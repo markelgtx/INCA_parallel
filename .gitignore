@@ -1,0 +1,13 @@
+# Ignore everything
+*
+
+# But not this file
+!.gitignore
+
+# Allow src/ folder itself
+!src/
+
+# Allow Fortran source files inside src/
+!src/**/*.f90
+!src/**/*.f
+
