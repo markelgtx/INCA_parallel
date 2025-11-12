@@ -20,11 +20,10 @@ integer, allocatable,dimension(:) :: npb
 integer :: nr_total
 double precision, allocatable, dimension(:,:) :: gpt
 double precision :: z
-integer :: i, ia, ir, sm, smnn, j, smp, n_an, smrad
+integer :: i, ia, ir, sm, smnn, j, n_an, smrad
 double precision, parameter :: pi=4.d0*datan(1.d0)
 double precision, parameter :: trsh=1.d-15, trsh2=1.d-16, tol=dsqrt(epsilon(1.d0))
 !double precision :: a,b
-double precision :: xs
 double precision :: r_start,r_end
 allocate(npb(nblock))
 nr_total=0

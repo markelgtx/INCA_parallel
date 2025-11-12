@@ -13,10 +13,8 @@ logical, intent(in) :: normalize_dm2p
 integer :: kk1, kk2 !integers we do not want to read from .dm2
 integer :: dfact    !double factorial
 integer :: ii,iii,sum, ig, ir, summ, np, sm, smm !some integers
-double precision :: pot, pot_x, pot_y, pot_z !power for the polynomial V 
 double precision :: R_i_k_2, R_j_l_2  !R_ik=(R_i-R_k)^2
 double precision :: Aa_ijkl !grid independent part of the intracule
-double precision :: n_prim_i, n_prim_j,n_prim_k, n_prim_l !normalization of primitives for DM2
 double precision :: n_prim_t !total normalization factor
 double precision :: DMval !value of DM2
 double precision :: A_ind !eq.18 (grid independent part)
@@ -46,9 +44,8 @@ double precision :: trace_DM2prim, trDM2 !normalized and not normalized DM2prim
 integer :: npairs      !number of electron pairs
 double precision :: T1, T2, T3, T4, TT1, TT2, TT3, TT4, TT5 !time check
 double precision :: Tread, T1screen, T2screen, Tgrid
-double precision :: vee, h
-double precision, allocatable :: vee_intra(:)
-double precision :: intracule_total, intracule_zero
+double precision :: vee
+double precision :: intracule_zero
 !primitive normalization
 double precision, allocatable, dimension(:) :: N_prim
 !set counter for primitive quartets

@@ -151,7 +151,6 @@ use quadratures
 implicit none
 character*80 :: name
 integer :: i, j
-character*20 :: ccent
 call getarg(1,name)  !gets the name of the input file (writen in the prompt)
 name=trim(name)      !remove the blank spaces of the string 'name'
 open(unit=3,file=name,status='OLD')  

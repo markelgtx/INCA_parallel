@@ -163,21 +163,21 @@ end function
    integer :: i
     Density=0.d0
     if (corr) then
-      do i=1,noccmo
-        Density= Density + Occ(i) * MoOr(x,y,z,i)**2.d0  
-      end do        
-    !else if (uhf) then
-    !     if (dble(nalfae).gt.0.1d0) then
-    !         do i=1,nalfae
-    !            dens_a=dens_a+MO_a(x,y,z,i)**2.d0
-    !         end do
-    !     end if
-    !       if (dble(nbetae).gt.0.1d0) then
-    !          do i=1,nbetae
-    !            dens_b=dens_b+MO_b(x,y,z,i)**2.d0
-    !          end do
-    !       end if            
-    !       density=dens_a+dens_b
+        do i=1,noccmo
+            Density= Density + Occ(i) * MoOr(x,y,z,i)**2.d0  
+        end do        
+    else if (uhf) then
+        if (dble(nalfae).gt.0.1d0) then
+            do i=1,nalfae
+                dens_a=dens_a+MO_a(x,y,z,i)**2.d0
+            end do
+        end if
+        if (dble(nbetae).gt.0.1d0) then
+            do i=1,nbetae
+                dens_b=dens_b+MO_b(x,y,z,i)**2.d0
+            end do
+        end if            
+        density=dens_a+dens_b
     else        
        do i=1,noccmo 
            Density=Density+ Occ(i)*MoOr(x,y,z,i)**2.d0
@@ -396,8 +396,8 @@ end subroutine
    use geninfo
    implicit none
    double precision :: rdm1_alf
-   double precision :: MoOr, MO_a, MO_b
-   double precision, intent(in) :: x1, y1, z1, x2, y2, z2
+   double precision :: MoOr, MO_a
+  double precision, intent(in) :: x1, y1, z1, x2, y2, z2
    integer :: i
     rDM1_alf=0.d0
    if (uhf) then 
@@ -433,7 +433,7 @@ end subroutine
    use geninfo
    implicit none
    double precision :: rdm1_bet
-   double precision :: MoOr, MO_a, MO_b
+   double precision :: MoOr, MO_b
    double precision, intent(in) :: x1, y1, z1, x2, y2, z2
    integer :: i
    if (uhf) then
@@ -446,7 +446,7 @@ end subroutine
            rDM1_bet=0.d0
            if (dble(nalfae).gt.0.1d0) then
              do i=1,nalfae
-                rDM1_bet=rDM1_bet+MO_a(x1,y1,z1,i)*MO_a(x2,y2,z2,i)
+                rDM1_bet=rDM1_bet+MO_b(x1,y1,z1,i)*MO_b(x2,y2,z2,i)
              end do
            else
                 write(*,*) "No alpha electrons, rdm1alf=0"

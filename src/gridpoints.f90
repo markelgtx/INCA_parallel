@@ -36,9 +36,6 @@ integer :: i, ia, ir, sm, smp, sma, smnn, j, k, smr, smpr, ngrid, i1
 integer :: np !number of points
 double precision, parameter :: pi=4.d0*datan(1.d0)
 double precision, parameter :: trsh=1.d-15, trsh2=1.d-16, tol=dsqrt(epsilon(1.d0))
-double precision :: xs
-!double precision :: a,b
-!ntrsh=-trsh !set negative threshold
 !count maximum number of points
 np=0
 do i=1,nquad
