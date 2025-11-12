@@ -26,8 +26,6 @@ double precision, parameter :: trsh=1.d-15, trsh2=1.d-16, tol=dsqrt(epsilon(1.d0
 !double precision :: a,b
 double precision :: xs
 double precision :: r_start,r_end
-write(*,*) nblock
-write(*,*) "tol=", tol
 allocate(npb(nblock))
 nr_total=0
 do i=1,nblock
@@ -93,24 +91,6 @@ do i=1,nblock !loop for each radius fragment
     if (n_an.eq.4802) call LD4802(x_lb,y_lb,z_lb,Wlb,n_an) !4802
     if (n_an.eq.5294) call LD5294(x_lb,y_lb,z_lb,Wlb,n_an) !5294
     if (n_an.eq.5810) call LD5810(x_lb,y_lb,z_lb,Wlb,n_an) !5810 
-    !allocate(theta(n_an))
-    !allocate(phi(n_an))
-    !do j=1,n_an   !compute angles     
-    !    theta(j)= dacos(r_lb(3,j))
-        !if (1.d0 - dabs(r_lb(3,j)).gt.tol) then
-            !xs=r_lb(1,j)/dsin(theta(j))
-            !if (xs.gt. 1.d0) xs=1.d0
-            !if (xs.lt.-1.d0) xs=-1.d0
-    !        phi(j) = datan2(r_lb(2,j), r_lb(1,j))
-            !phi(j)=dacos(xs)
-            !if (r_lb(2,j).lt. 0.d0) phi(j)=-1.0d0*phi(j)
-        !else
-        !      phi(j)=0.d0
-        !end if
-        !Wlb(j)=Wlb(j)*2.d0*pi !store 2pi factor on the weight (see solid angle integral)
-    !end do   
-     !angles and weights are computed for each block
-
     !!!!!!!!Compute grid points!!!!!!!!!!!!!!!!!!!!!!!!!!    
     do ir=1,npb(i) !loop for each radius inside the block
         smrad=smrad+1 !sum over radius
@@ -141,10 +121,6 @@ do i=1,nblock !loop for each radius fragment
     deallocate(Wlb)
     deallocate(x_lb); deallocate(y_lb); deallocate(z_lb)
 end do   !end loop for radius fragment
- 
-write(*,*) "Original number of grid points", sm
-write(*,*) "Number of grid points after I(r)=I(-r)", smnn
-write(*,*) "Number of grid points per radi", smn
 allocate(rpg(3,smnn))
 allocate(w_ang(smnn))
 w_ang = 0.0d0

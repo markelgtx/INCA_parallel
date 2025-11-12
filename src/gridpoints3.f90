@@ -6,7 +6,6 @@
   !local variables
   integer :: i,j,k,sm
   double precision, dimension(3) :: xm  
-
   rgrid=np_i(1)*np_i(2)*np_i(3)
   allocate(rg(3,rgrid))
   rg=0.d0
@@ -28,11 +27,6 @@
           end do   
       end do
    end do
-   write(*,*) "xm", xm(:)
-   write(*,*) "np_i", np_i(:)
-   do i=1,rgrid
-     write(7,*) rg(:,i)
-   end do  
  end subroutine gridpoints3    
 
  subroutine gridpoints3_corner(center_i, step_i, np_i)
@@ -63,12 +57,4 @@
          end do
       end do
    end do
- 
-   ! Diagnostic output
-   write(*,*) "Grid corner (origin):", xm(:)
-   write(*,*) "Number of points per direction:", np_i(:)
-   do i = 1, rgrid
-      write(7,*) rg(:, i)
-   end do
- 
  end subroutine gridpoints3_corner

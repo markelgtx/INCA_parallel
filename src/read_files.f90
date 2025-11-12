@@ -448,9 +448,9 @@ subroutine filefchk(fchkfilename)
    character(len=*), intent(in) :: fchkfilename
    character(len=500) :: line
    character(len=40)  :: typ, method, basis
-   integer :: i, j, k, l, l1 , iprim, ishell, ncshl, npshl
+   integer :: i, j, k, l, l1 , iprim, ncshl, npshl
    integer, allocatable :: shell_types(:), prim_per_shell(:), shell2atom(:)
-   double precision, allocatable :: prim_exp(:), contr_coeff(:), pscontr(:)
+   double precision, allocatable :: prim_exp(:)
    
    ! Reset flags
    corr=.false.; uhf=.false.; rhf=.false.
@@ -758,11 +758,10 @@ subroutine filebas(basfilename)
    character(len=*), intent(in) :: basfilename
    integer :: i, j, k
    double precision, allocatable, dimension(:,:) :: bas
-   write(*,*) "Subroutine that reads the bas file"
    open(unit=1,file=basfilename,status='OLD')
    allocate(bas(nprim,3))
    !read basis set info from .bas
-   !remove data from fchk
+   !overwrite .fchk info
    call locate(1,"#")
    do i=1,nprim
       read(1,*) k, bas(i,1), bas(i,2), bas(i,3), Alpha(i), TMN(i,1), TMN(i,2), TMN(i,3)      
@@ -774,8 +773,8 @@ subroutine filebas(basfilename)
       end do   
    end do
    close(1)
-   write(*,*) "Reading basis set from .bas file"
-   do i=1,nprim
-      write(*,*) cartes(int(Ra(i)),1), cartes(int(Ra(i)),2), cartes(int(Ra(i)),3), Alpha(i), TMN(i,1), TMN(i,2), TMN(i,3)
-   end do
+   !write(*,*) "Reading basis set from .bas file"
+   !do i=1,nprim
+   !   write(*,*) cartes(int(Ra(i)),1), cartes(int(Ra(i)),2), cartes(int(Ra(i)),3), Alpha(i), TMN(i,1), TMN(i,2), TMN(i,3)
+   !end do
 end subroutine  

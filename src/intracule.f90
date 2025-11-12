@@ -114,8 +114,6 @@ open(unit=5,file=dm2name, form='unformatted',access='stream') !open binary file
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 sum=0     !quartets skipped in the 1st screening
 summ=0    !quartets skipped in the 2nd screeening         
-write(*,*) "starting loop for primitives"
-write(*,*) "Loop over", ngrid, "grid points" 
 rewind(5)    !start reading from the begining of the dm2 file
 smm=0
 trDM2=0.d0  !sum of all the DM2 terms.
@@ -151,9 +149,9 @@ if (normalize_dm2p) then
 end if
 do while (.true.)  !loop for primitive quartets.
     call cpu_time(TT1)    
-    !read(5,end=100, err=200) kk1,i,j,k,l,DMval,kk2!read a line from binary file .dm2
-    read(5,end=100, err=200) i,j,k,l,DMval
-  !  write(*,*) i,j,k,l
+    read(5,end=100, err=200) kk1,i,j,k,l,DMval,kk2!read a line from binary file .dm2
+    !read(5,end=100, err=200) i,j,k,l,DMval
+    !write(*,*) i,j,k,l
     if (i.lt.1 .or. i.gt.nprim) goto 200
     if (j.lt.1 .or. k.lt.1 .or. l.lt.1) goto 200
     quartet_count=quartet_count+1
@@ -309,7 +307,6 @@ else
        !stop
     end if
 end if
-
 !end subroutine intracalc 
 !as output gives a vector with the intracule at the given points
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -336,49 +333,7 @@ if (radial_plot) then        !compute radial intracule
     end do 
     deallocate(r_intra)
     close(3)
- end if     
-
-if (vee_flag) then        ! compute radial intracule
-    allocate(r_intra(nradi))
-    allocate(vee_intra(nradi))  
-    ig = 0
-    sm = 0
-    r_intra = 0.0d0
-    vee_intra = 0.0d0
-    ir = 0  
-    ! Perform angular integration for each radial point
-    do i = 1, nradi
-        do k = 1, smn(i) ! sum reduced angular points per radial shell
-            sm = sm + 1
-            r_intra(i) = r_intra(i) + w_ang(sm) * I_vec(sm) ! Perform the angular quadrature 
-            vee_intra(i) = vee_intra(i) + w_ang(sm) * I_vec(sm) ! Same angular quadrature
-        end do    
-        ! Handle special case at origin
-        if (radi(i) .le. 0.0d0) then
-            intracule_zero = r_intra(1)
-            r_intra(i) = 0.0d0
-            vee_intra(i) = 0.0d0
-        else
-            ! First normalization: without /radi(i) at the end
-            r_intra(i) = (r_intra(i)/(4.0d0*pi)) * 4.0d0*pi*radi(i)**2    
-            ! Second normalization: with /radi(i) at the end (original definition)
-            vee_intra(i) = (vee_intra(i)/(4.0d0*pi)) * 4.0d0*pi*radi(i)**2/radi(i)
-        end if            
-    end do  
-    ! Compute integrations using Simpson's 1/3 rule
-    h = radi(2)-radi(1)  ! spacing = 0.1 au  
-    ! First integration for r_intra (intracule)
-    intracule_total = simpson_integrate(r_intra, nradi, h)      
-    ! Second integration for vee_intra (Vee)
-    vee = simpson_integrate(vee_intra, nradi, h) 
-    write(*, '(A, ES25.16)') 'INTRACULE AT ZERO = ', intracule_zero
-    write(*, '(A, ES25.16)') 'TOTAL VALUE OF INTRACULE = ', intracule_total
-    write(*, '(A, ES25.16)') 'TOTAL VALUE OF Vee = ', vee
-    write(*, '(A, ES25.16)') 'TOTAL Energy = ', toteng
-    deallocate(r_intra)
-    deallocate(vee_intra)
-    close(3)
-end if 
+end if     
 if (radial_integral) then !integral of the intracule
     r_integral=0.d0 
     vee=0.d0
@@ -416,97 +371,60 @@ end if
 ! 40 format(6(E16.6E3))
 call cpu_time(T4)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+write(*,*) "-----------Computational time----------------"
+write(*,*) "Total CPU time", T4-T1 
+write(*,*) "Grid points computing time", T2-T1
+write(*,*) "Primitive quartet loop time", T3-T2
+write(*,*) "CPU time for intracule integrations", T4-T3
+write(*,*) "---Primitive quartet time analysis-----------"
+write(*,*) "Reading .dm2p file-->", Tread
+write(*,*) "1st primitive screening-->", T1screen
+write(*,*) "2nd primitive screening-->", T2screen
+write(*,*) "Grid points loop-->", Tgrid
+write(*,*) "---------------------------------------------"
+write(*,*) "------Grid point + primitive quartet info----"
+write(*,*) "Original grid points", maxgrid
+write(*,*) "Symmetry reduced grid points", rgrid
+write(*,*) "Total number of reduced grid points", rrgrid  
+write(*,*) "---------------------------------------------"
+write(*,*) "--------------Accuracy check-----------------"
+write(*,*) "Sum of all DM2prim terms=", trDM2, trace_DM2prim
+write(*,*) "Thresholds used for DM2prim", trsh1, trsh2
+write(*,*) "Threshold used for screenings(Tau)=", thresh
+write(*,*) "Computed limit for the screenings", lim
+write(*,*) "---------------------------------------------"
 !!!!!!!!!!!!!!!!!!!!!Print output!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 open(unit=3,file=outname) !open output file 
-write(3,*) "*******Job Finished************"
-write(3,*) "-----------Computational time----------------"
-write(3,*) "Total CPU time", T4-T1 
-write(3,*) "Grid points computing time", T2-T1
-write(3,*) "Primitive quartet loop time", T3-T2
-write(3,*) "CPU time for intracule integrations", T4-T3
-write(3,*) "---Primitive quartet time analysis-----------"
-write(3,*) "Reading .dm2p file-->", Tread
-write(3,*) "1st primitive screening-->", T1screen
-write(3,*) "2nd primitive screening-->", T2screen
-write(3,*) "Grid points loop-->", Tgrid
-write(3,*) "---------------------------------------------"
-write(3,*) "------Grid point + primitive quartet info----"
-write(3,*) "Original grid points", maxgrid
-write(3,*) "Symmetry reduced grid points", rgrid
-write(3,*) "Total number of reduced grid points", rrgrid  
-write(3,*) "---------------------------------------------"
-write(3,*) "--------------Accuracy check-----------------"
-write(3,*) "Sum of all DM2prim terms=", trDM2, trace_DM2prim
-write(3,*) "Thresholds used for DM2prim", trsh1, trsh2
-write(3,*) "Threshold used for screenings(Tau)=", thresh
-write(3,*) "Computed limit for the screenings", lim
-write(3,*) "---------------------------------------------"
+write(*,*) "*******Job Finished************"
 if (radial_integral) then   
     write(3,*) "--------------RADIAL INTEGRAL----------------" 
     write(3,*) "Number of centres", nquad
+    if (nquad.gt.1) then
+        write(3,*) "Centres for radial integration"
+    end if
     do i=1,nquad
-         write(3,*) i, ":::", cent(:,i)
+        write(3,*) i, ":::", cent(:,i)
     end do
     write(3,*) "Weights for centres", Ps(:)
     write(3,*) "Alpha parameter", sfalpha(:)
     write(3,*) "Gauss-Legendre nodes", nradc(:)
     write(3,*) "Gauss-Lebedev nodes", nangc(:)
     write(3,*) "---------------------------------------------"
-    write(3, '(A, ES25.16)') 'INTRACULE AT ZERO = ', intracule_zero
     write(3, '(A, ES25.16)') 'TOTAL VALUE OF INTRACULE = ', r_integral
     write(3, '(A, ES25.16)') 'TOTAL VALUE OF Vee = ', vee
-    write(3, '(A, ES25.16)') 'TOTAL Energy = ', toteng
+    !write(3, '(A, ES25.16)') 'TOTAL Energy = ', toteng
     npairs=(nelec)*(nelec-1)/2
     write(3,*) "Radial_integral error=", r_integral-dble(npairs)
 else if (radial_plot) then
-     write(3,*) "RADIAL PLOT, I(S) vs s"    
-     write(3,*) "Number of distances", nradi
-     write(3,*) "From", radi(1), "to", radi(nradi)
+    write(3,*) "RADIAL PLOT, I(S) vs s"    
+    write(3,*) "Gauss-Lebedev nodes", n_an_per_part(:)
+    write(3,*) "From", radi(1), "to", radi(nradi)
 else if (cubeintra) then
-     write(3,*) "CUBEFILE GENERATED"
+    write(3,*) "CUBEFILE GENERATED"
 else if (intracule_at_zero) then
-     write(3, '(A, ES25.16)') 'INTRACULE AT ZERO = ', intracule_zero
-else if (vee_flag) then
-     write(3, '(A, ES25.16)') 'INTRACULE AT ZERO = ', intracule_zero
-     write(3, '(A, ES25.16)') 'TOTAL VALUE OF INTRACULE = ', intracule_total
-     write(3, '(A, ES25.16)') 'TOTAL VALUE OF Vee = ', vee
-     write(3, '(A, ES25.16)') 'TOTAL Energy = ', toteng    
+    write(3, '(A, ES25.16)') 'INTRACULE AT ZERO = ', intracule_zero
 end if
 close(3)
-contains
-! Simpson's 1/3 rule integration function
-! Integrates function values y over uniform grid with spacing h
-! Requires odd number of points for proper Simpson's rule
-function simpson_integrate(y, n, h) result(integral)
-    implicit none
-    integer, intent(in) :: n           ! number of points
-    real(8), intent(in) :: y(n)       ! function values at grid points
-    real(8), intent(in) :: h          ! grid spacing
-    real(8) :: integral
-    integer :: i
-    
-    ! Check if we have odd number of points (required for Simpson's 1/3)
-    if (mod(n, 2) == 0) then
-        write(*, '(A)') 'Warning: Even number of points in Simpson integration'
-    end if
-    
-    ! Simpson's 1/3 rule: ∫f(x)dx ≈ (h/3)[f(x₀) + 4f(x₁) + 2f(x₂) + 4f(x₃) + ... + 4f(x_{n-1}) + f(x_n)]
-    integral = y(1)  ! First point f(x₀)
-    
-    ! Odd indices get coefficient 4
-    do i = 2, n - 1, 2
-        integral = integral + 4.0d0 * y(i)
-    end do
-    
-    ! Even indices (except first and last) get coefficient 2
-    do i = 3, n - 2, 2
-        integral = integral + 2.0d0 * y(i)
-    end do
-    
-    integral = integral + y(n)      ! Last point f(x_n)
-    integral = integral * h / 3.0d0 ! Multiply by h/3
-    
-end function simpson_integrate
 end subroutine
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

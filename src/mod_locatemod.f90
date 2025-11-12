@@ -37,7 +37,7 @@ contains
      if (ios /= 0) exit
      if (index(linia,string) /= 0) then
         located = .true.
-        write(*,*) "Located section -> ", trim(string)
+        !write(*,*) "Located section -> ", trim(string)
         return
      end if
   end do

@@ -46,15 +46,14 @@ end if
 
 if (intracalc) then !compute the intracule
   call readintra()
-  write(*,*) "readed intra info"
   normalize_dm2p=.true.
   call intracule(normalize_dm2p)  
-  write(*,*) "intracule computed succesfully"
 end if
 
-if (c1calc) then
+if (c1calc) then !Becke-Roussel
    call c1hole(70,1.d0)
 end if
+
 end program wavefunction
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -260,18 +259,6 @@ open(unit=3,file=name,status='OLD')
             read(3,*) x_point2, y_point2, z_point2
         else
             write(*,*) 'Warning! You must provide at least a radial or vectorial plot option for intracule calculations'    
-        end if
-        rewind(3)
-        !Javier's method to calculate Vee!
-        if (located(3,'$Vee')) then
-            write(*,*) 'yeehaw'
-            read(3,*) nblock
-            allocate(n_an_per_part(nblock))
-            allocate(tart(2,nblock))
-            allocate(stp(nblock))
-            do i=1,nblock
-                read(3,*) tart(:,i), stp(i), n_an_per_part(i)
-            end do
         end if
         rewind(3)
  close(3) 
