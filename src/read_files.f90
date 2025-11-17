@@ -13,13 +13,8 @@ use locatemod
    name=trim(name)      !remove the blank spaces of the string 'name'
    open(unit=3,file=name,status='OLD') 
    !set up logical variables as false
-   primcube=.false.
-   aocube=.false.
-   MOcube=.false.
-   denscube=.false.
-   gradient=.false.
-   laplacian=.false.
-   intracalc=.false.
+   primcube=.false.; aocube=.false.; MOcube=.false.; denscube=.false.; gradient=.false.
+   laplacian=.false.; intracalc=.false.
    !read input file
    if (located(3,"$wfxfile")) then
        readwfx=.true.
@@ -40,7 +35,7 @@ use locatemod
        read(3,*) logfilename
    end if
    rewind 3    
-   
+  
    if (located(3,"$cubefile")) then
        read(3,*) (center(i), i=1,3) !cube centered in (x,y,z)
        read(3,*) (step(i), i=1,3) !distance between points in the axis
@@ -96,112 +91,156 @@ use locatemod
    call getarg(1,name)  !gets the name of the input file (writen in the prompt)
    name=trim(name)      !remove the blank spaces of the string 'name'
    open(unit=3,file=name,status='OLD')  
-           !read input for intracule
-           call locate(3,'$Integral screening threshold') !threshold for integral screenings
-           read(3,*) thresh  
-           rewind(3)
-           dm2name = ''
-           call locate(3,'$DM2P')
-           read(3,*) dm2name           !name of the dm2p file
-           read(3,*) trsh1, trsh2      !thresholds used in DM2prim
-           read(3,*) outname           !name of the output file
-           if (located(3,'$nosym')) then
-               nosym=.true.
-               write(*,*) 'Deactivating symmetry in intracule calculations'
-           else
-               nosym=.false.
-           end if
-           rewind(3)
-           if (located(3,'$radial_integral')) then
-               radial_integral=.true.
-               if (located(3,'$definite')) then
-                   definite=.true.
-                   read(3,*) a,b
-               end if
-               if (located(3,'$Multicenter')) then
-                   if (located(3,'$manual_grid')) then !number of quadrature centers(not automatically calculated)
-                       read(3,*) nquad
-                       allocate(cent(3,nquad))
-                       do i=1,nquad
-                           read(3,*) (cent(j,i), j=1,3) !read position of centers
-                       end do
-                       allocate(nradc(nquad))
-                       allocate(nangc(nquad))
-                       allocate(sfalpha(nquad)) 
-                       call locate(3,'$Gauss-Legendre')
-                       read(3,*) (nradc(i), i=1,nquad)
-                       read(3,*) sfalpha(:)
-                       call locate(3,'$Gauss-Lebedev')
-                       read(3,*) (nangc(i), i=1,nquad)
-                       call locate(3,'$Center weights')
-                       allocate(Ps(nquad)) !allocate weight of each centre
-                       read(3,*) Ps(:) !the weigth of a positive center must be equal to the neg.
-                       rewind(3)
-                   else !automatically calculate the parameters (default)
-                       if (located(3,'$Gauss-Legendre')) then
-                           read(3,*) nrad
-                       else
-                           nrad=50
-                       end if
-                       if (located(3,'$Gauss-Lebedev')) then
-                           read(3,*) nang
-                       else
-                           nang=590
-                       end if
-                       if (located(3,'$hydro')) then
-                           nohydro=.false.
-                       else
-                           nohydro=.true. !do not include H atoms as centres per default
-                       end if
-                       call centercalc() !calculate the number of centers and their positions
-                   end if
-               else !single center quadrature
-                   write(*,*) 'Using single center quadrature'
-                   nquad=1
-                   allocate(cent(3,1))
-                   allocate(nradc(1)); allocate(nangc(1)); allocate(sfalpha(1)); allocate(Ps(nquad))
-                   cent(1:3,1)=0.0d0
-                   if (located(3,'$Gauss-Legendre')) then
-                       write(*,*) 'Reading number of radial points and scaling factor for radial integration'
-                       read(3,*) nradc(1)
-                       read(3,*) sfalpha(1)
-                   else !default values
-                       nradc(1)=50
-                       sfalpha(1)=1.0d0
-                   end if
-                   if (located(3,'$Gauss-Lebedev')) then
-                       read(3,*) nangc(1)
-                   else !default values
-                       write(*,*) 'Using default value of 590 points for angular integration'
-                       nangc(1)=590
-                   end if
-               end if    
-           else if (located(3,'$radial_plot')) then
-               radial_plot=.true.
-               read(3,*) r_plot_name
-               read(3,*) nblock
-               allocate(n_an_per_part(nblock))
-               allocate(tart(2,nblock))
-               allocate(stp(nblock))
-               do i=1,nblock
-                   read(3,*) tart(:,i), stp(i), n_an_per_part(i)
+   !read input for intracule
+   if (located(3,'$Integral screening threshold')) then !threshold for integral screenings
+      read(3,*) thresh
+   else  
+      thresh=1.0d-12 !default value
+   end if    
+
+   rewind(3)
+   call locate(3,'$DM2P')
+   read(3,*) dm2name           !name of the dm2p file
+   !read(3,*) trsh1, trsh2      !thresholds used in DM2prim
+   read(3,*) outname           !name of the output file
+   if (located(3,'$nosym')) then
+      nosym=.true.
+      write(*,*) 'Deactivating symmetry in intracule calculations'
+   else
+      nosym=.false.
+   end if
+   rewind(3)
+   if (located(3,'$radial_integral')) then
+      radial_integral=.true.
+      if (located(3,'$definite')) then
+         definite=.true.
+         read(3,*) a,b
+      end if
+      if (located(3,'$Multicenter')) then
+         if (definite) then
+            write(*,*) 'Error! You cannot use definite integrals with multicenter quadrature'
+            stop
+         end if
+         if (located(3,'$manual_grid')) then !number of quadrature centers(not automatically calculated)
+            if (located(3,'$number of quadrature centers')) then
+               read(3,*) nquad
+            else
+               write(*,*) 'Error! In manual mode you must provide the number of quadrature centers'
+               stop
+            end if
+            allocate(cent(3,nquad))
+            if (located(3,'$position of quadrature centers')) then               
+               do i=1,nquad
+                  read(3,*) (cent(j,i), j=1,3) !read position of centers
                end do
-           else if (located(3,'$Vectorial_plot')) then     
-               cubeintra=.true.  
-               read(3,*) cubeintraname
-               read(3,*) (center_i(i), i=1,3) !cube centered in (x,y,z)
-               read(3,*) (step_i(i), i=1,3) !distance between points in the axis
-               read(3,*) (np_i(i), i=1,3) !number of points for each axis
-           else if (located(3,'$Intracule_at_zero')) then
-               intracule_at_zero=.true.
-           else if (located(3,'$Intracule_two_points')) then
-               intracule_two_points=.true.   
-               read(3,*) x_point1, y_point1, z_point1
-               read(3,*) x_point2, y_point2, z_point2
-           else
-               write(*,*) 'Warning! You must provide at least a radial or vectorial plot option for intracule calculations'    
-           end if
-           rewind(3)
+            else
+               write(*,*) 'Error! In manual mode you must provide the positions of the quadrature centers'
+               stop
+            end if   
+            allocate(nradc(nquad))
+            allocate(nangc(nquad))
+            allocate(sfalpha(nquad))
+            if (located(3,'$Gauss-Legendre')) then
+               read(3,*) (nradc(i), i=1,nquad)
+            else 
+               nradc(:)=50 !default value
+            end if
+            if (located(3,'$scaling factor')) then
+               read(3,*) sfalpha(:)
+            else
+               sfalpha(:)=1.0d0 !default value
+            end if  
+            if (located(3,'$Gauss-Lebedev')) then
+               read(3,*) (nangc(i), i=1,nquad)
+            else  
+               nangc(:)=590 !default value
+            end if  
+             allocate(Ps(nquad)) !allocate weight of each centre
+            if (located(3,'$Center weights')) then
+               read(3,*) Ps(:) !the weigth of a positive center must be equal to the neg.
+            else  
+               Ps(:)=1.0d0 !default equal weights
+            end if  
+            rewind(3)
+         else !automatically calculate the parameters (default)
+            if (located(3,'$Gauss-Legendre')) then
+               read(3,*) nrad
+            else
+               nrad=50
+            end if
+            if (located(3,'$Gauss-Lebedev')) then
+               read(3,*) nang
+            else
+               nang=590
+            end if
+            if (located(3,'$hydro')) then
+               nohydro=.false.
+            else
+               nohydro=.true. !do not include H atoms as centres per default
+            end if
+            call centercalc() !calculate the number of centers and their positions
+         end if
+      else !single center quadrature (Default)
+         write(*,*) 'Using single center quadrature'
+         nquad=1
+         allocate(cent(3,1))
+         allocate(nradc(1)); allocate(nangc(1)); allocate(sfalpha(1)); allocate(Ps(nquad))
+         cent(1:3,1)=0.0d0
+         if (located(3,'$Gauss-Legendre')) then
+            read(3,*) nradc(1) 
+         else !default values
+            nradc(1)=100
+         end if
+         if (located(3,'$scaling factor')) then                  
+            read(3,*) sfalpha(1)
+         else !default values
+            sfalpha(1)=1.0d0
+         end if
+         if (located(3,'$Gauss-Lebedev')) then
+            read(3,*) nangc(1)
+         else !default values
+            nangc(1)=590
+         end if
+      end if    
+   else if (located(3,'$radial_plot')) then
+      radial_plot=.true.
+      if (located(3,'$plot_name')) then
+         read(3,*) r_plot_name
+      else
+         r_plot_name=trim(name//'.rad')
+      end if
+      if (located(3,'$number of blocks')) then         
+         read(3,*) nblock
+      else
+         nblock=1 !default value
+      end if   
+      allocate(n_an_per_part(nblock))
+      allocate(tart(2,nblock))
+      allocate(stp(nblock))
+      if (located(3,'$start, end, step, nang')) then
+         do i=1,nblock
+            read(3,*) tart(:,i), stp(i), n_an_per_part(i)
+         end do
+      else
+         write(*,*) 'Error! You must provide start, end, step and number of angles per block for radial plots'
+         stop
+      end if
+   else if (located(3,'$Vectorial_plot')) then     
+      cubeintra=.true.  
+      read(3,*) cubeintraname
+      read(3,*) (center_i(i), i=1,3) !cube centered in (x,y,z)
+      read(3,*) (step_i(i), i=1,3) !distance between points in the axis
+      read(3,*) (np_i(i), i=1,3) !number of points for each axis
+   else if (located(3,'$Intracule_at_zero')) then
+      intracule_at_zero=.true.
+   else if (located(3,'$Intracule_two_points')) then
+      intracule_two_points=.true.   
+      read(3,*) x_point1, y_point1, z_point1
+      read(3,*) x_point2, y_point2, z_point2
+   else
+      write(*,*) 'Warning! You must provide at least a radial or vectorial plot option for intracule calculations'    
+   end if
+   rewind(3)
    close(3) 
 end subroutine readintra
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -703,7 +742,7 @@ subroutine filefchk(fchkfilename)
    ! ============================
    write(*,*) "Reading fchk file"
    call getline_with(1,"Number of atoms",line)
-   write(*,*) line
+  ! write(*,*) line
    read(line,*) typ, typ, typ, typ, natoms   ! label has spaces → just grab last value
 
    ! ============================
@@ -774,7 +813,7 @@ subroutine filefchk(fchkfilename)
          stop
       end select
    end do
-   write(*,*) "nprim calculated from shells=", nprim
+   !write(*,*) "nprim calculated from shells=", nprim
    ! ============================
    ! Shell-to-atom map
    ! ============================
@@ -807,7 +846,7 @@ subroutine filefchk(fchkfilename)
             Alpha(iprim) = prim_exp(l)
             Ptyp(iprim) = 1
             TMN(iprim,:) = (/0,0,0/)
-            write(*,*) "s shell", iprim
+            !write(*,*) "s shell", iprim
          end do
       case(1) ! p shell -> expand px, py, pz
          do k=1,prim_per_shell(i)
@@ -819,7 +858,7 @@ subroutine filefchk(fchkfilename)
                Ptyp(iprim) = 1+j
                TMN(iprim,:) = 0
                TMN(iprim,j) = 1
-               write(*,*) "p shell", iprim
+              ! write(*,*) "p shell", iprim
             end do
          end do
       case(2, -2)
@@ -839,7 +878,7 @@ subroutine filefchk(fchkfilename)
             Ptyp(iprim)=9; TMN(iprim,:)=(/1,0,1/)   ! xz
             iprim = iprim+1; Ra(iprim)=shell2atom(i); Alpha(iprim)=prim_exp(l)
             Ptyp(iprim)=10; TMN(iprim,:)=(/0,1,1/)  ! yz
-            write(*,*) "d shell", iprim
+            !write(*,*) "d shell", iprim
          end do
       case(3, -3)  ! f shell -> Cartesian (10 functions)
          do k=1,prim_per_shell(i)
@@ -865,7 +904,7 @@ subroutine filefchk(fchkfilename)
             Ptyp(iprim)=19; TMN(iprim,:)=(/0,1,2/)   ! yzz
             iprim = iprim+1; Ra(iprim)=shell2atom(i); Alpha(iprim)=prim_exp(l)
             Ptyp(iprim)=20; TMN(iprim,:)=(/1,1,1/)  ! xyz
-            write(*,*) "f shell", iprim
+           ! write(*,*) "f shell", iprim
          end do
       case(4, -4) ! g shell -> Cartesian (15 functions) 
          do k=1,prim_per_shell(i)
@@ -902,10 +941,10 @@ subroutine filefchk(fchkfilename)
             Ptyp(iprim)=34; TMN(iprim,:)=(/1,2,1/)   ! xyyz
             iprim = iprim+1; Ra(iprim)=shell2atom(i); Alpha(iprim)=prim_exp(l)
             Ptyp(iprim)=35; TMN(iprim,:)=(/1,1,2/)   ! xyzz
-            write(*,*) "g shell", iprim            
+            !write(*,*) "g shell", iprim            
          end do 
       case(-1) ! SP shell: s + p
-         write(*,*) "SP shell"
+         !write(*,*) "SP shell"
          l1=l
          do k=1,prim_per_shell(i)
             l=l+1
@@ -951,9 +990,9 @@ subroutine filefchk(fchkfilename)
          stop  
       end select
    end do
-   do i=1,nprim
-      write(*,*) cartes(Ra(i),1), cartes(Ra(i),2), cartes(Ra(i),3), Alpha(i), TMN(i,1), TMN(i,2), TMN(i,3)
-   end do
+   !do i=1,nprim
+   !   write(*,*) cartes(Ra(i),1), cartes(Ra(i),2), cartes(Ra(i),3), Alpha(i), TMN(i,1), TMN(i,2), TMN(i,3)
+   !end do
    close(1)
 end subroutine filefchk
 subroutine filebas(basfilename)
@@ -964,6 +1003,7 @@ subroutine filebas(basfilename)
    character(len=*), intent(in) :: basfilename
    integer :: i, j, k
    double precision, allocatable, dimension(:,:) :: bas
+   write(*,*) "Reading basis set from .bas file"
    open(unit=1,file=basfilename,status='OLD')
    allocate(bas(nprim,3))
    !read basis set info from .bas

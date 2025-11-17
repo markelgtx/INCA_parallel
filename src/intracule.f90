@@ -30,7 +30,7 @@ integer, parameter :: nmax = (Lmax+1)/2 + 1
 integer, parameter :: npmax = Lmax + 1
 integer :: nn !number of gauss hermite nodes (for x y and z)
 integer, dimension(3) :: Lrtot  !total angular momentum and number of nodes
-double precision, allocatable, dimension(:) :: ipiv !for dgesv in intrastuff
+integer, allocatable, dimension(:) :: ipiv !for dgesv in intrastuff
 !GRID POINTS
 integer :: ngrid !number of grid points
 double precision, allocatable, dimension(:,:) :: r !grid points
@@ -57,7 +57,7 @@ lim=thresh*(dble(nprim)*(dble(nprim)+1.d0)*0.5d0)**(-1.d0) !limit for the 1st in
 call cpu_time(T1)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!Obtain grid points!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+write(*,*) "Obtaining grid points..."
 if (radial_integral) then
     call gridpoints(nradc,nAngc,sfalpha,nquad,cent,Ps) !obtain the grid points
     allocate(r(3,rrgrid))
@@ -144,6 +144,7 @@ if (normalize_dm2p) then
         dble(dfact(2*TMN(i,1)-1)*dfact(2*TMN(i,2)-1)*dfact(2*TMN(i,3)-1))**(-1.d0))  
     end do
 end if
+write(*,*) "Starting loop over primitive quartets..."
 do while (.true.)  !loop for primitive quartets.
     call cpu_time(TT1)    
     read(5,end=100, err=200) kk1,i,j,k,l,DMval,kk2!read a line from binary file .dm2
@@ -158,24 +159,6 @@ do while (.true.)  !loop for primitive quartets.
     trDM2=trDM2+DMval
     smm=smm+1
     if (normalize_dm2p) then
-        !normalization of DM2--> Normalize the primitives
-    !    N_prim_i=(2.d0*Alpha(i)/pi)**(0.75d0)&
-    !    *dsqrt(((4.d0*Alpha(i))**(dble(TMN(i,1)+TMN(i,2)+TMN(i,3))))*&
-    !    dble(dfact(2*TMN(i,1)-1)*dfact(2*TMN(i,2)-1)*dfact(2*TMN(i,3)-1))**(-1.d0))  
-   
-    !    N_prim_j=(2.d0*Alpha(j)/pi)**(0.75d0)&
-    !    *dsqrt(((4.d0*Alpha(j))**(dble(TMN(j,1)+TMN(j,2)+TMN(j,3))))*&
-    !    dble(dfact(2*TMN(j,1)-1)*dfact(2*TMN(j,2)-1)*dfact(2*TMN(j,3)-1))**(-1.d0)) 
-   
-    !    N_prim_k=(2.d0*Alpha(k)/pi)**(0.75d0)&
-    !    *dsqrt(((4.d0*Alpha(k))**(dble(TMN(k,1)+TMN(k,2)+TMN(k,3))))*&
-    !    dble(dfact(2*TMN(k,1)-1)*dfact(2*TMN(k,2)-1)*dfact(2*TMN(k,3)-1))**(-1.d0)) 
-         
-    !    N_prim_l=(2.d0*Alpha(l)/pi)**(0.75d0)&
-    !    *dsqrt(((4.d0*Alpha(l))**(dble(TMN(l,1)+TMN(l,2)+TMN(l,3))))*&
-    !    dble(dfact(2*TMN(l,1)-1)*dfact(2*TMN(l,2)-1)*dfact(2*TMN(l,3)-1))**(-1.d0)) 
-   
-        !compute DMval with the normalization of primitives
         n_prim_t=N_prim(i)*N_prim(j)*N_prim(k)*N_prim(l)
         DMval=n_prim_t*DMval 
     end if     
@@ -185,7 +168,9 @@ do while (.true.)  !loop for primitive quartets.
     a_jl=Alpha(j)+Alpha(l)                  !eqn. 10                         
     e_ik=Alpha(i)*Alpha(k)*a_ik**(-1.d0)
     e_jl=Alpha(j)*Alpha(l)*a_jl**(-1.d0)   
-                
+    if ((a_ik.lt.1.d-4).or.(a_jl.lt.1.d-4)) then !skip this quartet if exponents are too small
+        write(*,*) "one exponent too small", a_ik, a_jl, i, j, k, l
+    end if               
     R_i_k_2=(Cartes(Ra(i),1)-Cartes(Ra(k),1))**2.d0+& !this is needed to compute A_ijkl (eqn. 18)
             (Cartes(Ra(i),2)-Cartes(Ra(k),2))**2.d0+&      !R_i_k_2=(R_i-R_k)²
             (Cartes(Ra(i),3)-Cartes(Ra(k),3))**2.d0    
@@ -202,6 +187,9 @@ do while (.true.)  !loop for primitive quartets.
         !compute the other variables (eqn. 12)
         a_ijkl=a_ik+a_jl
         !and also careful with this!
+        if (a_ijkl.lt.1.d-4) then
+            write(*,*) "a_ijkl too small", a_ijkl, i, j, k, l
+        end if
         e_ijkl=(a_ik*a_jl)*a_ijkl**(-1.d0)
         sqe=dsqrt(e_ijkl)
         !careful with these expressions!
@@ -274,7 +262,7 @@ do while (.true.)  !loop for primitive quartets.
 end do !end loop over quartets 
 !it comes here when .dm2 file is finished
 100 continue
-write(*,*) "Reached end of file."
+write(*,*) "Reached end of .dm2p file."
 write(*,*) "Total number of quartets read:", quartet_count
 goto 300
 200 continue

@@ -147,7 +147,7 @@ IMPLICIT NONE
 INTEGER, intent(in) :: np, n, ax !number of points, number of nodes, axis
 double precision, intent(out) :: C_r(:)
 double precision, intent(in) :: w_r(:), rh(:)
-double precision, intent(inout) :: ipiv(:) !for dgbsv
+integer, intent(inout) :: ipiv(:) !for dgbsv
 !local variables
 double precision, dimension(np,np) :: M  
 double precision, dimension(np) :: xx    !Points where we evaluate W
