@@ -3,6 +3,7 @@ subroutine intracule(normalize_dm2p)  !Computes vector or radial intracule, or r
                         !need .wfx and .dm2p as input
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 use geninfo !information about the primitive functions
+use numbers
 use intrastuff !subroutines and functions to compute the intracule 
 use wfxinfo
 use intrainfo !information from the input
@@ -50,9 +51,18 @@ double precision :: intracule_zero
 double precision, allocatable, dimension(:) :: N_prim
 !set counter for primitive quartets
 integer :: quartet_count, refval
+!block summation stuff
+integer, parameter :: BUFSIZE = 128   ! or 128 for even better stability
+double precision, allocatable :: buf(:,:)
+integer, allocatable :: bufcnt(:)
+! For pairwise reduction
+double precision :: term
+integer :: cnt
+
 quartet_count=0
 
-lim=thresh*(dble(nprim)*(dble(nprim)+1.d0)*0.5d0)**(-1.d0) !limit for the 1st integral screening
+
+lim=thresh*(dble(nprim)*(dble(nprim)+ONE)*HALF)**(-ONE) !limit for the 1st integral screening
  
 call cpu_time(T1)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -84,7 +94,7 @@ end if
 if (intracule_at_zero) then
     ngrid=1
     allocate(r(3,ngrid))
-    r(:,1)=0.d0    
+    r(:,1)=ZERO    
 end if    
 if (intracule_two_points) then
     ngrid=2
@@ -97,10 +107,14 @@ if (intracule_two_points) then
     r(3,2)=z_point2
 end if    
  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+allocate(buf(BUFSIZE, ngrid))
+allocate(bufcnt(nGrid))
+buf = ZERO
+bufcnt = 0
 allocate(I_vec(ngrid))
-I_vec=0.d0
-trace_DM2prim=0.d0 
-trDM2=0.d0
+I_vec=ZERO
+trace_DM2prim=ZERO 
+trDM2=ZERO
 call cpu_time(T2)
 !call intracalc(r,ngrid)
 !subroutine intracalc(Computes intracule function with the given points)
@@ -113,16 +127,16 @@ sum=0     !quartets skipped in the 1st screening
 summ=0    !quartets skipped in the 2nd screeening         
 rewind(5)    !start reading from the begining of the dm2 file
 smm=0
-trDM2=0.d0  !sum of all the DM2 terms.
-trace_DM2prim=0.d0 !sum of all the normalized DM2 terms.
+trDM2=ZERO  !sum of all the DM2 terms.
+trace_DM2prim=ZERO !sum of all the normalized DM2 terms.
 !Time check
-Tread=0.d0
-T1screen=0.d0
-T2screen=0.d0
-Tgrid=0.d0
-intracule_zero=0.d0
+Tread=ZERO
+T1screen=ZERO
+T2screen=ZERO
+Tgrid=ZERO
+intracule_zero=ZERO
 allocate(rh(nmax)) 
-rh=0.d0
+rh=ZERO
 allocate(w_r(nmax))
 allocate(C_x(npmax)); allocate(C_y(npmax)); allocate(C_z(npmax))
 allocate(ipiv(npmax))
@@ -130,18 +144,18 @@ allocate(ipiv(npmax))
 allocate(w_m_array(npmax))
 do ii = 1, npmax
     if (ii == 1) then
-        w_m_array(ii) = 1.d0
+        w_m_array(ii) = ONE
     else
-        w_m_array(ii) = (dble(ii) * 0.5d0)**(dble(ii) * 0.5d0) * dexp(-dble(ii) * 0.5d0)
+        w_m_array(ii) = (dble(ii) * HALF)**(dble(ii) * HALF) * dexp(-dble(ii) * HALF)
     end if
 end do
 !perform primitive normalization for DM2 if requested before primitive loop
 allocate(N_prim(nprim))
 if (normalize_dm2p) then
     do i=1,nprim
-        N_prim(i)=(2.d0*Alpha(i)/pi)**(0.75d0)&
-        *dsqrt(((4.d0*Alpha(i))**(dble(TMN(i,1)+TMN(i,2)+TMN(i,3))))*&
-        dble(dfact(2*TMN(i,1)-1)*dfact(2*TMN(i,2)-1)*dfact(2*TMN(i,3)-1))**(-1.d0))  
+        N_prim(i)=(TWO*Alpha(i)/pi)**(THREEQUARTER)&
+        *dsqrt(((FOUR*Alpha(i))**(dble(TMN(i,1)+TMN(i,2)+TMN(i,3))))*&
+        dble(dfact(2*TMN(i,1)-1)*dfact(2*TMN(i,2)-1)*dfact(2*TMN(i,3)-1))**(-ONE))  
     end do
 end if
 write(*,*) "Starting loop over primitive quartets..."
@@ -149,7 +163,6 @@ do while (.true.)  !loop for primitive quartets.
     call cpu_time(TT1)    
     read(5,end=100, err=200) kk1,i,j,k,l,DMval,kk2!read a line from binary file .dm2
     !read(5,end=100, err=200) i,j,k,l,DMval
-    !write(*,*) i,j,k,l
     if (i.lt.1 .or. i.gt.nprim) goto 200
     if (j.lt.1 .or. k.lt.1 .or. l.lt.1) goto 200
     quartet_count=quartet_count+1
@@ -166,18 +179,18 @@ do while (.true.)  !loop for primitive quartets.
     !compute the first variables
     a_ik=Alpha(i)+Alpha(k)  
     a_jl=Alpha(j)+Alpha(l)                  !eqn. 10                         
-    e_ik=Alpha(i)*Alpha(k)*a_ik**(-1.d0)
-    e_jl=Alpha(j)*Alpha(l)*a_jl**(-1.d0)   
+    e_ik=Alpha(i)*Alpha(k)*a_ik**(-ONE)
+    e_jl=Alpha(j)*Alpha(l)*a_jl**(-ONE)   
     if ((a_ik.lt.1.d-4).or.(a_jl.lt.1.d-4)) then !skip this quartet if exponents are too small
         write(*,*) "one exponent too small", a_ik, a_jl, i, j, k, l
     end if               
-    R_i_k_2=(Cartes(Ra(i),1)-Cartes(Ra(k),1))**2.d0+& !this is needed to compute A_ijkl (eqn. 18)
-            (Cartes(Ra(i),2)-Cartes(Ra(k),2))**2.d0+&      !R_i_k_2=(R_i-R_k)²
-            (Cartes(Ra(i),3)-Cartes(Ra(k),3))**2.d0    
+    R_i_k_2=(Cartes(Ra(i),1)-Cartes(Ra(k),1))**TWO+& !this is needed to compute A_ijkl (eqn. 18)
+            (Cartes(Ra(i),2)-Cartes(Ra(k),2))**TWO+&      !R_i_k_2=(R_i-R_k)²
+            (Cartes(Ra(i),3)-Cartes(Ra(k),3))**TWO    
                 
-    R_j_l_2=(Cartes(Ra(j),1)-Cartes(Ra(l),1))**2.d0+&
-            (Cartes(Ra(j),2)-Cartes(Ra(l),2))**2.d0+&
-            (Cartes(Ra(j),3)-Cartes(Ra(l),3))**2.d0                   
+    R_j_l_2=(Cartes(Ra(j),1)-Cartes(Ra(l),1))**TWO+&
+            (Cartes(Ra(j),2)-Cartes(Ra(l),2))**TWO+&
+            (Cartes(Ra(j),3)-Cartes(Ra(l),3))**TWO                   
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1st integral screening!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!                                   
     screen1=dabs(DMval)*dsqrt(J_ik(i,k,R_i_K_2)*J_jl(j,l,R_j_l_2))            
     call cpu_time(TT3)
@@ -190,17 +203,17 @@ do while (.true.)  !loop for primitive quartets.
         if (a_ijkl.lt.1.d-4) then
             write(*,*) "a_ijkl too small", a_ijkl, i, j, k, l
         end if
-        e_ijkl=(a_ik*a_jl)*a_ijkl**(-1.d0)
+        e_ijkl=(a_ik*a_jl)*a_ijkl**(-ONE)
         sqe=dsqrt(e_ijkl)
         !careful with these expressions!
         do ii=1,3                   !X_ik,Y_ik,Z_ik,...
-            R_ik(ii)=(Alpha(i)*Cartes(Ra(i),ii)+Alpha(k)*Cartes(Ra(k),ii))*a_ik**(-1.d0)
-            R_jl(ii)=(Alpha(j)*Cartes(Ra(j),ii)+Alpha(l)*Cartes(Ra(l),ii))*a_jl**(-1.d0)
-            R_ijkl(ii)=(a_ik*R_ik(ii)+a_jl*R_jl(ii))*a_ijkl**(-1.d0)
+            R_ik(ii)=(Alpha(i)*Cartes(Ra(i),ii)+Alpha(k)*Cartes(Ra(k),ii))*a_ik**(-ONE)
+            R_jl(ii)=(Alpha(j)*Cartes(Ra(j),ii)+Alpha(l)*Cartes(Ra(l),ii))*a_jl**(-ONE)
+            R_ijkl(ii)=(a_ik*R_ik(ii)+a_jl*R_jl(ii))*a_ijkl**(-ONE)
         end do                      
-        Alf_ijkl=0.5d0*(a_ik-a_jl)*a_ijkl**(-1.d0)
+        Alf_ijkl=HALF*(a_ik-a_jl)*a_ijkl**(-ONE)
         !compute Aa_ijkl (the grid independent part)  !eq.18
-        A_ind=(a_ijkl)**(-1.5d0)* dexp(-e_ik*R_i_k_2-e_jl*R_j_l_2)
+        A_ind=(a_ijkl)**(-ONEANDHALF)* dexp(-e_ik*R_i_k_2-e_jl*R_j_l_2)
         Aa_ijkl=DMval*A_ind 
         !!!!!!!!!!!!Calculate coeficients of V!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         sm=0
@@ -231,7 +244,7 @@ do while (.true.)  !loop for primitive quartets.
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!                                             
             !loop over grid points
             do ig=1,nGrid                                             
-                V_x=0.d0; V_y=0.d0; V_z=0.d0  
+                V_x=ZERO; V_y=ZERO; V_z=ZERO  
                 rp(1)=sqe*(r(1,ig)+r_ik(1)-r_jl(1)) !compute R'(eq. 19)
                 rp(2)=sqe*(r(2,ig)+r_ik(2)-r_jl(2))
                 rp(3)=sqe*(r(3,ig)+r_ik(3)-r_jl(3)) 
@@ -248,7 +261,16 @@ do while (.true.)  !loop for primitive quartets.
                     V_z=V_z*rp(3)+C_z(iii)
                 end do  !end loop over the polynomial coefficients
                 !!!!!!!!!!!!!Calculate intracule at the grid point!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                I_vec(ig)=I_vec(ig)+Aa_ijkl*dexp(-(rp(1)**2.d0+rp(2)**2.d0+rp(3)**2.d0))*V_x*V_y*V_z
+                I_vec(ig)=I_vec(ig)+Aa_ijkl*dexp(-(rp(1)**TWO+rp(2)**TWO+rp(3)**TWO))*V_x*V_y*V_z
+                !term = Aa_ijkl * dexp(-(rp(1)**TWO + rp(2)**TWO + rp(3)**TWO)) * V_x * V_y * V_z
+                ! ---- Block summation ----
+                !cnt = bufcnt(ig) + 1
+                !bufcnt(ig) = cnt
+                !buf(cnt,ig) = term
+                !if (cnt == BUFSIZE) then
+                !    I_vec(ig) = I_vec(ig) + pairwise_sum(buf(1:BUFSIZE,ig), BUFSIZE)
+                !    bufcnt(ig) = 0
+                !end if
                 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!                                  
             end do       !End loop over grid points
             call CPU_time(TT5)
@@ -272,6 +294,17 @@ write(*,*) "Stopping safely"
 goto 300
 
 300 continue
+
+!do ig = 1, nGrid
+!    if (bufcnt(ig) > 0) then
+!        I_vec(ig) = I_vec(ig) + pairwise_sum(buf(1:bufcnt(ig),ig), bufcnt(ig))
+!        bufcnt(ig) = 0
+!    end if
+!end do
+
+deallocate(buf)
+deallocate(bufcnt)
+
 write(*,*) "Loop over primtives completed"
 deallocate(C_x)
 deallocate(C_y)   !deallocate polynomial coefficients
@@ -289,7 +322,7 @@ else
     if (.not.nosym) then
         write(*,*) "You should run with the option NOSYM to get correct intracule values"
         write(*,*) "Exiting..."
-       !stop
+        !stop
     end if
 end if
 !end subroutine intracalc 
@@ -304,7 +337,7 @@ if (radial_plot) then        !compute radial intracule
     allocate(r_intra(nradi)) 
     ig=0
     sm=0
-    r_intra=0.d0
+    r_intra=ZERO
     ir=0
     do i=1,nradi   
         write(*,*) i, radi(i), smn(i)
@@ -314,14 +347,14 @@ if (radial_plot) then        !compute radial intracule
         end do
         write(3,*) radi(i), r_intra(i), r_intra(i)*2.0d0*pi*radi(i)**2, r_intra(i)*2.0d0*pi*radi(i)
         !'(F8.4,1X,D20.16,1X,E15.10,1X,E15.10)'
-        !write(3,*) i, radi(i), r_intra(i), r_intra(i)*2.d0*pi*radi(i)**2, r_intra*2*pi*radi(i)
+        !write(3,*) i, radi(i), r_intra(i), r_intra(i)*TWO*pi*radi(i)**2, r_intra*2*pi*radi(i)
     end do 
     deallocate(r_intra)
     close(3)
 end if     
 if (radial_integral) then !integral of the intracule
-    r_integral=0.d0 
-    vee=0.d0
+    r_integral=ZERO 
+    vee=ZERO
     do i=1,rrgrid
         r_integral=r_integral+rweight(i)*I_vec(i)
         vee=vee+rweight_vee(i)*I_vec(i)
@@ -333,9 +366,9 @@ if (cubeintra) then
     write(3,*) "CUBE FILE"
     write(3,*) "OUTER LOOP:X, MIDDLE LOOP:Y, INNER LOOP:Z"
     write(3,*) natoms, center_i(1), center_i(2), center_i(3)
-    write(3,*) np_i(1), step_i(1), 0.d0, 0.d0
-    write(3,*) np_i(2), 0.d0, step_i(2), 0.d0
-    write(3,*) np_i(3), 0.d0, 0.d0, step_i(3)
+    write(3,*) np_i(1), step_i(1), ZERO, ZERO
+    write(3,*) np_i(2), ZERO, step_i(2), ZERO
+    write(3,*) np_i(3), ZERO, ZERO, step_i(3)
     do i=1,natoms
         write(3,*) an(i), chrg(i), cartes(i,1), cartes(i,2), cartes(i,3)
     end do
@@ -346,7 +379,7 @@ if (cubeintra) then
     close(3)
 end if       
 if (intracule_at_zero) then
-    intracule_zero=I_vec(1)/2.d0
+    intracule_zero=I_vec(1)/TWO
     write(*, '(A, ES25.16)') 'INTRACULE AT ZERO = ', intracule_zero
 end if 
 if (intracule_two_points) then
@@ -410,6 +443,33 @@ else if (intracule_at_zero) then
     write(3, '(A, ES25.16)') 'INTRACULE AT ZERO = ', intracule_zero
 end if
 close(3)
+contains
+recursive function pairwise_sum(arr, n) result(res)
+    implicit none
+    double precision, intent(in) :: arr(n)
+    integer, intent(in) :: n
+    double precision :: res
+    integer :: m, i
+    double precision, allocatable :: tmp(:)
+
+    if (n == 1) then
+        res = arr(1)
+        return
+    end if
+
+    m = (n + 1) / 2
+    allocate(tmp(m))
+
+    do i = 1, n-1, 2
+        tmp((i+1)/2) = arr(i) + arr(i+1)
+    end do
+
+    if (mod(n,2) == 1) tmp(m) = arr(n)
+
+    res = pairwise_sum(tmp, m)
+    deallocate(tmp)
+end function pairwise_sum
+
 end subroutine
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

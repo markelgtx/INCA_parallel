@@ -102,7 +102,12 @@ use locatemod
    call locate(3,'$DM2P')
    read(3,*) dm2name           !name of the dm2p file
    !read(3,*) trsh1, trsh2      !thresholds used in DM2prim
-   read(3,*) outname           !name of the output file
+   if (located(3,'$outname')) then
+      read(3,*) outname           !name of the output file
+   else
+      outname=trim(name)//'.out' !default name
+   end if
+
    if (located(3,'$nosym')) then
       nosym=.true.
       write(*,*) 'Deactivating symmetry in intracule calculations'
