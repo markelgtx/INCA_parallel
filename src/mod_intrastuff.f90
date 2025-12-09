@@ -3,205 +3,259 @@ use geninfo
 use quadratures
 use numbers
 implicit none
-integer :: i,j,k,l !primitive quartets
-double precision :: sqe !dsqrt(e_ijkl) save time and compute it once
+!global variables that depens on all ijkl primitives
+double precision :: alfijkl, zeta, eijkl
+double precision :: invz, sqe
+integer, allocatable, dimension(:) :: ipiv
+!primtive parameters
+!double precision :: Xi,Yi,Zi,Xj,Yj,Zj,Xk,Yk,Zk,Xl,Yl,Zl !center of each of the primitives
+!double precision :: ti,mi,ni,tj,mj,nj,tk,mk,nk,tl,ml,nl !angular momenta of each primitive
+!double precision :: alfi,alfj,alfk,alfl !exponents of each primitive
+!Cioslowski's parameters
+!double precision :: sqe !dsqrt(e_ijkl) save time and compute it once
 !Grid independent variables for the intracule:
-double precision :: a_ik, a_jl, a_ijkl 
-double precision :: e_ik, e_jl, e_ijkl 
-double precision, dimension(3) :: R_i, R_k, R_j, R_l !X_i, ...
-double precision, dimension(3) :: R_ik, R_jl, R_ijkl !X_ik, ...
-double precision :: Alf_ijkl
+!double precision ::  zeta 
+!double precision ::  eijkl 
+!double precision, dimension(3) :: R_ik, R_jl, R_ijkl !X_ik, ...
+!double precision :: alfijkl
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 contains
 !!!!!!!!!!!!!Functions for the first integral screening!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
-        function J_ik(i,k,R_i_k_2) !J upper bound for the first integral screening
-        implicit none
-        double precision :: J_ik       
-        integer, intent(in) :: i,k
-        double precision, intent(in) :: R_i_k_2
+        function JA8(ti,tk,mi,mk,ni,nk,alfi,alfk,Xi,Xk,Yi,Yk,Zi,Zk,Rik2,aik,eik) !J upper bound for the first integral screening
+        implicit none                    !eqn A8 
+        double precision :: JA8          
+        integer, intent(in) :: ti,tk,mi,mk,ni,nk
+        double precision, intent(in) :: alfi,alfk
+        double precision, intent(in) :: Xi,Xk,Yi,Yk,Zi,Zk
+        double precision, intent(in) :: Rik2
+        double precision, intent(in) :: aik, eik
+        !local variables
         double precision, dimension(3) :: x_max
-        double precision :: r_part
-        integer :: n_nodes, ii
-    
-        do ii=1,3 !loop for J_ik(x_i(*), (y) and (z)
-                n_nodes=TMN(i,ii)+TMN(k,ii) + 1          !obtain x_max
-                if (n_nodes.eq.1) then
-                        x_max(ii)=ZERO
-                else if (n_nodes.eq.2) then
-                        x_max(ii)=0.707106781186548d0 
-                else if (n_nodes.eq.3) then 
-                        x_max(ii)=1.224744871391589d0 
-                else if (n_nodes.eq.4) then
-                        x_max(ii)=1.650680123885785d0
-                else if (n_nodes.eq.5) then 
-                        x_max(ii)=2.020182870456086d0 
-                else if (n_nodes.eq.6) then 
-                        x_max(ii)=2.350604973674492d0
-                else if (n_nodes.eq.7) then 
-                        x_max(ii)=2.651961356835233d0 
-                else if (n_nodes.eq.8) then 
-                        x_max(ii)=2.930637420257244d0
-                else if (n_nodes.eq.9) then 
-                        x_max(ii)=3.190993201781528d0  
-                else if (n_nodes.eq.10) then 
-                        x_max(ii)=3.436159118837738d0
-                end if
-        end do
-                
-        J_ik=pi**(ONEANDHALF)*(TWO*a_ik)**(-(dble(TMN(i,1)+TMN(k,1)+TMN(i,2)+TMN(k,2)+TMN(i,3)+TMN(k,3))+ONEANDHALF))&
-        *dexp(-TWO*e_ik*(R_i_k_2))
-        r_part=ONE
-        do ii=1,3
-              r_part=r_part &
-              *((x_max(ii)+Alpha(k)*dsqrt(TWO/a_ik)*dabs(Cartes(Ra(k),ii)-Cartes(Ra(i),ii)))**(TWO*dble(TMN(i,ii))))&
-              *((x_max(ii)+Alpha(i)*dsqrt(TWO/a_ik)*dabs(Cartes(Ra(k),ii)-Cartes(Ra(i),ii)))**(TWO*dble(TMN(k,ii))))
-        end do
-        J_ik=J_ik*r_part
+        integer :: n_nodes
+        !x_max values depending on the number of nodes
+        n_nodes=ti+tk+1
+        if (n_nodes.eq.1) then
+                x_max(1)=ZERO
+        else if (n_nodes.eq.2) then
+                x_max(1)=0.707106781186548d0 
+        else if (n_nodes.eq.3) then 
+                x_max(1)=1.224744871391589d0 
+        else if (n_nodes.eq.4) then
+                x_max(1)=1.650680123885785d0
+        else if (n_nodes.eq.5) then 
+                x_max(1)=2.020182870456086d0 
+        else if (n_nodes.eq.6) then 
+                x_max(1)=2.350604973674492d0
+        else if (n_nodes.eq.7) then 
+                x_max(1)=2.651961356835233d0 
+        else if (n_nodes.eq.8) then 
+                x_max(1)=2.930637420257244d0
+        else if (n_nodes.eq.9) then 
+                x_max(1)=3.190993201781528d0  
+        else if (n_nodes.eq.10) then 
+                x_max(1)=3.436159118837738d0
+        end if
+        !y
+        n_nodes=mi+mk+1
+        if (n_nodes.eq.1) then
+                x_max(2)=ZERO
+        else if (n_nodes.eq.2) then
+                x_max(2)=0.707106781186548d0 
+        else if (n_nodes.eq.3) then 
+                x_max(2)=1.224744871391589d0 
+        else if (n_nodes.eq.4) then
+                x_max(2)=1.650680123885785d0
+        else if (n_nodes.eq.5) then 
+                x_max(2)=2.020182870456086d0 
+        else if (n_nodes.eq.6) then 
+                x_max(2)=2.350604973674492d0
+        else if (n_nodes.eq.7) then 
+                x_max(2)=2.651961356835233d0 
+        else if (n_nodes.eq.8) then 
+                x_max(2)=2.930637420257244d0
+        else if (n_nodes.eq.9) then 
+                x_max(2)=3.190993201781528d0  
+        else if (n_nodes.eq.10) then 
+                x_max(2)=3.436159118837738d0
+        end if
+        !z
+        n_nodes=ni+nk+1
+        if (n_nodes.eq.1) then
+                x_max(3)=ZERO
+        else if (n_nodes.eq.2) then
+                x_max(3)=0.707106781186548d0 
+        else if (n_nodes.eq.3) then 
+                x_max(3)=1.224744871391589d0 
+        else if (n_nodes.eq.4) then
+                x_max(3)=1.650680123885785d0
+        else if (n_nodes.eq.5) then 
+                x_max(3)=2.020182870456086d0 
+        else if (n_nodes.eq.6) then 
+                x_max(3)=2.350604973674492d0
+        else if (n_nodes.eq.7) then 
+                x_max(3)=2.651961356835233d0 
+        else if (n_nodes.eq.8) then 
+                x_max(3)=2.930637420257244d0
+        else if (n_nodes.eq.9) then 
+                x_max(3)=3.190993201781528d0  
+        else if (n_nodes.eq.10) then 
+                x_max(3)=3.436159118837738d0
+        end if
+        JA8=pi**(ONEANDHALF)*(TWO*aik)**(-(dble(ti+tk+mi+mk+ni+nk)+ONEANDHALF))&
+        *dexp(-TWO*eik*(Rik2))&
+        *((x_max(1)+alfk*dsqrt(TWO/aik)*dabs(Xk-Xi))**(TWO*dble(ti)))&
+        *((x_max(1)+alfi*dsqrt(TWO/aik)*dabs(Xk-Xi))**(TWO*dble(tk)))&
+        *((x_max(2)+alfk*dsqrt(TWO/aik)*dabs(Yk-Yi))**(TWO*dble(mi)))&
+        *((x_max(2)+alfi*dsqrt(TWO/aik)*dabs(Yk-Yi))**(TWO*dble(mk)))&
+        *((x_max(3)+alfk*dsqrt(TWO/aik)*dabs(Zk-Zi))**(TWO*dble(ni)))&
+        *((x_max(3)+alfi*dsqrt(TWO/aik)*dabs(Zk-Zi))**(TWO*dble(nk)))
         end function
+
+
+        !JA8=pi**(ONEANDHALF)*(TWO*a_ik)**(-(dble(TMN(i,1)+TMN(k,1)+TMN(i,2)+TMN(k,2)+TMN(i,3)+TMN(k,3))+ONEANDHALF))&
+        !*dexp(-TWO*e_ik*(Rik2))&
+        !*((x_max(1)+Alpha(k)*dsqrt(TWO/a_ik)*dabs(Cartes(Ra(k),1)-Cartes(Ra(i),1)))**(TWO*dble(TMN(i,1))))&
+        !*((x_max(1)+Alpha(i)*dsqrt(TWO/a_ik)*dabs(Cartes(Ra(k),1)-Cartes(Ra(i),1)))**(TWO*dble(TMN(k,1))))&
+        !*((x_max(2)+Alpha(k)*dsqrt(TWO/a_ik)*dabs(Cartes(Ra(k),2)-Cartes(Ra(i),2)))**(TWO*dble(TMN(i,2))))&
+        !*((x_max(2)+Alpha(i)*dsqrt(TWO/a_ik)*dabs(Cartes(Ra(k),2)-Cartes(Ra(i),2)))**(TWO*dble(TMN(k,2))))&
+        !*((x_max(3)+Alpha(k)*dsqrt(TWO/a_ik)*dabs(Cartes(Ra(k),3)-Cartes(Ra(i),3)))**(TWO*dble(TMN(i,3))))&
+        !*((x_max(3)+Alpha(i)*dsqrt(TWO/a_ik)*dabs(Cartes(Ra(k),3)-Cartes(Ra(i),3)))**(TWO*dble(TMN(k,3))))
+        !end function
  
-        function J_jl(j,l,R_j_l_2) !J upper bound for the first integral screening
-        double precision :: J_jl
-        integer, intent(in) :: j,l
-        double precision, intent(in) :: R_j_l_2
-        double precision, dimension(3) :: x_max 
-        integer :: n_nodes, ii
-        n_nodes=0  
-        do ii=1,3 !loop for J_ik(x_i(*), (y) and (z)
-                n_nodes=TMN(j,ii)+TMN(l,ii) + 1
-                if (n_nodes.eq.1) then 
-                        x_max(ii)=ZERO
-                else if (n_nodes.eq.2) then
-                        x_max(ii)=0.707106781186548d0 
-                else if (n_nodes.eq.3) then 
-                        x_max(ii)=1.224744871391589d0 
-                else if (n_nodes.eq.4) then 
-                        x_max(ii)=1.650680123885785d0
-                else if (n_nodes.eq.5) then 
-                        x_max(ii)=2.020182870456086d0 
-                else if (n_nodes.eq.6) then 
-                        x_max(ii)=2.350604973674492d0
-                else if (n_nodes.eq.7) then 
-                        x_max(ii)=2.651961356835233d0 
-                else if (n_nodes.eq.8) then 
-                        x_max(ii)=2.930637420257244d0
-                else if (n_nodes.eq.9) then 
-                        x_max(ii)=3.190993201781528d0  
-                else if (n_nodes.eq.10) then 
-                        x_max(ii)=3.436159118837738d0
-                end if
-        end do
+       ! function J_jl(i,l,R_j_l_2) !J upper bound for the first integral screening
+       ! double precision :: J_jl
+       ! integer, intent(in) :: j,l
+       ! double precision, intent(in) :: R_j_l_2
+       ! double precision, dimension(3) :: x_max 
+       ! integer :: n_nodes, ii
+       ! n_nodes=0  
+       ! do ii=1,3 !loop for J_ik(x_i(*), (y) and (z)
+       !         n_nodes=TMN(j,ii)+TMN(l,ii) + 1
+       !         if (n_nodes.eq.1) then 
+       !                 x_max(ii)=ZERO
+       !         else if (n_nodes.eq.2) then
+       !                 x_max(ii)=0.707106781186548d0 
+       !         else if (n_nodes.eq.3) then 
+       !                 x_max(ii)=1.224744871391589d0 
+       !         else if (n_nodes.eq.4) then 
+       !                 x_max(ii)=1.650680123885785d0
+       !         else if (n_nodes.eq.5) then 
+       !                 x_max(ii)=2.020182870456086d0 
+       !         else if (n_nodes.eq.6) then 
+       !                 x_max(ii)=2.350604973674492d0
+       !         else if (n_nodes.eq.7) then 
+       !                 x_max(ii)=2.651961356835233d0 
+       !         else if (n_nodes.eq.8) then 
+       !                 x_max(ii)=2.930637420257244d0
+       !         else if (n_nodes.eq.9) then 
+       !                 x_max(ii)=3.190993201781528d0  
+       !         else if (n_nodes.eq.10) then 
+       !                 x_max(ii)=3.436159118837738d0
+       !         end if
+       ! end do
   
-        J_jl=pi**(ONEANDHALF)*(TWO*a_jl)**(-(dble(TMN(j,1)+TMN(l,1)+TMN(j,2)+TMN(l,2)+TMN(j,3)+TMN(l,3))+ONEANDHALF))&
-        *dexp(-TWO*e_jl*(R_j_l_2))&
-        *((x_max(1)+Alpha(l)*dsqrt(TWO/a_jl)*dabs(Cartes(Ra(l),1)-Cartes(Ra(j),1)))**(TWO*dble(TMN(j,1))))&
-        *((x_max(1)+Alpha(j)*dsqrt(TWO/a_jl)*dabs(Cartes(Ra(l),1)-Cartes(Ra(j),1)))**(TWO*dble(TMN(l,1))))&
-        *((x_max(2)+Alpha(l)*dsqrt(TWO/a_jl)*dabs(Cartes(Ra(l),2)-Cartes(Ra(j),2)))**(TWO*dble(TMN(j,2))))&
-        *((x_max(2)+Alpha(j)*dsqrt(TWO/a_jl)*dabs(Cartes(Ra(l),2)-Cartes(Ra(j),2)))**(TWO*dble(TMN(l,2))))&
-        *((x_max(3)+Alpha(l)*dsqrt(TWO/a_jl)*dabs(Cartes(Ra(l),3)-Cartes(Ra(j),3)))**(TWO*dble(TMN(j,3))))&
-        *((x_max(3)+Alpha(j)*dsqrt(TWO/a_jl)*dabs(Cartes(Ra(l),3)-Cartes(Ra(j),3)))**(TWO*dble(TMN(l,3))))
-        end function
+        !J_jl=pi**(ONEANDHALF)*(TWO*a_jl)**(-(dble(TMN(j,1)+TMN(l,1)+TMN(j,2)+TMN(l,2)+TMN(j,3)+TMN(l,3))+ONEANDHALF))&
+        !*dexp(-TWO*e_jl*(R_j_l_2))&
+        !*((x_max(1)+Alpha(l)*dsqrt(TWO/a_jl)*dabs(Cartes(Ra(l),1)-Cartes(Ra(j),1)))**(TWO*dble(TMN(j,1))))&
+        !*((x_max(1)+Alpha(j)*dsqrt(TWO/a_jl)*dabs(Cartes(Ra(l),1)-Cartes(Ra(j),1)))**(TWO*dble(TMN(l,1))))&
+        !*((x_max(2)+Alpha(l)*dsqrt(TWO/a_jl)*dabs(Cartes(Ra(l),2)-Cartes(Ra(j),2)))**(TWO*dble(TMN(j,2))))&
+        !*((x_max(2)+Alpha(j)*dsqrt(TWO/a_jl)*dabs(Cartes(Ra(l),2)-Cartes(Ra(j),2)))**(TWO*dble(TMN(l,2))))&
+        !*((x_max(3)+Alpha(l)*dsqrt(TWO/a_jl)*dabs(Cartes(Ra(l),3)-Cartes(Ra(j),3)))**(TWO*dble(TMN(j,3))))&
+        !*((x_max(3)+Alpha(j)*dsqrt(TWO/a_jl)*dabs(Cartes(Ra(l),3)-Cartes(Ra(j),3)))**(TWO*dble(TMN(l,3))))
+        !end function
       
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    
-
-   !     function A_ind(R_i_k_2,R_j_l_2)  !grid independent part of the intracule
-   !     implicit none
-   !     double precision, intent(in) :: R_i_k_2, R_j_l_2
-   !     double precision :: A_ind
-   !     A_ind=(a_ijkl)**(-ONEANDHALF)* dexp(-e_ik*R_i_k_2-e_jl*R_j_l_2) !eq.18
- ! 
- !       end function A_ind
-
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!eq 15!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!!!!!!!!!!
+!!!!!!!!!!!!!!!function Wijkl(i,j,k,l,rhat,r,ax)  !for 1st integral screening. Equation 15
+        subroutine polycoef(Ri,Rj,Rk,Rl,Rik,Rjl,Rijkl,tmni,tmnj,tmnk,tmnl,np,n,rh,wh,Cijkl)
+                implicit none
+                !==== Arguments ====
+                double precision, intent(in) :: Ri,Rj,Rk,Rl !primitive centers
+                integer, intent(in) :: tmni, tmnj, tmnk, tmnl !angular momenta
+                double precision, intent(in) :: Rik,Rjl,Rijkl
+                integer, intent(in) :: np, n !np is the number of points, n is 
+                double precision, intent(out) :: Cijkl(:) !coefficients of the polynomial
+                double precision, intent(in) :: wh(:), rh(:)
+                !integer, intent(inout) :: ipiv(:)   
+                !==== Local variables ====
+                double precision, dimension(np,np) :: M  
+                double precision, dimension(np)    :: xx
+                integer :: Ltot
+                integer :: i1, j1, l1, INFO            
+                if (np == 1) then
+                    Cijkl = wh(1)
+                else
+                    Ltot = np - 1
+                    ! Generate points
+                    do i1 = 1, np
+                        xx(i1) = -HALF + dble(i1)
+                    end do
+            
+                    ! Build M
+                    do i1 = 1, np
+                        l1 = Ltot
+                        do j1 = 1, np
+                            M(i1,j1) = (sqe*(xx(i1)+Rik-Rjl))**dble(l1)
+                            l1 = l1 - 1
+                        end do
+                    end do
+            
+                    ! Build RHS vector Cijkl
+                    Cijkl = 0.0d0
+                    do i1 = 1, np
+                        do j1 = 1, n
+                            Cijkl(i1) = Cijkl(i1) + wh(j1)*Wijkl(Ri,Rj,Rk,Rl,Rijkl,tmni,tmnj,tmnk,tmnl,rh(j1),xx(i1))
+                        end do
+                    end do
+            
+                    ! Solve
+                    call dgesv(np,1,M,np,ipiv,Cijkl,np,INFO)
+                    if (INFO /= 0) write(*,*) "ERROR, cannot solve linear equations"
+                end if
+            
+            contains
+            
+                !===========================================================
+                ! Internal Wijkl function
+                !===========================================================
+                function Wijkl(Ri,Rj,Rk,Rl,Rijkl,tmni,tmnj,tmnk,tmnl,rhat,r) result(Wv)
+                    implicit none
+                    double precision, intent(in) :: Ri,Rj,Rk,Rl !primitive centers
+                    integer, intent(in) :: tmni, tmnj, tmnk, tmnl !angular momenta
+                    double precision, intent(in) :: rijkl
+                    double precision :: Wv
+                    double precision, intent(in) :: rhat, r
+                    double precision :: invzrhat, alfijklplushalfr, alfijklminushalfr
+                    invzrhat=invz*rhat
+                    alfijklplushalfr=(alfijkl+HALF)*r 
+                    alfijklminushalfr=(alfijkl-HALF)*r
+                    Wv=(invzrhat+alfijklminushalfr+(rijkl-Ri))**dble(tmni)* &
+                         (invzrhat+alfijklplushalfr+(rijkl-Rj))**dble(tmnj)* &
+                         (invzrhat+alfijklminushalfr+(rijkl-Rk))**dble(tmnk)* &
+                         (invzrhat+alfijklplushalfr+(rijkl-Rl))**dble(tmnl)
+                    !Wv = ((dsqrt(zeta)**(-ONE)*rhat)+(alfijkl-HALF)*r+(r_ijkl(ax)-Cartes(Ra(i),ax)))**dble(tmni) * &
+                    !     ((dsqrt(zeta)**(-ONE)*rhat)+(alfijkl+HALF)*r+(r_ijkl(ax)-Cartes(Ra(j),ax)))**dble(tmnj) * &
+                    !     ((dsqrt(zeta)**(-ONE)*rhat)+(alfijkl-HALF)*r+(r_ijkl(ax)-Cartes(Ra(k),ax)))**dble(tmnk) * &
+                    !     ((dsqrt(zeta)**(-ONE)*rhat)+(alfijkl+HALF)*r+(r_ijkl(ax)-Cartes(Ra(l),ax)))**dble(tmnl)
+                end function Wijkl
+            
+            end subroutine polycoef
 
-
-  function Wr(rhat,r,ax)  !for 1st integral screening
-        double precision :: Wr
-        double precision, intent(in) :: rhat,r
-        integer, intent(in) :: ax
-        Wr=((dsqrt(a_ijkl)**(-ONE)*rhat)+(alf_ijkl-HALF)*r+(r_ijkl(ax)-Cartes(Ra(i),ax)))**dble(TMN(i,ax))*&
-        ((dsqrt(a_ijkl)**(-ONE)*rhat)+(alf_ijkl+HALF)*r+(r_ijkl(ax)-Cartes(Ra(j),ax)))**dble(TMN(j,ax))*&
-        ((dsqrt(a_ijkl)**(-ONE)*rhat)+(alf_ijkl-HALF)*r+(r_ijkl(ax)-Cartes(Ra(k),ax)))**dble(TMN(k,ax))*&
-        ((dsqrt(a_ijkl)**(-ONE)*rhat)+(alf_ijkl+HALF)*r+(r_ijkl(ax)-Cartes(Ra(l),ax)))**dble(TMN(l,ax))
-  end function Wr
-      
-
- 
- 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   
-subroutine polycoef(C_r,np,n,ax,rh,w_r,ipiv)
-!Evaluates W function (eqn.15) at xx(np=L+1) points and sets up a system of linear equations (see
-!matrix M). 
-!Solves this linear equations using Lapack subroutine dgesv.
-!As output, we get the polynomial coefficients(C_r(np)) of V_r. This process is repeated for 
-!x (ax=1), y (ax=2) and z (ax=3).
-
-!n is the number of nodes of the quadrature
-!np is the number of unknowns
-!w_n is a matrix with the n weights of the G-Hermite quadrature (in module quadratures)
-!rh is a matrix with the n nodes of the G-Hermite quadrature (in module quadratures)
-IMPLICIT NONE
-!global variables
-INTEGER, intent(in) :: np, n, ax !number of points, number of nodes, axis
-double precision, intent(out) :: C_r(:)
-double precision, intent(in) :: w_r(:), rh(:)
-integer, intent(inout) :: ipiv(:) !for dgbsv
-!local variables
-double precision, dimension(np,np) :: M  
-double precision, dimension(np) :: xx    !Points where we evaluate W
-integer :: Ltot
-integer :: i1, j1, l1
-
-!variables for dgbsv!!!!!
-integer :: INFO
-
-if (np.eq.1) then !only one coefficient
-   C_r=w_r(1)     !see equation 15 (in this case we only have 1 node)
-else
-   Ltot=np-1 !degree of the polynomial    
-   !generate 'np' points to evaluate the polynomial (xx(np)) !linearly independent!! 
-   do i1=1,np
-     xx(i1)=-HALF+dble(i1)
-   end do   
-   !build M matrix (M and C_r form the augmented matrix)
-   do i1=1,np
-       l1=Ltot !start from the maximum degree
-       do j1=1,np
-          M(i1,j1)=(sqe*(xx(i1)+r_ik(ax)-r_jl(ax)))**(dble(l1)) !r'^l               
-          l1=l1-1
-       end do
-   end do
-   C_r=ZERO
-   do i1=1,np
-       do j1=1,n        
-         C_r(i1)=C_r(i1)+w_r(j1)*Wr(rh(j1),xx(i1),ax) !V_ijkl(X') (~eq.16)
-       end do 
-   end do 
-   !!!Solve linear system with lapack!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-   call dgesv(np,1,M,np,ipiv,C_r,np,INFO)
-   if (INFO.ne.0) write(*,*) "ERROR, cannot solve linear equations"
-   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-end if
-END SUBROUTINE Polycoef
-
-subroutine gauherm(Lrtot,n,rh,w_r) 
+subroutine gauherm(Lrtot,n,rh,wh) 
         !performs gauss-hermite quadrature                          
         !we will obtain the nodes and weights depending on the degree of the polinomial (2n-1) --> (n) 
         !(n is nx ny or nz in intracule.f90)
-         implicit none
-         !global variable
-         integer, intent(in) :: Lrtot !degree of polynomial
-         integer, intent(out) :: n    !number of gauss-hermite nodes
-         double precision,intent(out) :: rh(:), w_r(:) !nodes
-         !local variables
-         integer :: factn, i2
-         double precision :: Cons
-         double precision, parameter :: pi=FOUR*datan(ONE)
-         if (Lrtot.gt.0) then
-         !compute the number of nodes for exact Hermite quadrature
+        implicit none
+        integer, intent(in) :: Lrtot !degree of polynomial
+        double precision,intent(out) :: rh(:), wh(:) !nodes
+        integer, intent(out) :: n    !number of gauss-hermite nodes
+        !local variables
+        integer :: factn, i2
+        double precision :: Cons
+        !double precision, parameter :: pi=FOUR*datan(ONE)
+        if (Lrtot.gt.0) then
+        !compute the number of nodes for exact Hermite quadrature
              if(MOD(Lrtot,2).eq.0) then !even 
                    n=int((dble(Lrtot)*HALF)+ONE) !nx->number of nodes
              else 
@@ -299,10 +353,8 @@ subroutine gauherm(Lrtot,n,rh,w_r)
           end do
           Cons=((TWO)**(dble(n-1)) * dble(factn)* dsqrt(pi))/dble(n*n)
           do i2=1,n
-           w_r(i2)=cons*(ONE/(Hermite(rh(i2),n))**TWO)  
+           wh(i2)=cons*(ONE/(Hermite(rh(i2),n))**TWO)  
           end do  
-
-        
           contains
             function Hermite(x,n) !
             double precision :: Hermite

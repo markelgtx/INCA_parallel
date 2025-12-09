@@ -15,6 +15,7 @@ module geninfo           !general information, can be obtained from .wfx files.
   double precision, allocatable, dimension(:) :: Alpha !Primitive exponents
   integer, allocatable, dimension(:,:) :: TMN !matrix with t,m,n coeficients
   double precision, allocatable,  dimension(:,:) :: cartes !nuclear cartesian coordinates
+  double precision, allocatable, dimension(:) :: Xn,Yn,Zn !centers of primitives
   integer, allocatable, dimension(:) :: an !atomic number
   double precision, allocatable, dimension(:) :: chrg !nuclear charge  
   double precision, parameter :: pi=4.d0*datan(1.d0)  

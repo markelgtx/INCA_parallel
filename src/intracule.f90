@@ -10,60 +10,61 @@ use intrainfo !information from the input
 use quadratures !nodes and weights of the quadratures, +total grid points
 implicit none
 logical, intent(in) :: normalize_dm2p
-!!!!!!!!!!!!!!!local variables!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!local variables from the paper!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 integer :: kk1, kk2 !integers we do not want to read from .dm2
 integer :: dfact    !double factorial
 integer :: ii,iii,sum, ig, ir, summ, np, sm, smm !some integers
-double precision :: R_i_k_2, R_j_l_2  !R_ik=(R_i-R_k)^2
-double precision :: Aa_ijkl !grid independent part of the intracule
-double precision :: n_prim_t !total normalization factor
-double precision :: DMval !value of DM2
-double precision :: A_ind !eq.18 (grid independent part)
-double precision :: screen1, screen2, lim !integral screenings
-double precision :: U_x, U_y, U_z !coef. for 2nd integral screening
-double precision, allocatable, dimension(:) :: C_x, C_y, C_z !coefficients of V 
-double precision :: V_x, V_y, V_z !eq 16 
-double precision, allocatable, dimension(:) :: w_m_array
-!Gauss-hermite quadrature
-double precision, allocatable, dimension(:) :: rh, w_r !nodes and weights for gauss hermite(coef.)
-integer, parameter :: Lmax=21 !maximum angular momentum for primitives
+double precision :: Xi,Yi,Zi,Xj,Yj,Zj,Xk,Yk,Zk,Xl,Yl,Zl !primitive centers
+double precision :: alfi,alfj,alfk,alfl !primitive exponents
+integer :: ti,mi,ni,tj,mj,nj,tk,mk,nk,tl,ml,nl !angular momenta of primitives
+double precision :: aik, ajl, eik, ejl            !variables from eqn 10
+double precision ::  Xik, Yik, Zik, Xjl, Yjl, Zjl !variables from eqn 10
+!double precision :: zeta, eijkl, alfijkl,sqe      !variables from eqn 12 in module intrastuff
+double precision :: Xijkl, Yijkl, Zijkl          !variables from eqn 12
+double precision :: Rik2, Rjl2  !R_ik=(R_i-R_k)^2 !for equation A8
+double precision :: Jik, Jjl !J of equation A8 for screening
+double precision :: Aijkl !grid independent part of the intracule (eqn 18)
+double precision, allocatable, dimension(:) :: rh, wh !nodes and weights for gauss hermite (eqn16)
+integer :: nn !number of nodes for gauss hermite (eqn 16) output from gauherm, input to polycoef
+integer, parameter :: Lmax=21 !maximum angular momentum for primitives (eq 16)
 integer, parameter :: nmax = (Lmax+1)/2 + 1
 integer, parameter :: npmax = Lmax + 1
-integer :: nn !number of gauss hermite nodes (for x y and z)
+double precision, allocatable, dimension(:) :: Cx, Cy, Cz !coefficients of V (eqns 16,42) 
+double precision, allocatable, dimension(:) :: wmarray !eq A10, for 2nd integral screening (eq 43)
+double precision :: Ux, Uy, Uz !coef. for 2nd integral screening (eqn. 43)
+double precision :: Vx, Vy, Vz !eq 16 
+!!!!!!!!!!primitive quartet variables!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+integer :: i, j, k, l !indices for primitive functions
+double precision :: nprimt !total normalization factor
+double precision :: DMval !value of DM2
+double precision :: screen1, screen2, lim !integral screenings
 integer, dimension(3) :: Lrtot  !total angular momentum and number of nodes
-integer, allocatable, dimension(:) :: ipiv !for dgesv in intrastuff
+!integer, allocatable, dimension(:) :: ipiv !for dgesv in intrastuff
 !GRID POINTS
 integer :: ngrid !number of grid points
 double precision, allocatable, dimension(:,:) :: r !grid points
 double precision, dimension(3) :: rp  !prima points(X', Y', Z')
 !intracules
-double precision :: r_integral                         !radial integral
-double precision, allocatable, dimension(:) :: r_intra !radial intracule
-double precision, allocatable, dimension(:) :: I_vec   !intracule at a point
+double precision :: rintegral                         !radial integral
+double precision, allocatable, dimension(:) :: rintra !radial intracule
+double precision, allocatable, dimension(:) :: Ivec   !intracule at a point
 !check accuracy of calculations
-double precision :: trace_DM2prim, trDM2 !normalized and not normalized DM2prim
+double precision :: traceDM2prim, trDM2 !normalized and not normalized DM2prim
 integer :: npairs      !number of electron pairs
 double precision :: T1, T2, T3, T4, TT1, TT2, TT3, TT4, TT5 !time check
 double precision :: Tread, T1screen, T2screen, Tgrid
 double precision :: vee
-double precision :: intracule_zero
+double precision :: intraculezero
 !primitive normalization
-double precision, allocatable, dimension(:) :: N_prim
+double precision, allocatable, dimension(:) :: normprim
 !set counter for primitive quartets
-integer :: quartet_count, refval
+integer :: quartetcount, refval
 !block summation stuff
-integer, parameter :: BUFSIZE = 128   ! or 128 for even better stability
-double precision, allocatable :: buf(:,:)
-integer, allocatable :: bufcnt(:)
-! For pairwise reduction
-double precision :: term
-integer :: cnt
-
-quartet_count=0
+!integer, parameter :: BUFSIZE = 128   ! or 128 for even better stability
+!double precision, allocatable :: buf(:,:)
+!integer, allocatable :: bufcnt(:)
 
 
-lim=thresh*(dble(nprim)*(dble(nprim)+ONE)*HALF)**(-ONE) !limit for the 1st integral screening
- 
 call cpu_time(T1)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!Obtain grid points!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -106,169 +107,185 @@ if (intracule_two_points) then
     r(2,2)=y_point2
     r(3,2)=z_point2
 end if    
- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
-allocate(buf(BUFSIZE, ngrid))
-allocate(bufcnt(nGrid))
-buf = ZERO
-bufcnt = 0
-allocate(I_vec(ngrid))
-I_vec=ZERO
-trace_DM2prim=ZERO 
-trDM2=ZERO
-call cpu_time(T2)
-!call intracalc(r,ngrid)
-!subroutine intracalc(Computes intracule function with the given points)
-open(unit=5,file=dm2name, form='unformatted',access='stream') !open binary file
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
-!!!!!!!!!!!!!!!Start loop over primitive quartets!!!!!!!!!!!!!!!!!!!  
-!!!!!!!!!!!!!!!Following Cioslowski and Liu algorithm!!!!!!!!!!!!!!!
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-sum=0     !quartets skipped in the 1st screening
-summ=0    !quartets skipped in the 2nd screeening         
-rewind(5)    !start reading from the begining of the dm2 file
-smm=0
-trDM2=ZERO  !sum of all the DM2 terms.
-trace_DM2prim=ZERO !sum of all the normalized DM2 terms.
+write(*,*) "Number of grid points to compute intracule:", ngrid
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+!allocate(buf(BUFSIZE, ngrid))
+!allocate(bufcnt(nGrid))
+!buf = ZERO
+!bufcnt = 0
+allocate(Ivec(ngrid))
+Ivec=ZERO
+call cpu_time(T2)    
+traceDM2prim=ZERO !sum of all the normalized DM2 terms.
 !Time check
 Tread=ZERO
 T1screen=ZERO
 T2screen=ZERO
 Tgrid=ZERO
-intracule_zero=ZERO
 allocate(rh(nmax)) 
 rh=ZERO
-allocate(w_r(nmax))
-allocate(C_x(npmax)); allocate(C_y(npmax)); allocate(C_z(npmax))
+allocate(wh(nmax))
+allocate(Cx(npmax)); allocate(Cy(npmax)); allocate(Cz(npmax))
 allocate(ipiv(npmax))
-! Precompute w_m values for 2nd integral screening
-allocate(w_m_array(npmax))
+!!!!!!!Precompute w_m values for 2nd integral screening!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+allocate(wmarray(npmax))
 do ii = 1, npmax
     if (ii == 1) then
-        w_m_array(ii) = ONE
+        wmarray(ii) = ONE
     else
-        w_m_array(ii) = (dble(ii) * HALF)**(dble(ii) * HALF) * dexp(-dble(ii) * HALF)
+        wmarray(ii) = (dble(ii) * HALF)**(dble(ii) * HALF) * dexp(-dble(ii) * HALF)
     end if
 end do
 !perform primitive normalization for DM2 if requested before primitive loop
-allocate(N_prim(nprim))
+allocate(normprim(nprim))
 if (normalize_dm2p) then
-    do i=1,nprim
-        N_prim(i)=(TWO*Alpha(i)/pi)**(THREEQUARTER)&
-        *dsqrt(((FOUR*Alpha(i))**(dble(TMN(i,1)+TMN(i,2)+TMN(i,3))))*&
-        dble(dfact(2*TMN(i,1)-1)*dfact(2*TMN(i,2)-1)*dfact(2*TMN(i,3)-1))**(-ONE))  
+    do ii=1,nprim
+        normprim(ii)=(TWO*Alpha(ii)/pi)**(THREEQUARTER)&
+        *dsqrt(((FOUR*Alpha(ii))**(dble(TMN(ii,1)+TMN(ii,2)+TMN(ii,3))))*&
+        dble(dfact(2*TMN(ii,1)-1)*dfact(2*TMN(ii,2)-1)*dfact(2*TMN(ii,3)-1))**(-ONE))  
     end do
 end if
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+!!!!!!!!!!!!!!!Start loop over primitive quartets!!!!!!!!!!!!!!!!!!!  
+!!!!!!!!!!!!!!!Following Cioslowski and Liu algorithm!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
 write(*,*) "Starting loop over primitive quartets..."
+quartetcount=0
+lim=thresh*(dble(nprim)*(dble(nprim)+ONE)*HALF)**(-ONE) !limit for the 1st integral screening
+open(unit=5,file=dm2name, form='unformatted',access='stream') !open binary file
 do while (.true.)  !loop for primitive quartets.
     call cpu_time(TT1)    
     read(5,end=100, err=200) kk1,i,j,k,l,DMval,kk2!read a line from binary file .dm2
     !read(5,end=100, err=200) i,j,k,l,DMval
     if (i.lt.1 .or. i.gt.nprim) goto 200
     if (j.lt.1 .or. k.lt.1 .or. l.lt.1) goto 200
-    quartet_count=quartet_count+1
+    quartetcount=quartetcount+1
     !if (i.eq.0) goto 100 !file is finished            
     call cpu_time(TT2) 
     Tread=Tread+(TT2-TT1)
     trDM2=trDM2+DMval
     smm=smm+1
     if (normalize_dm2p) then
-        n_prim_t=N_prim(i)*N_prim(j)*N_prim(k)*N_prim(l)
-        DMval=n_prim_t*DMval 
+        nprimt=normprim(i)*normprim(j)*normprim(k)*normprim(l)
+        DMval=nprimt*DMval 
     end if     
-    trace_DM2prim=trace_DM2prim+DMval !sum all the DM2 quartets to check accuracy           
+    traceDM2prim=traceDM2prim+DMval !sum all the DM2 quartets to check accuracy
+    !load data for i,j,k,l primitives (only one for speed-up)
+    alfi=Alpha(i); alfj=Alpha(j); alfk=Alpha(k); alfl=Alpha(l)   
+    ti=TMN(i,1); mi=TMN(i,2); ni=TMN(i,3)
+    tj=TMN(j,1); mj=TMN(j,2); nj=TMN(j,3)
+    tk=TMN(k,1); mk=TMN(k,2); nk=TMN(k,3)
+    tl=TMN(l,1); ml=TMN(l,2); nl=TMN(l,3)
+    Xi=Xn(i); Yi=Yn(i); Zi=Zn(i)
+    Xj=Xn(j); Yj=Yn(j); Zj=Zn(j)
+    Xk=Xn(k); Yk=Yn(k); Zk=Zn(k)    
+    Xl=Xn(l); Yl=Yn(l); Zl=Zn(l)
     !compute the first variables
-    a_ik=Alpha(i)+Alpha(k)  
-    a_jl=Alpha(j)+Alpha(l)                  !eqn. 10                         
-    e_ik=Alpha(i)*Alpha(k)*a_ik**(-ONE)
-    e_jl=Alpha(j)*Alpha(l)*a_jl**(-ONE)   
-    if ((a_ik.lt.1.d-4).or.(a_jl.lt.1.d-4)) then !skip this quartet if exponents are too small
-        write(*,*) "one exponent too small", a_ik, a_jl, i, j, k, l
-    end if               
-    R_i_k_2=(Cartes(Ra(i),1)-Cartes(Ra(k),1))**TWO+& !this is needed to compute A_ijkl (eqn. 18)
-            (Cartes(Ra(i),2)-Cartes(Ra(k),2))**TWO+&      !R_i_k_2=(R_i-R_k)²
-            (Cartes(Ra(i),3)-Cartes(Ra(k),3))**TWO    
-                
-    R_j_l_2=(Cartes(Ra(j),1)-Cartes(Ra(l),1))**TWO+&
-            (Cartes(Ra(j),2)-Cartes(Ra(l),2))**TWO+&
-            (Cartes(Ra(j),3)-Cartes(Ra(l),3))**TWO                   
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1st integral screening!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!                                   
-    screen1=dabs(DMval)*dsqrt(J_ik(i,k,R_i_K_2)*J_jl(j,l,R_j_l_2))            
+    aik=alfi+alfk                  !eqn. 10
+    ajl=alfj+alfl                  !eqn. 10                         
+    eik=alfi*alfk*aik**(-ONE)
+    ejl=alfj*alfl*ajl**(-ONE)   
+    if ((aik.lt.1.d-4).or.(ajl.lt.1.d-4)) then !skip this quartet if exponents are too small
+        write(*,*) "one exponent too small", aik, ajl, i, j, k, l
+    end if
+    Rik2=(Xi-Xk)**TWO+(Yi-Yk)**TWO+(Zi-Zk)**TWO    
+    Rjl2=(Xj-Xl)**TWO+(Yj-Yl)**TWO+(Zj-Zl)**TWO                
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1st integral screening!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    Jik=JA8(ti,tk,mi,mk,ni,nk,alfi,alfk,xi,xk,yi,yk,zi,zk,Rik2,aik,eik)
+    Jjl=JA8(tj,tl,mj,ml,nj,nl,alfj,alfl,xj,xl,yj,yl,zj,zl,Rjl2,ajl,ejl)                                   
+    screen1=dabs(DMval)*dsqrt(Jik*Jjl) !eqn.39           
     call cpu_time(TT3)
     T1screen=T1screen-(TT3-TT2)         
     if (screen1.ge.lim) then    
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!             
         !compute the other variables (eqn. 12)
-        a_ijkl=a_ik+a_jl
+        zeta=aik+ajl
         !and also careful with this!
-        if (a_ijkl.lt.1.d-4) then
-            write(*,*) "a_ijkl too small", a_ijkl, i, j, k, l
+        if (zeta.lt.1.d-4) then
+            write(*,*) "zeta_ijkl too small", zeta, i, j, k, l
         end if
-        e_ijkl=(a_ik*a_jl)*a_ijkl**(-ONE)
-        sqe=dsqrt(e_ijkl)
+        eijkl=(aik*ajl)*zeta**(-ONE)
+        sqe=dsqrt(eijkl)
         !careful with these expressions!
-        do ii=1,3                   !X_ik,Y_ik,Z_ik,...
-            R_ik(ii)=(Alpha(i)*Cartes(Ra(i),ii)+Alpha(k)*Cartes(Ra(k),ii))*a_ik**(-ONE)
-            R_jl(ii)=(Alpha(j)*Cartes(Ra(j),ii)+Alpha(l)*Cartes(Ra(l),ii))*a_jl**(-ONE)
-            R_ijkl(ii)=(a_ik*R_ik(ii)+a_jl*R_jl(ii))*a_ijkl**(-ONE)
-        end do                      
-        Alf_ijkl=HALF*(a_ik-a_jl)*a_ijkl**(-ONE)
-        !compute Aa_ijkl (the grid independent part)  !eq.18
-        A_ind=(a_ijkl)**(-ONEANDHALF)* dexp(-e_ik*R_i_k_2-e_jl*R_j_l_2)
-        Aa_ijkl=DMval*A_ind 
+        Xik=(alfi*Xi+alfk*Xk)*(aik**(-ONE)) !eq. 11
+        Yik=(alfi*Yi+alfk*Yk)*(aik**(-ONE))
+        Zik=(alfi*Zi+alfk*Zk)*(aik**(-ONE))
+        Xjl=(alfj*Xj+alfl*Xl)*(ajl**(-ONE))
+        Yjl=(alfj*Yj+alfl*Yl)*(ajl**(-ONE))
+        Zjl=(alfj*Zj+alfl*Zl)*(ajl**(-ONE))
+        Xijkl=(aik*Xik+ajl*Xjl)*zeta**(-ONE) !eq. 12
+        Yijkl=(aik*Yik+ajl*Yjl)*zeta**(-ONE)
+        Zijkl=(aik*Zik+ajl*Zjl)*zeta**(-ONE)
+        !do ii=1,3                   !X_ik,Y_ik,Z_ik,...
+        !    R_ik(ii)=(Alpha(i)*Cartes(Ra(i),ii)+alfk*Cartes(Ra(k),ii))*aik**(-ONE)
+        !    R_jl(ii)=(Alpha(j)*Cartes(Ra(j),ii)+Alpha(l)*Cartes(Ra(l),ii))*ajl**(-ONE)
+        !    R_ijkl(ii)=(aik*R_ik(ii)+ajl*R_jl(ii))*zeta**(-ONE)
+        !end do
+        invz=dsqrt(zeta)**(-ONE) !zeta^(-1)                     
+        alfijkl=HALF*(aik-ajl)*zeta**(-ONE)
+        !compute Aijkl (the grid independent part)  !eq.18
+        Aijkl=DMval*(zeta)**(-ONEANDHALF)*dexp(-eik*Rik2-ejl*Rjl2) 
         !!!!!!!!!!!!Calculate coeficients of V!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         sm=0
-        !calculate w_m
         ! --- x direction ---
-        Lrtot(1)=TMN(i,1)+TMN(j,1)+TMN(k,1)+TMN(l,1) !Lrtot=degree of eqn 15 (I don't use Lmax)    
-        call gauherm(Lrtot(1), nn, rh, w_r) !obtain Gauss-Hermite nodes(rh) and weights(w_r) (2L+1)
+        !Lrtot(1)=TMN(i,1)+TMN(j,1)+TMN(k,1)+TMN(l,1) !Lrtot=degree of eqn 15 (I don't use Lmax)
+        Lrtot(1)=ti+tj+tk+tl 
+        call gauherm(Lrtot(1),nn,rh,wh) !obtain Gauss-Hermite nodes(rh) and weights(wh) (2L+1)
         np=Lrtot(1)+1              !np is the number of coefficients to represent the polynomial V
-        call polycoef(C_x, np, nn, 1, rh, w_r, ipiv) !obtain coefficients of V in x direction
-        U_x=dot_product(C_x(1:np),w_m_array(1:np)) !compute U coefficients for 2nd integral screening (eq.43 of the paper)
+        call polycoef(Xi,Xj,Xk,Xl,Xik,Xjl,Xijkl,ti,tj,tk,tl,np,nn,rh,wh,Cx) !obtain coefficients of V in x direction
+        Ux=dot_product(Cx(1:np),wmarray(1:np)) !compute U coefficients for 2nd integral screening (eq.43 of the paper)
         ! --- y direction ---
-        Lrtot(2)=TMN(i,2)+TMN(j,2)+TMN(k,2)+TMN(l,2) !Lrtot=degree of eqn 15 (I don't use Lmax)
-        call gauherm(Lrtot(2), nn, rh, w_r) !obtain Gauss-Hermite nodes(rh) and weights(w_r) (2L+1)
+        !Lrtot(2)=TMN(i,2)+TMN(j,2)+TMN(k,2)+TMN(l,2) !Lrtot=degree of eqn 15 (I don't use Lmax)
+        Lrtot(2)=mi+mj+mk+ml
+        call gauherm(Lrtot(2), nn, rh, wh) !obtain Gauss-Hermite nodes(rh) and weights(wh) (2L+1)
         np=Lrtot(2)+1              !np is the number of coefficients to represent the polynomial V
-        call polycoef(C_y, np, nn, 2, rh, w_r, ipiv) !obtain coefficients of V in y direction
-        U_y=dot_product(C_y(1:np),w_m_array(1:np)) !compute U coefficients for 2nd integral screening (eq.43 of the paper)  
+        call polycoef(Yi,Yj,Yk,Yl,Yik,Yjl,Yijkl,mi,mj,mk,ml,np,nn,rh,wh,Cy) !obtain coefficients of V in y direction
+        Uy=dot_product(Cy(1:np),wmarray(1:np)) !compute U coefficients for 2nd integral screening (eq.43 of the paper)  
         ! --- z direction ---
-        Lrtot(3)=TMN(i,3)+TMN(j,3)+TMN(k,3)+TMN(l,3) !Lrtot=degree of eqn 15 (I don't use Lmax)
-        call gauherm(Lrtot(3), nn, rh, w_r) !obtain Gauss-Hermite nodes(rh) and weights(w_r) (2L+1)
+        Lrtot(3)=ni+nj+nk+nl
+
+        !Lrtot(3)=TMN(i,3)+TMN(j,3)+TMN(k,3)+TMN(l,3) !Lrtot=degree of eqn 15 (I don't use Lmax)
+        call gauherm(Lrtot(3), nn, rh, wh) !obtain Gauss-Hermite nodes(rh) and weights(wh) (2L+1)
         np=Lrtot(3)+1              !np is the number of coefficients to represent the polynomial V
-        call polycoef(C_z, np, nn, 3, rh, w_r, ipiv) !obtain coefficients of V in z direction
-        U_z=dot_product(C_z(1:np),w_m_array(1:np)) !compute U coefficients for 2nd integral screening (eq.43 of the paper)             
+        call polycoef(Zi,Zj,Zk,Zl,Zik,Zjl,Zijkl,ni,nj,nk,nl,np,nn,rh,wh,Cz) !obtain coefficients of V in z direction
+        Uz=dot_product(Cz(1:np),wmarray(1:np)) !compute U coefficients for 2nd integral screening (eq.43 of the paper)             
         !!!!!!!!!!2nd Integral Screening!!!!!!!!!!!!!!!!!!!!!                      
-        screen2=dabs(Aa_ijkl*U_x*U_y*U_z) !eqn.40
+        screen2=dabs(Aijkl*Ux*Uy*Uz) !eqn.40
         call CPU_time(TT4)
         T2screen=T2screen+(TT4-TT3)                
         if (screen2.ge.lim) then 
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!                                             
             !loop over grid points
             do ig=1,nGrid                                             
-                V_x=ZERO; V_y=ZERO; V_z=ZERO  
-                rp(1)=sqe*(r(1,ig)+r_ik(1)-r_jl(1)) !compute R'(eq. 19)
-                rp(2)=sqe*(r(2,ig)+r_ik(2)-r_jl(2))
-                rp(3)=sqe*(r(3,ig)+r_ik(3)-r_jl(3)) 
+                Vx=ZERO; Vy=ZERO; Vz=ZERO  
+                !rp(1)=sqe*(r(1,ig)+r_ik(1)-r_jl(1)) !compute R'(eq. 19)
+                !rp(2)=sqe*(r(2,ig)+r_ik(2)-r_jl(2))
+                !rp(3)=sqe*(r(3,ig)+r_ik(3)-r_jl(3)) 
+                rp(1)=sqe*(r(1,ig)+Xik-Xjl) !compute R'(eq. 19)
+                rp(2)=sqe*(r(2,ig)+Yik-Yjl)
+                rp(3)=sqe*(r(3,ig)+Zik-Zjl)
                 ! ----Horner's method for x ----
                 do iii=1,Lrtot(1)+1   !Ltot+1 is the number of coefficients we have
-                    V_x=V_x*rp(1)+C_x(iii)
+                    Vx=Vx*rp(1)+Cx(iii)
                 end do  !end loop over the polynomial coefficients
                 ! ----Horner's method for y ----
                 do iii=1,Lrtot(2)+1   !Ltot+1 is the number of coefficients we have
-                    V_y=V_y*rp(2)+C_y(iii)
+                    Vy=Vy*rp(2)+Cy(iii)
                 end do  !end loop over the polynomial coefficients
                 ! ----Horner's method for z ----
                 do iii=1,Lrtot(3)+1   !Ltot+1 is the number of coefficients we have
-                    V_z=V_z*rp(3)+C_z(iii)
+                    Vz=Vz*rp(3)+Cz(iii)
                 end do  !end loop over the polynomial coefficients
                 !!!!!!!!!!!!!Calculate intracule at the grid point!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                I_vec(ig)=I_vec(ig)+Aa_ijkl*dexp(-(rp(1)**TWO+rp(2)**TWO+rp(3)**TWO))*V_x*V_y*V_z
-                !term = Aa_ijkl * dexp(-(rp(1)**TWO + rp(2)**TWO + rp(3)**TWO)) * V_x * V_y * V_z
+                Ivec(ig)=Ivec(ig)+Aijkl*dexp(-(rp(1)**TWO+rp(2)**TWO+rp(3)**TWO))*Vx*Vy*Vz
+                !term = Aijkl * dexp(-(rp(1)**TWO + rp(2)**TWO + rp(3)**TWO)) * Vx * Vy * Vz
                 ! ---- Block summation ----
                 !cnt = bufcnt(ig) + 1
                 !bufcnt(ig) = cnt
                 !buf(cnt,ig) = term
                 !if (cnt == BUFSIZE) then
-                !    I_vec(ig) = I_vec(ig) + pairwise_sum(buf(1:BUFSIZE,ig), BUFSIZE)
+                !    Ivec(ig) = Ivec(ig) + pairwise_sum(buf(1:BUFSIZE,ig), BUFSIZE)
                 !    bufcnt(ig) = 0
                 !end if
                 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!                                  
@@ -285,35 +302,25 @@ end do !end loop over quartets
 !it comes here when .dm2 file is finished
 100 continue
 write(*,*) "Reached end of .dm2p file."
-write(*,*) "Total number of quartets read:", quartet_count
+write(*,*) "Total number of quartets read:", quartetcount
 goto 300
 200 continue
-write(*,*) "REad error or corrupted record near quartet", quartet_count+1
+write(*,*) "REad error or corrupted record near quartet", quartetcount+1
 write(*,*) "Ended loop for primitives"
 write(*,*) "Stopping safely"
 goto 300
 
 300 continue
 
-!do ig = 1, nGrid
-!    if (bufcnt(ig) > 0) then
-!        I_vec(ig) = I_vec(ig) + pairwise_sum(buf(1:bufcnt(ig),ig), bufcnt(ig))
-!        bufcnt(ig) = 0
-!    end if
-!end do
-
-deallocate(buf)
-deallocate(bufcnt)
-
 write(*,*) "Loop over primtives completed"
-deallocate(C_x)
-deallocate(C_y)   !deallocate polynomial coefficients
-deallocate(C_z) 
+deallocate(Cx)
+deallocate(Cy)   !deallocate polynomial coefficients
+deallocate(Cz) 
 !check if we read a symmetry reduced dmp2prim or the full dm2prim
 refval=(((nprim*(nprim+1)/2)+1)*(nprim*(nprim+1)/2))/2
 write(*,*) "last quartet", i,j,k,l
-write(*,*) "nprim", nprim, "refval", refval, "quartet_count", quartet_count
-if (quartet_count.gt.refval) then
+write(*,*) "nprim", nprim, "refval", refval, "quartet_count", quartetcount
+if (quartetcount.gt.refval) then
     write(*,*) "Full DM2prim read"
     write(*,*) "I(r)=I(-r) intracule symmetry is respected"
 else
@@ -334,30 +341,30 @@ end if
 call cpu_time(T3)
 if (radial_plot) then        !compute radial intracule
     open(unit=3, file=r_plot_name)   
-    allocate(r_intra(nradi)) 
+    allocate(rintra(nradi)) 
     ig=0
     sm=0
-    r_intra=ZERO
+    rintra=ZERO
     ir=0
     do i=1,nradi   
         write(*,*) i, radi(i), smn(i)
         do k=1,smn(i) !sum reduced angular points per radi  
             sm=sm+1            
-            r_intra(i)=r_intra(i)+w_ang(sm)*I_vec(sm)!Perform the angular quadrature 
+            rintra(i)=rintra(i)+w_ang(sm)*Ivec(sm)!Perform the angular quadrature 
         end do
-        write(3,*) radi(i), r_intra(i), r_intra(i)*2.0d0*pi*radi(i)**2, r_intra(i)*2.0d0*pi*radi(i)
+        write(3,*) radi(i), rintra(i), rintra(i)*TWO*pi*radi(i)**TWO, rintra(i)*TWO*pi*radi(i)
         !'(F8.4,1X,D20.16,1X,E15.10,1X,E15.10)'
-        !write(3,*) i, radi(i), r_intra(i), r_intra(i)*TWO*pi*radi(i)**2, r_intra*2*pi*radi(i)
+        !write(3,*) i, radi(i), rintra(i), rintra(i)*TWO*pi*radi(i)**2, rintra*2*pi*radi(i)
     end do 
-    deallocate(r_intra)
+    deallocate(rintra)
     close(3)
 end if     
 if (radial_integral) then !integral of the intracule
-    r_integral=ZERO 
+    rintegral=ZERO 
     vee=ZERO
     do i=1,rrgrid
-        r_integral=r_integral+rweight(i)*I_vec(i)
-        vee=vee+rweight_vee(i)*I_vec(i)
+        rintegral=rintegral+rweight(i)*Ivec(i)
+        vee=vee+rweight_vee(i)*Ivec(i)
     end do 
     deallocate(rweight)
 end if
@@ -373,18 +380,18 @@ if (cubeintra) then
         write(3,*) an(i), chrg(i), cartes(i,1), cartes(i,2), cartes(i,3)
     end do
     do i=1,ngrid
-        !write(3,'(D25.16)') I_vec(i)/2.0d0
-        write(3,*) I_vec(i)
+        !write(3,'(D25.16)') Ivec(i)/2.0d0
+        write(3,*) Ivec(i)
     end do  
     close(3)
 end if       
 if (intracule_at_zero) then
-    intracule_zero=I_vec(1)/TWO
-    write(*, '(A, ES25.16)') 'INTRACULE AT ZERO = ', intracule_zero
+    intraculezero=Ivec(1)/TWO
+    write(*, '(A, ES25.16)') 'INTRACULE AT ZERO = ', intraculezero
 end if 
 if (intracule_two_points) then
-    write(*, *) x_point1, y_point1, z_point1, I_vec(1)
-    write(*, *) x_point2, y_point2, z_point2, I_vec(2)
+    write(*, *) x_point1, y_point1, z_point1, Ivec(1)
+    write(*, *) x_point2, y_point2, z_point2, Ivec(2)
 end if
 ! 40 format(6(E16.6E3))
 call cpu_time(T4)
@@ -406,7 +413,7 @@ write(*,*) "Symmetry reduced grid points", rgrid
 write(*,*) "Total number of reduced grid points", rrgrid  
 write(*,*) "---------------------------------------------"
 write(*,*) "--------------Accuracy check-----------------"
-write(*,*) "Sum of all DM2prim terms=", trDM2, trace_DM2prim
+write(*,*) "Sum of all DM2prim terms=", trDM2, traceDM2prim
 write(*,*) "Thresholds used for DM2prim", trsh1, trsh2
 write(*,*) "Threshold used for screenings(Tau)=", thresh
 write(*,*) "Computed limit for the screenings", lim
@@ -428,11 +435,11 @@ if (radial_integral) then
     write(3,*) "Gauss-Legendre nodes", nradc(:)
     write(3,*) "Gauss-Lebedev nodes", nangc(:)
     write(3,*) "---------------------------------------------"
-    write(3, '(A, ES25.16)') 'TOTAL VALUE OF INTRACULE = ', r_integral
+    write(3, '(A, ES25.16)') 'TOTAL VALUE OF INTRACULE = ', rintegral
     write(3, '(A, ES25.16)') 'TOTAL VALUE OF Vee = ', vee
     !write(3, '(A, ES25.16)') 'TOTAL Energy = ', toteng
     npairs=(nelec)*(nelec-1)/2
-    write(3,*) "Radial_integral error=", r_integral-dble(npairs)
+    write(3,*) "Radial_integral error=", rintegral-dble(npairs)
 else if (radial_plot) then
     write(3,*) "RADIAL PLOT, I(S) vs s"    
     write(3,*) "Gauss-Lebedev nodes", n_an_per_part(:)
@@ -440,36 +447,30 @@ else if (radial_plot) then
 else if (cubeintra) then
     write(3,*) "CUBEFILE GENERATED"
 else if (intracule_at_zero) then
-    write(3, '(A, ES25.16)') 'INTRACULE AT ZERO = ', intracule_zero
+    write(3, '(A, ES25.16)') 'INTRACULE AT ZERO = ', intraculezero
 end if
 close(3)
-contains
-recursive function pairwise_sum(arr, n) result(res)
-    implicit none
-    double precision, intent(in) :: arr(n)
-    integer, intent(in) :: n
-    double precision :: res
-    integer :: m, i
-    double precision, allocatable :: tmp(:)
-
-    if (n == 1) then
-        res = arr(1)
-        return
-    end if
-
-    m = (n + 1) / 2
-    allocate(tmp(m))
-
-    do i = 1, n-1, 2
-        tmp((i+1)/2) = arr(i) + arr(i+1)
-    end do
-
-    if (mod(n,2) == 1) tmp(m) = arr(n)
-
-    res = pairwise_sum(tmp, m)
-    deallocate(tmp)
-end function pairwise_sum
-
+!contains
+!recursive function pairwise_sum(arr, n) result(res)
+!    implicit none
+!    double precision, intent(in) :: arr(n)
+!    integer, intent(in) :: n
+!    double precision :: res
+!    integer :: m, i
+!    double precision, allocatable :: tmp(:)
+!    if (n == 1) then
+!        res = arr(1)
+!        return
+!    end if
+!    m = (n + 1) / 2
+!    allocate(tmp(m))
+!    do i = 1, n-1, 2
+!        tmp((i+1)/2) = arr(i) + arr(i+1)
+!    end do
+!    if (mod(n,2) == 1) tmp(m) = arr(n)
+!    res = pairwise_sum(tmp, m)
+!    deallocate(tmp)
+!end function pairwise_sum
 end subroutine
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -487,4 +488,5 @@ else
   end do
 end if
 end function
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

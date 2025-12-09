@@ -222,7 +222,8 @@ use locatemod
       allocate(n_an_per_part(nblock))
       allocate(tart(2,nblock))
       allocate(stp(nblock))
-      if (located(3,'$start, end, step, nang')) then
+      rewind(3)
+      if (located(3,'$start-end-step-nang')) then
          do i=1,nblock
             read(3,*) tart(:,i), stp(i), n_an_per_part(i)
          end do
@@ -529,6 +530,10 @@ if (uhf) then                !split T matrix into T_a and T_b (alpha and beta)
 end if 
 do i=1,nprim
    write(*,*) cartes(Ra(i),1), cartes(Ra(i),2), cartes(Ra(i),3), Alpha(i), TMN(i,1), TMN(i,2), TMN(i,3)
+end do
+allocate(Xn(nprim));allocate(Yn(nprim));allocate(Zn(nprim))
+do i=1,nprim
+   Xn(i)=cartes(Ra(i),1); Yn(i)=cartes(Ra(i),2); Zn(i)=cartes(Ra(i),3)
 end do
 
  close(1) 
@@ -995,9 +1000,12 @@ subroutine filefchk(fchkfilename)
          stop  
       end select
    end do
-   !do i=1,nprim
+   allocate(Xn(nprim));allocate(Yn(nprim));allocate(Zn(nprim))
+   do i=1,nprim
+      Xn(i)=cartes(Ra(i),1); Yn(i)=cartes(Ra(i),2); Zn(i)=cartes(Ra(i),3)
+   end do
+       
    !   write(*,*) cartes(Ra(i),1), cartes(Ra(i),2), cartes(Ra(i),3), Alpha(i), TMN(i,1), TMN(i,2), TMN(i,3)
-   !end do
    close(1)
 end subroutine filefchk
 subroutine filebas(basfilename)
@@ -1011,11 +1019,13 @@ subroutine filebas(basfilename)
    write(*,*) "Reading basis set from .bas file"
    open(unit=1,file=basfilename,status='OLD')
    allocate(bas(nprim,3))
+   allocate(Xn(nprim));allocate(Yn(nprim));allocate(Zn(nprim))
    !read basis set info from .bas
    !overwrite .fchk info
    call locate(1,"#")
    do i=1,nprim
       read(1,*) k, bas(i,1), bas(i,2), bas(i,3), Alpha(i), TMN(i,1), TMN(i,2), TMN(i,3)      
+      Xn(i)=bas(i,1); Yn(i)=bas(i,2); Zn(i)=bas(i,3)
       do j=1,natoms
          if (((dabs(bas(i,1)-cartes(j,1))).lt.0.00001).and.(dabs((bas(i,2)-cartes(j,2))).lt.0.00001)&
          .and.(dabs((bas(i,3)-cartes(j,3))).lt.0.00001)) then
