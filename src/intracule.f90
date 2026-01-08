@@ -156,8 +156,8 @@ lim=thresh*(dble(nprim)*(dble(nprim)+ONE)*HALF)**(-ONE) !limit for the 1st integ
 open(unit=5,file=dm2name, form='unformatted',access='stream') !open binary file
 do while (.true.)  !loop for primitive quartets.
     call cpu_time(TT1)    
-    read(5,end=100, err=200) kk1,i,j,k,l,DMval,kk2!read a line from binary file .dm2
-    !read(5,end=100, err=200) i,j,k,l,DMval
+    !read(5,end=100, err=200) kk1,i,j,k,l,DMval,kk2!read a line from binary file .dm2
+    read(5,end=100, err=200) i,j,k,l,DMval
     if (i.lt.1 .or. i.gt.nprim) goto 200
     if (j.lt.1 .or. k.lt.1 .or. l.lt.1) goto 200
     quartetcount=quartetcount+1

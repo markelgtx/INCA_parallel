@@ -110,8 +110,6 @@ contains
         *((x_max(3)+alfk*dsqrt(TWO/aik)*dabs(Zk-Zi))**(TWO*dble(ni)))&
         *((x_max(3)+alfi*dsqrt(TWO/aik)*dabs(Zk-Zi))**(TWO*dble(nk)))
         end function
-
-
         !JA8=pi**(ONEANDHALF)*(TWO*a_ik)**(-(dble(TMN(i,1)+TMN(k,1)+TMN(i,2)+TMN(k,2)+TMN(i,3)+TMN(k,3))+ONEANDHALF))&
         !*dexp(-TWO*e_ik*(Rik2))&
         !*((x_max(1)+Alpha(k)*dsqrt(TWO/a_ik)*dabs(Cartes(Ra(k),1)-Cartes(Ra(i),1)))**(TWO*dble(TMN(i,1))))&
@@ -121,7 +119,7 @@ contains
         !*((x_max(3)+Alpha(k)*dsqrt(TWO/a_ik)*dabs(Cartes(Ra(k),3)-Cartes(Ra(i),3)))**(TWO*dble(TMN(i,3))))&
         !*((x_max(3)+Alpha(i)*dsqrt(TWO/a_ik)*dabs(Cartes(Ra(k),3)-Cartes(Ra(i),3)))**(TWO*dble(TMN(k,3))))
         !end function
- 
+
        ! function J_jl(i,l,R_j_l_2) !J upper bound for the first integral screening
        ! double precision :: J_jl
        ! integer, intent(in) :: j,l
@@ -231,16 +229,15 @@ contains
                     alfijklplushalfr=(alfijkl+HALF)*r 
                     alfijklminushalfr=(alfijkl-HALF)*r
                     Wv=(invzrhat+alfijklminushalfr+(rijkl-Ri))**dble(tmni)* &
-                         (invzrhat+alfijklplushalfr+(rijkl-Rj))**dble(tmnj)* &
-                         (invzrhat+alfijklminushalfr+(rijkl-Rk))**dble(tmnk)* &
-                         (invzrhat+alfijklplushalfr+(rijkl-Rl))**dble(tmnl)
-                    !Wv = ((dsqrt(zeta)**(-ONE)*rhat)+(alfijkl-HALF)*r+(r_ijkl(ax)-Cartes(Ra(i),ax)))**dble(tmni) * &
-                    !     ((dsqrt(zeta)**(-ONE)*rhat)+(alfijkl+HALF)*r+(r_ijkl(ax)-Cartes(Ra(j),ax)))**dble(tmnj) * &
-                    !     ((dsqrt(zeta)**(-ONE)*rhat)+(alfijkl-HALF)*r+(r_ijkl(ax)-Cartes(Ra(k),ax)))**dble(tmnk) * &
-                    !     ((dsqrt(zeta)**(-ONE)*rhat)+(alfijkl+HALF)*r+(r_ijkl(ax)-Cartes(Ra(l),ax)))**dble(tmnl)
-                end function Wijkl
-            
-            end subroutine polycoef
+                        (invzrhat+alfijklplushalfr+(rijkl-Rj))**dble(tmnj)* &
+                        (invzrhat+alfijklminushalfr+(rijkl-Rk))**dble(tmnk)* &
+                        (invzrhat+alfijklplushalfr+(rijkl-Rl))**dble(tmnl)
+                    !Wv=((dsqrt(zeta)**(-ONE)*rhat)+(alfijkl-HALF)*r+(r_ijkl(ax)-Cartes(Ra(i),ax)))**dble(tmni) * &
+                    !   ((dsqrt(zeta)**(-ONE)*rhat)+(alfijkl+HALF)*r+(r_ijkl(ax)-Cartes(Ra(j),ax)))**dble(tmnj) * &
+                    !   ((dsqrt(zeta)**(-ONE)*rhat)+(alfijkl-HALF)*r+(r_ijkl(ax)-Cartes(Ra(k),ax)))**dble(tmnk) * &
+                    !   ((dsqrt(zeta)**(-ONE)*rhat)+(alfijkl+HALF)*r+(r_ijkl(ax)-Cartes(Ra(l),ax)))**dble(tmnl)
+                end function Wijkl            
+        end subroutine polycoef
 
 subroutine gauherm(Lrtot,n,rh,wh) 
         !performs gauss-hermite quadrature                          
@@ -261,26 +258,26 @@ subroutine gauherm(Lrtot,n,rh,wh)
              else 
                    n=int((dble(Lrtot)+ONE)*HALF) 
              end if
-         else
+        else
           !only one node
             n=1
-         end if  
-         !store rh values depending on pol. degree
-          if (n.eq.1) then !1 node-->degree of the pol is 0 or 1 
+        end if  
+        !store rh values depending on pol. degree
+        if (n.eq.1) then !1 node-->degree of the pol is 0 or 1 
            rh(1)=ZERO 
-          else if (n.eq.2) then !2 nodes-->degree of the pol is 3 or 2                
+        else if (n.eq.2) then !2 nodes-->degree of the pol is 3 or 2                
            rh(2)=0.7071067811865475d0 
            rh(1)=-0.7071067811865475d0 
-          else if (n.eq.3) then !3 nodes-->degree of pol is 5 or 4
+        else if (n.eq.3) then !3 nodes-->degree of pol is 5 or 4
            rh(2)=ZERO
            rh(3)= 1.224744871391589d0 
            rh(1)=-1.224744871391589d0  
-          else if (n.eq.4) then   !7 or 6
+        else if (n.eq.4) then   !7 or 6
            rh(3)=0.5246476232752903d0 
            rh(4)=1.650680123885785d0 
            rh(2)=-0.5246476232752903d0 
            rh(1)=-1.650680123885785d0 
-          else if (n.eq.5) then    !9 or 8
+        else if (n.eq.5) then    !9 or 8
            rh(1)=-2.020182870456086d0
            rh(2)=-0.9585724646138185d0
            rh(3)=0.000000000000000d0
@@ -385,7 +382,5 @@ subroutine gauherm(Lrtot,n,rh,wh)
            Hermite=1024.d0*(x**TEN)-23040.d0*(x**EIGHT)+161280.d0*(x**SIX)-403200.d0*(x**FOUR)+302400.d0*(x**TWO)-30240.d0  
            end if       
            end function
-        
         end subroutine gauherm 
-      
 end module intrastuff

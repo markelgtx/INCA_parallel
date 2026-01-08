@@ -39,25 +39,25 @@ subroutine becke(rrg,sumq,rgrid,nquad,cent,w_beck,Ps)                           
  w_becke=0.d0     
  sm=0     
  do i1=1,rgrid !for all the grid points
-   sm=sm+1     !count grid points
-   do i=1,nquad   
+    sm=sm+1     !count grid points
+    do i=1,nquad   
         P(i)=1.d0
         do j=1,nquad
-           if (i.ne.j) then        
-             ri=dsqrt(sum((rrg(:,i1)-cent(:,i))**2.d0)) !distance to center i (from point r)
-             rj=dsqrt(sum((rrg(:,i1)-cent(:,j))**2.d0)) !distance to center j (from point r)
-             mu_ij=(ri-rj)*(Rij(i,j)**(-1.d0))
-             u_ij=(xi(i,j)-1.d0)/(xi(i,j)+1.d0)  
-             a_ij=u_ij*((u_ij**2.d0)-1.d0)**(-1.d0)
-             v_ij=mu_ij+a_ij*(1.d0-mu_ij**2.d0) 
-             s_ij=0.5d0*(1.d0-f_k(v_ij))
-             P(i)=P(i)*s_ij
-           end if              
+            if (i.ne.j) then        
+              ri=dsqrt(sum((rrg(:,i1)-cent(:,i))**2.d0)) !distance to center i (from point r)
+              rj=dsqrt(sum((rrg(:,i1)-cent(:,j))**2.d0)) !distance to center j (from point r)
+              mu_ij=(ri-rj)*(Rij(i,j)**(-1.d0))      !equation 11
+              u_ij=(xi(i,j)-1.d0)/(xi(i,j)+1.d0)     !equation A6
+              a_ij=u_ij*((u_ij**2.d0)-1.d0)**(-1.d0) !equation A5
+              v_ij=mu_ij+a_ij*(1.d0-mu_ij**2.d0)     !equation A2
+              s_ij=0.5d0*(1.d0-f_k(v_ij))            !equation 21
+              P(i)=P(i)*s_ij                         !equation 13
+            end if              
         end do
        w_becke(i1,i)=P(i) !store weight of quadrature i at point i1     
-   end do 
-   Ptot=sum(P)
-   w_becke(i1,:)=w_becke(i1,:)*(Ptot**(-1.d0)) !normalize weight to fulfill equation 3   
+    end do 
+    Ptot=sum(P)
+    w_becke(i1,:)=w_becke(i1,:)*(Ptot**(-1.d0)) !normalize weight to fulfill equation 3   
  end do
  
  !store single becke weight for each grid point in a single array
@@ -91,4 +91,3 @@ subroutine becke(rrg,sumq,rgrid,nquad,cent,w_beck,Ps)                           
          pf=1.5d0*vl-0.5d0*vl**(3.d0)     
      end function
 end subroutine becke         
-

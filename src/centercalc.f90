@@ -99,20 +99,26 @@ end do
 do i=1,nquad
    dist(i)=sqrt(sum(c1(:,i)**2))
 end do
-sfalpha(1)=1.d0
-!minval(dist,dim=1,mask=(dist.gt.zero))/2.d0
-!Ps(1)=sum(an)/natoms !the weight of the central positive center
-Ps(1)=1.d0 
-sm=0
-k_val=nrad/nquad
-do i=2,nquad
-   if (dist(i).ge.zero) then
-      sfalpha(i)=1.d0
-      Ps(i)=1.d0
-   end if   
-end do
+sfalpha(:)=1.d0
+if (betaone) then
+   Ps(:)=1.d0
+else   
+   !Ps(1)=1.d0 
+   !minval(dist,dim=1,mask=(dist.gt.zero))/2.d0
+   Ps(1)=sum(an)/natoms !the weight of the central positive center
+   do i=2,nquad
+      if (dist(i).gt.zero) then
+         Ps(i)=nelec_cent(i)
+      else
+         write(*,*) "Dist is zero"
+         Ps(i)=0.d0
+      end if
+      write(*,*) Ps(i)   
+   end do
+end if            
+!k_val=nrad/nquad
 write(*,*) "Integration parameters for each center:"
-write(*,*)  "Center (x,y,z)    nrad    nang    sfalpha    Weight"
+write(*,*) "Center (x,y,z)    nrad    nang    sfalpha    Weight"
 do i=1,nquad
    write(*,'(3F8.3, 2I6, F8.3, F8.3)') cent(1,i), cent(2,i), cent(3,i), nradc(i), nangc(i), sfalpha(i), Ps(i)
 end do

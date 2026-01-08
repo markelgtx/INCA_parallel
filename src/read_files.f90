@@ -168,6 +168,11 @@ use locatemod
             end if  
             rewind(3)
          else !automatically calculate the parameters (default)
+            if (located(3,'$betaone')) then
+               betaone=.true.
+            else
+               betaone=.false. !default value
+            end if
             if (located(3,'$Gauss-Legendre')) then
                read(3,*) nrad
             else
@@ -1000,11 +1005,10 @@ subroutine filefchk(fchkfilename)
          stop  
       end select
    end do
-   allocate(Xn(nprim));allocate(Yn(nprim));allocate(Zn(nprim))
-   do i=1,nprim
-      Xn(i)=cartes(Ra(i),1); Yn(i)=cartes(Ra(i),2); Zn(i)=cartes(Ra(i),3)
-   end do
-       
+   !allocate(Xn(nprim));allocate(Yn(nprim));allocate(Zn(nprim))
+   !do i=1,nprim
+   !   Xn(i)=cartes(Ra(i),1); Yn(i)=cartes(Ra(i),2); Zn(i)=cartes(Ra(i),3)
+   !end do       
    !   write(*,*) cartes(Ra(i),1), cartes(Ra(i),2), cartes(Ra(i),3), Alpha(i), TMN(i,1), TMN(i,2), TMN(i,3)
    close(1)
 end subroutine filefchk
