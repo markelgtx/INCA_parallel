@@ -36,6 +36,7 @@ integer :: i, ia, ir, sm, smp, sma, smnn, j, k, smr, smpr, ngrid, i1
 integer :: np !number of points
 double precision, parameter :: pi=4.d0*datan(1.d0)
 double precision, parameter :: trsh=1.d-15, trsh2=1.d-16, tol=dsqrt(epsilon(1.d0))
+double precision :: actual_dist
 !count maximum number of points
 np=0
 do i=1,nquad
@@ -114,9 +115,15 @@ do i1=1,nquad       !loop over centres
         end do   
     else
         do ir=1,nrad    
-          radius(ir)=(1.d0+xl_i(ir))/(1.d0-xl_i(ir))*sfalpha(i1)
-          wl2_i(ir)=2*pi*(2.d0*sfalpha(i1)/((1.d0-xl_i(ir))**2.d0))*wl_i(ir)*radius(ir)   ! for Vee
-          wl_i(ir)=2*pi*(2.d0*sfalpha(i1)/((1.d0-xl_i(ir))**2.d0))*wl_i(ir)*radius(ir)*radius(ir) !for I(r)
+            radius(ir)=(1.d0+xl_i(ir))/(1.d0-xl_i(ir))*sfalpha(i1)
+            if ((nquad.gt.1).and.(radius(ir).gt.15.d0)) then
+                write(*,*) "Removing grid point=", radius(ir), "in quadrature center", i1
+                wl2_i(ir)=0.d0
+                wl_i(ir)=0.d0
+            else          
+                !wl2_i(ir)=2*pi*(2.d0*sfalpha(i1)/((1.d0-xl_i(ir))**2.d0))*wl_i(ir)*radius(ir)   ! for Vee
+                wl_i(ir)=2*pi*(2.d0*sfalpha(i1)/((1.d0-xl_i(ir))**2.d0))*wl_i(ir)*radius(ir)*radius(ir) !for I(r)
+            end if
         end do   
     end if  
     !compute grid points for all the becke centers
@@ -144,7 +151,7 @@ do i1=1,nquad       !loop over centres
             do k=1,nAng  
                 sm=sm+1
                 weight(sm)=Wlb(k)*Wl_i(j)
-                weight_vee(sm)=Wlb(k)*wl2_i(j) !for Vee
+                !weight_vee(sm)=Wlb(k)*wl2_i(j) !for Vee
             end do             
         end do
     else 
@@ -163,7 +170,7 @@ do i1=1,nquad       !loop over centres
                         weight_vee(smr)=Wlb(k)*wl2_i(j) !for Vee
                     else
                         weight(smr)=2.d0*Wlb(k)*Wl_i(j) !z is positive, use sym (I(z)=I(-z))
-                        weight_vee(smr)=2.d0*Wlb(k)*wl2_i(j) !for Vee
+                        !weight_vee(smr)=2.d0*Wlb(k)*wl2_i(j) !for Vee
                     end if
                 else 
                     !sym neglected point    
@@ -197,7 +204,7 @@ if (nosym) then
             sm=sm+1
             gr3(:,sm)=gr1(:,sm)
             srweight(sm)=weight(sm)
-            srweight_vee(sm)=weight_vee(sm) !for Vee
+            !srweight_vee(sm)=weight_vee(sm) !for Vee
         end do  
     end do 
     deallocate(gr1)
@@ -208,7 +215,7 @@ else
             sm=sm+1
             gr3(:,sm)=gr2(:,sm)
             srweight(sm)=weight(sm)
-            srweight_vee(sm)=weight_vee(sm) !for Vee
+            !srweight_vee(sm)=weight_vee(sm) !for Vee
         end do
     end do
     deallocate(gr1)
@@ -249,9 +256,16 @@ do i=1,rgrid
     if ((srweight(i).gt.trsh2)) then !remove points with low (zero) weight
         sm=sm+1 
         rweight(sm)=srweight(i) 
-        rweight_vee(sm)=srweight_vee(i) !for Vee
+        !rweight_vee(sm)=srweight_vee(i) !for Vee
+        actual_dist=dsqrt(sum(gr3(:,i)**2)) !compute actual distance of the point to the origin
+        rweight_vee(sm)=srweight(i)*(actual_dist)**(-1.d0) !for Vee, divide by r to get correct weight for Vee
         rrrg(:,sm)=gr3(:,i)           
     end if
+end do
+write(*,*) "Grid points:"
+open(4,file='gridpoints.dat',status='replace')
+do i=1,rrgrid
+    write(4,'(I6,3F15.8,F30.8)') i, rrrg(1,i), rrrg(2,i), rrrg(3,i), rweight(i)
 end do
 deallocate(weight); deallocate(srweight)
 deallocate(weight_vee); deallocate(srweight_vee)

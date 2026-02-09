@@ -3,10 +3,6 @@ use geninfo
 use quadratures
 use numbers
 implicit none
-!global variables that depens on all ijkl primitives
-double precision :: alfijkl, zeta, eijkl
-double precision :: invz, sqe
-integer, allocatable, dimension(:) :: ipiv
 !primtive parameters
 !double precision :: Xi,Yi,Zi,Xj,Yj,Zj,Xk,Yk,Zk,Xl,Yl,Zl !center of each of the primitives
 !double precision :: ti,mi,ni,tj,mj,nj,tk,mk,nk,tl,ml,nl !angular momenta of each primitive
@@ -166,7 +162,10 @@ contains
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!!!!!eq 15!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!!!!!!!!!!!!!function Wijkl(i,j,k,l,rhat,r,ax)  !for 1st integral screening. Equation 15
-        subroutine polycoef(Ri,Rj,Rk,Rl,Rik,Rjl,Rijkl,tmni,tmnj,tmnk,tmnl,np,n,rh,wh,Cijkl)
+        subroutine polycoef(Ri,Rj,Rk,Rl,Rik,Rjl,Rijkl,&
+                tmni,tmnj,tmnk,tmnl, &
+                np,n,rh,wh,Cijkl, &
+                sqe, invz, alfijkl, ipiv)
                 implicit none
                 !==== Arguments ====
                 double precision, intent(in) :: Ri,Rj,Rk,Rl !primitive centers
@@ -175,7 +174,8 @@ contains
                 integer, intent(in) :: np, n !np is the number of points, n is 
                 double precision, intent(out) :: Cijkl(:) !coefficients of the polynomial
                 double precision, intent(in) :: wh(:), rh(:)
-                !integer, intent(inout) :: ipiv(:)   
+                double precision, intent(in) :: sqe, invz, alfijkl
+                integer, intent(inout) :: ipiv(:)   
                 !==== Local variables ====
                 double precision, dimension(np,np) :: M  
                 double precision, dimension(np)    :: xx
@@ -200,7 +200,7 @@ contains
                     end do
             
                     ! Build RHS vector Cijkl
-                    Cijkl = 0.0d0
+                    Cijkl = ZERO
                     do i1 = 1, np
                         do j1 = 1, n
                             Cijkl(i1) = Cijkl(i1) + wh(j1)*Wijkl(Ri,Rj,Rk,Rl,Rijkl,tmni,tmnj,tmnk,tmnl,rh(j1),xx(i1))

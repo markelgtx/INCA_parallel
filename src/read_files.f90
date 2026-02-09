@@ -1038,8 +1038,8 @@ subroutine filebas(basfilename)
       end do   
    end do
    close(1)
-   !write(*,*) "Reading basis set from .bas file"
-   !do i=1,nprim
-   !   write(*,*) cartes(int(Ra(i)),1), cartes(int(Ra(i)),2), cartes(int(Ra(i)),3), Alpha(i), TMN(i,1), TMN(i,2), TMN(i,3)
-   !end do
+   write(*,*) "Reading basis set from .bas file"
+   do i=1,nprim
+      write(*,*) cartes(int(Ra(i)),1), cartes(int(Ra(i)),2), cartes(int(Ra(i)),3), Alpha(i), TMN(i,1), TMN(i,2), TMN(i,3)
+   end do
 end subroutine  
