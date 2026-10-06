@@ -18,3 +18,4 @@ tests/parallel_test/gridpoints.dat
 tests/data/H3_FCI_cc-pVTZ.*
 tests/data/Li_FCI_cc-pVTZ.*
 tests/data/03a.dm2p
+tests/data/03a*
