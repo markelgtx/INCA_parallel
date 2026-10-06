@@ -28,7 +28,8 @@ contains
 
    subroutine read_all_input(filename)
       character(len=*), intent(in) :: filename
-      integer :: i, ios, dot_idx      
+      integer :: i, ios, dot_idx
+      character(len=256) :: errmsg
       
       ! ==========================================================
       ! Define the NAMELIST groups
@@ -71,28 +72,18 @@ contains
          stop
       end if
 
-      open(unit=10, file=filename, status='old')
-      
-      read(10, nml=files)
+      ! Each block is optional (end of file, ios < 0, keeps the defaults);
+      ! a syntax error (ios > 0, e.g. an unknown keyword) stops the run.
+      read(10, nml=files, iostat=ios, iomsg=errmsg)
+      if (ios > 0) call stop_bad_block("&files")
       rewind(10)
-      
-      read(10, nml=intracule_job)
-      rewind(10)
-      
-      read(10, nml=cube_job)
-      close(10)
 
-      ! Read blocks and check for syntax errors (ios > 0 means syntax error)
-      read(10, nml=files, iostat=ios)
-      if (ios > 0) write(*,*) "WARNING: Syntax error in &files block!"
+      read(10, nml=intracule_job, iostat=ios, iomsg=errmsg)
+      if (ios > 0) call stop_bad_block("&intracule_job")
       rewind(10)
-      
-      read(10, nml=intracule_job, iostat=ios)
-      if (ios > 0) write(*,*) "WARNING: Syntax error in &intracule_job block!"
-      rewind(10)
-      
-      read(10, nml=cube_job, iostat=ios)
-      if (ios > 0) write(*,*) "WARNING: Syntax error in &cube_job block!"
+
+      read(10, nml=cube_job, iostat=ios, iomsg=errmsg)
+      if (ios > 0) call stop_bad_block("&cube_job")
       close(10)
 
       ! ==========================================================
@@ -149,6 +140,15 @@ contains
          end do
       end if
       
+   contains
+
+      subroutine stop_bad_block(blockname)
+         character(len=*), intent(in) :: blockname
+         write(*,*) "ERROR: Syntax error in ", blockname, " block of the input file."
+         write(*,*) trim(errmsg)
+         stop 1
+      end subroutine stop_bad_block
+
    end subroutine read_all_input
 
    ! ==========================================================

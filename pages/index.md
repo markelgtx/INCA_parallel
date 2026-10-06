@@ -2,7 +2,7 @@ title: User Manual
 
 # INCA User Manual
 
-INCA uses a standard Fortran `NAMELIST` input structure. The input file contains three namelist blocks, `&files`, `&intracule_job` and `&cube_job` (all three must be present, each ended by `/`). Variables are order-independent, case-insensitive, and separated by commas or newlines. 
+INCA uses a standard Fortran `NAMELIST` input structure. The input file contains three namelist blocks, `&files`, `&intracule_job` and `&cube_job` (each ended by `/`; a block that is left out keeps its defaults, and an unknown keyword stops the run with an error). Variables are order-independent, case-insensitive, and separated by commas or newlines. 
 
 ## 1. General Configuration
 

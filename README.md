@@ -56,9 +56,10 @@ and forces BLAS/LAPACK to a single thread to avoid oversubscription.
 
 ### Input
 
-The input is a Fortran namelist file with three blocks: `&files`,
-`&intracule_job` and `&cube_job`. **All three blocks must be present**, even if
-a block is empty (`&cube_job` then `/`). Examples are in `tests/inputs/`.
+The input is a Fortran namelist file with up to three blocks: `&files`,
+`&intracule_job` and `&cube_job`. A block that is left out keeps its defaults;
+an unknown keyword or other syntax error stops the run with a message. Each
+block ends with `/`. Examples are in `tests/inputs/`.
 
 Radial integral with an automatic multicenter grid:
 
