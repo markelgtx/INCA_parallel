@@ -13,7 +13,8 @@ python3 tests/run_tests.py
 `make test` does the same. The methane test (`tests/data/ch4.*`) ships with the
 repository. The H3 and Li tests need large files (~260 MB) that are not in the
 repository; download them from Zenodo
-(<!-- TODO: Zenodo DOI link -->) and unzip them into `tests/data/`. If they are
+(<https://doi.org/10.5281/zenodo.23184299>) and put the files
+(`H3_FCI_cc-pVTZ.{fchk,dm2p}`, `Li_FCI_cc-pVTZ.{fchk,dm2p}`) into `tests/data/`. If they are
 absent those tests are reported as SKIPPED, not failed.
 
 The harness uses paths relative to `tests/` and will create `tests/work/` on each run.

@@ -8,9 +8,11 @@ with Salvador's TFVC partitioning scheme. Loops are parallelised with OpenMP.
 
 Reference implementation accompanying the paper:
 
-> M. Ylla et al., "Numerical integration of intracule pair densities with
-> optimized multicenter grids", *J. Chem. Phys.* (submitted).
-> <!-- TODO: full author list, volume, pages and DOI once published -->
+> M. Ylla, J. M. Ugalde, E. Matito and E. Ramos-Cordoba, "Numerical integration
+> of intracule pair densities with optimized multicenter grids",
+> *J. Chem. Phys.* (submitted).
+
+Test data for the larger examples: https://doi.org/10.5281/zenodo.23184299
 
 If you use INCA, please cite the paper above.
 
@@ -108,8 +110,8 @@ make test         # same as: python3 tests/run_tests.py
 The methane test (`tests/data/ch4.*`) is included in the repository and runs
 quickly. It checks the radial integral, a radial scan and a vector cube against
 the references in `tests/refs/`. The larger H3 and Li tests need data files that
-are too big for GitHub; they are skipped if the data is absent. See
-`tests/README.md` for the download link.
+are too big for GitHub (Zenodo, [10.5281/zenodo.23184299](https://doi.org/10.5281/zenodo.23184299));
+they are skipped if the data is absent. See `tests/README.md`.
 
 ## Documentation
 
@@ -119,8 +121,10 @@ in a browser, or regenerate with `ford inca_project.md`.
 
 ## Contact
 
-Markel Ylla, Donostia International Physics Center. Please open a GitHub issue
-for bugs or questions. <!-- TODO: add email -->
+- Code and technical questions: Markel Ylla (markelgtx@gmail.com), Donostia International Physics Center
+- Corresponding authors: Eloy Ramos-Cordoba (eloy.ramos@iqac.csic.es) and Eduard Matito (ematito@dipc.org)
+
+Please open a GitHub issue for bugs or questions.
 
 ## License
 

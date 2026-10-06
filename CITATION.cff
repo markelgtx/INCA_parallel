@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use INCA, please cite the paper below."
+title: "INCA: Intracule Calculator"
+type: software
+license: MIT
+repository-code: "https://github.com/markelgtx/INCA_parallel"
+authors:
+  - family-names: Ylla
+    given-names: Markel
+  - family-names: Ugalde
+    given-names: Jesus M.
+  - family-names: Matito
+    given-names: Eduard
+  - family-names: Ramos-Cordoba
+    given-names: Eloy
+preferred-citation:
+  type: article
+  title: "Numerical integration of intracule pair densities with optimized multicenter grids"
+  journal: "J. Chem. Phys."
+  status: submitted
+  authors:
+    - family-names: Ylla
+      given-names: Markel
+    - family-names: Ugalde
+      given-names: Jesus M.
+    - family-names: Matito
+      given-names: Eduard
+    - family-names: Ramos-Cordoba
+      given-names: Eloy
