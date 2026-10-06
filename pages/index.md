@@ -42,7 +42,7 @@ Example, intracule at two points:
 
 ### General Grid & Math Parameters
 * **`thresh`** *(real)*: Threshold for Cioslowski-Liu integral screening (Default: `1.0d-8`).
-* **`nosym`** *(logical)*: Disables spatial symmetry optimization.
+* **`nosym`** *(logical)*: Intracule symmetry $I(s)=I(-s)$. By default it is used and only half of the grid points are computed; `nosym = .true.` disables it and uses all points.
 
 
 *Note: Angular integrations utilize high-precision Lebedev spherical quadratures.*
@@ -63,7 +63,7 @@ By default, INCA uses a **Single Center** expansion at the origin.
 ### Automatic Multicenter Grid
 * **`multicenter = .true.`**: Enables automated multicenter partitioning (Salvador TFVC scheme).
 * **`nrad`**, **`nang`** *(integers)*: Global radial and angular points per center.
-* **`nohydro`** *(logical)*: Excludes Hydrogen atoms as integration centers (Default: `.true.`).
+* **`nohydro`** *(logical)*: Drops the centers formed with hydrogen atoms (Default: `.true.`; currently set in the code, not read from the input file).
 * **`betaone`** *(logical)*: Forces alternate Becke partition stiffness.
 
 ### Manual Multicenter Grid
