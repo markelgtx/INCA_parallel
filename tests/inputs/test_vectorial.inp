@@ -6,8 +6,7 @@
   cubeintraname = '{prefix}_vector.cube'
 /
 &intracule_job
-  intracalc   = .true.,
-  cubeintra   = .true.,
+  calc_type   = 'cubeintra',
   thresh      = 1.0d-12,
   multicenter = .false.,
   nrad        = 50,

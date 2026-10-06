@@ -5,8 +5,7 @@
   r_plot_name  = '{prefix}_scan.rad'
 /
 &intracule_job
-  intracalc   = .true.,
-  radial_plot = .true.,
+  calc_type   = 'radial_plot',
   thresh      = 1.0d-12,
   
   nblock        = 1,
