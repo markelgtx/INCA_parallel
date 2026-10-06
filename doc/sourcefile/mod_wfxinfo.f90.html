@@ -1,0 +1,427 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Intracule Calculator for evaluating radial and vector intracules from quantum chemical data.">
+    <meta name="author" content="Markel Ylla" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>mod_wfxinfo.f90 &ndash; INCA</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">INCA <small>1.0</small></a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../page/index.html">User Manual</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/namelists.html">Namelists</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/inca.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>mod_wfxinfo.f90
+      <small>Source File</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.1% of total for source files.">10 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mod_wfxinfo.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+            <li class="breadcrumb-item active" aria-current="page">mod_wfxinfo.f90</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#mods-0"
+         aria-expanded="false" aria-controls="mods-0">
+         <h4 class="card-header bg-primary text-white">Modules</h4>
+      </a>
+      <div id="mods-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/wfxinfo.html">wfxinfo</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../sourcefile/mod_wfxinfo.f90.html#src">mod_wfxinfo.f90</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    <div class="col-md-9" id='text'>
+      <p>Stores wavefunction-specific data and MO coefficients (primarily from .wfx).</p>
+      <br>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Files dependent on this one</h3>
+          </div>
+          <div class="card-body">
+            <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: sourcefile~~mod_wfxinfo.f90~~AfferentGraph Pages: 1 -->
+<svg id="sourcefilemod_wfxinfof90AfferentGraph" width="634pt" height="169pt"
+ viewBox="0.00 0.00 634.00 169.47" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 165.47)">
+<title>sourcefile~~mod_wfxinfo.f90~~AfferentGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-165.47 630,-165.47 630,4 -4,4"/>
+<!-- sourcefile~mod_wfxinfo.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_node1" class="node">
+<title>sourcefile~mod_wfxinfo.f90</title>
+<polygon fill="none" stroke="black" points="91,-104 0,-104 0,-80 91,-80 91,-104"/>
+<text text-anchor="middle" x="45.5" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50">mod_wfxinfo.f90</text>
+</g>
+<!-- sourcefile~mod_c1hole.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_node2" class="node">
+<title>sourcefile~mod_c1hole.f90</title>
+<g id="a_sourcefile~~mod_wfxinfo.f90~~AfferentGraph_node2"><a xlink:href="../sourcefile/mod_c1hole.f90.html" xlink:title="mod_c1hole.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="354.5,-146 265.5,-146 265.5,-122 354.5,-122 354.5,-146"/>
+<text text-anchor="middle" x="310" y="-131.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mod_c1hole.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mod_c1hole.f90&#45;&gt;sourcefile~mod_wfxinfo.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_edge1" class="edge">
+<title>sourcefile~mod_c1hole.f90&#45;&gt;sourcefile~mod_wfxinfo.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M274.51,-146.03C237.19,-157.13 176.39,-169.6 127,-153 102.51,-144.77 79.55,-125.81 64.47,-111.2"/>
+<polygon fill="#000000" stroke="#000000" points="66.87,-108.65 57.33,-104.03 61.91,-113.59 66.87,-108.65"/>
+</g>
+<!-- sourcefile~mod_functions.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_node4" class="node">
+<title>sourcefile~mod_functions.f90</title>
+<g id="a_sourcefile~~mod_wfxinfo.f90~~AfferentGraph_node4"><a xlink:href="../sourcefile/mod_functions.f90.html" xlink:title="mod_functions.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="227,-144 127,-144 127,-120 227,-120 227,-144"/>
+<text text-anchor="middle" x="177" y="-129.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mod_functions.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mod_c1hole.f90&#45;&gt;sourcefile~mod_functions.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_edge9" class="edge">
+<title>sourcefile~mod_c1hole.f90&#45;&gt;sourcefile~mod_functions.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M265.38,-133.33C256.41,-133.2 246.83,-133.05 237.42,-132.91"/>
+<polygon fill="#000000" stroke="#000000" points="237.36,-129.41 227.31,-132.75 237.26,-136.41 237.36,-129.41"/>
+</g>
+<!-- sourcefile~mod_cubefile.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_node3" class="node">
+<title>sourcefile~mod_cubefile.f90</title>
+<g id="a_sourcefile~~mod_wfxinfo.f90~~AfferentGraph_node3"><a xlink:href="../sourcefile/mod_cubefile.f90.html" xlink:title="mod_cubefile.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="357,-104 263,-104 263,-80 357,-80 357,-104"/>
+<text text-anchor="middle" x="310" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mod_cubefile.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mod_cubefile.f90&#45;&gt;sourcefile~mod_wfxinfo.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_edge2" class="edge">
+<title>sourcefile~mod_cubefile.f90&#45;&gt;sourcefile~mod_wfxinfo.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M262.98,-92C217.91,-92 149.22,-92 101.34,-92"/>
+<polygon fill="#000000" stroke="#000000" points="101.16,-88.5 91.16,-92 101.16,-95.5 101.16,-88.5"/>
+</g>
+<!-- sourcefile~mod_cubefile.f90&#45;&gt;sourcefile~mod_functions.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_edge10" class="edge">
+<title>sourcefile~mod_cubefile.f90&#45;&gt;sourcefile~mod_functions.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M269.7,-104C256.48,-108.04 241.55,-112.6 227.64,-116.84"/>
+<polygon fill="#000000" stroke="#000000" points="226.27,-113.6 217.73,-119.87 228.32,-120.3 226.27,-113.6"/>
+</g>
+<!-- sourcefile~mod_functions.f90&#45;&gt;sourcefile~mod_wfxinfo.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_edge3" class="edge">
+<title>sourcefile~mod_functions.f90&#45;&gt;sourcefile~mod_wfxinfo.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M137.15,-120C124.08,-115.96 109.32,-111.4 95.57,-107.16"/>
+<polygon fill="#000000" stroke="#000000" points="96.36,-103.74 85.77,-104.13 94.3,-110.43 96.36,-103.74"/>
+</g>
+<!-- sourcefile~mod_intracule.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_node5" class="node">
+<title>sourcefile~mod_intracule.f90</title>
+<g id="a_sourcefile~~mod_wfxinfo.f90~~AfferentGraph_node5"><a xlink:href="../sourcefile/mod_intracule.f90.html" xlink:title="mod_intracule.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="226,-64 128,-64 128,-40 226,-40 226,-64"/>
+<text text-anchor="middle" x="177" y="-49.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mod_intracule.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mod_intracule.f90&#45;&gt;sourcefile~mod_wfxinfo.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_edge4" class="edge">
+<title>sourcefile~mod_intracule.f90&#45;&gt;sourcefile~mod_wfxinfo.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M137.15,-64C124.08,-68.04 109.32,-72.6 95.57,-76.84"/>
+<polygon fill="#000000" stroke="#000000" points="94.3,-73.57 85.77,-79.87 96.36,-80.26 94.3,-73.57"/>
+</g>
+<!-- sourcefile~mod_read_files.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_node6" class="node">
+<title>sourcefile~mod_read_files.f90</title>
+<g id="a_sourcefile~~mod_wfxinfo.f90~~AfferentGraph_node6"><a xlink:href="../sourcefile/mod_read_files.f90.html" xlink:title="mod_read_files.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="504,-24 400,-24 400,0 504,0 504,-24"/>
+<text text-anchor="middle" x="452" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mod_read_files.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mod_read_files.f90&#45;&gt;sourcefile~mod_wfxinfo.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_edge5" class="edge">
+<title>sourcefile~mod_read_files.f90&#45;&gt;sourcefile~mod_wfxinfo.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M399.75,-6.05C334.27,-0.44 218.45,2.75 127,-31 102.9,-39.89 80.03,-58.58 64.87,-72.94"/>
+<polygon fill="#000000" stroke="#000000" points="62.37,-70.48 57.67,-79.98 67.27,-75.48 62.37,-70.48"/>
+</g>
+<!-- sourcefile~inca_main.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_node7" class="node">
+<title>sourcefile~inca_main.f90</title>
+<g id="a_sourcefile~~mod_wfxinfo.f90~~AfferentGraph_node7"><a xlink:href="../sourcefile/inca_main.f90.html" xlink:title="inca_main.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="626,-84 547,-84 547,-60 626,-60 626,-84"/>
+<text text-anchor="middle" x="586.5" y="-69.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">inca_main.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~inca_main.f90&#45;&gt;sourcefile~mod_c1hole.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_edge6" class="edge">
+<title>sourcefile~inca_main.f90&#45;&gt;sourcefile~mod_c1hole.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M451,-133C422.75,-137.07 390.97,-137.61 364.83,-137.01"/>
+<polygon fill="#000000" stroke="#000000" points="364.84,-133.51 354.74,-136.72 364.63,-140.51 364.84,-133.51"/>
+</g>
+<!-- sourcefile~inca_main.f90&#45;&gt;sourcefile~mod_cubefile.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_edge7" class="edge">
+<title>sourcefile~inca_main.f90&#45;&gt;sourcefile~mod_cubefile.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M568.11,-84.02C543.72,-99.9 497.37,-126.62 453,-133"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M451,-133C431.72,-135.77 385.07,-120.41 350.89,-107.71"/>
+<polygon fill="#000000" stroke="#000000" points="351.77,-104.3 341.18,-104.04 349.3,-110.85 351.77,-104.3"/>
+</g>
+<!-- sourcefile~inca_main.f90&#45;&gt;sourcefile~mod_intracule.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_edge11" class="edge">
+<title>sourcefile~inca_main.f90&#45;&gt;sourcefile~mod_intracule.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M546.8,-70.1C474.99,-66.58 320.79,-59.01 236.3,-54.86"/>
+<polygon fill="#000000" stroke="#000000" points="236.26,-51.36 226.1,-54.36 235.92,-58.35 236.26,-51.36"/>
+</g>
+<!-- sourcefile~inca_main.f90&#45;&gt;sourcefile~mod_read_files.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_edge12" class="edge">
+<title>sourcefile~inca_main.f90&#45;&gt;sourcefile~mod_read_files.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M559.32,-60C545.04,-53.47 527.06,-45.27 511,-38 504.02,-34.84 496.56,-31.48 489.39,-28.27"/>
+<polygon fill="#000000" stroke="#000000" points="490.43,-24.9 479.87,-24 487.56,-31.29 490.43,-24.9"/>
+</g>
+<!-- sourcefile~mod_input_reader.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_node8" class="node">
+<title>sourcefile~mod_input_reader.f90</title>
+<g id="a_sourcefile~~mod_wfxinfo.f90~~AfferentGraph_node8"><a xlink:href="../sourcefile/mod_input_reader.f90.html" xlink:title="mod_input_reader.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="511,-104 393,-104 393,-80 511,-80 511,-104"/>
+<text text-anchor="middle" x="452" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mod_input_reader.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~inca_main.f90&#45;&gt;sourcefile~mod_input_reader.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_edge13" class="edge">
+<title>sourcefile~inca_main.f90&#45;&gt;sourcefile~mod_input_reader.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M546.82,-77.84C538.72,-79.06 529.94,-80.39 521.13,-81.72"/>
+<polygon fill="#000000" stroke="#000000" points="520.55,-78.26 511.19,-83.22 521.6,-85.19 520.55,-78.26"/>
+</g>
+<!-- sourcefile~mod_input_reader.f90&#45;&gt;sourcefile~mod_cubefile.f90 -->
+<g id="sourcefile~~mod_wfxinfo.f90~~AfferentGraph_edge8" class="edge">
+<title>sourcefile~mod_input_reader.f90&#45;&gt;sourcefile~mod_cubefile.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M392.84,-92C384.4,-92 375.73,-92 367.33,-92"/>
+<polygon fill="#000000" stroke="#000000" points="367.25,-88.5 357.25,-92 367.25,-95.5 367.25,-88.5"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#AfferentGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="AfferentGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="190pt" height="32pt"
+ viewBox="0.00 0.00 190.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 186,-28 186,4 -4,4"/>
+<!-- Source File -->
+<g id="node1" class="node">
+<title>Source File</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="67,-24 0,-24 0,0 67,0 67,-24"/>
+<text text-anchor="middle" x="33.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Source File</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node2" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="182,-24 85,-24 85,0 182,0 182,-24"/>
+<text text-anchor="middle" x="133.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a file to a file which it depends on. A file
+is dependent upon another if the latter must be compiled before the former
+can be.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+          </div>
+        </div>
+<br>
+      <section>
+        <h2><span class="anchor" id="src"></span>Source Code</h2>
+        <div class="hl codehilite"><pre><span></span><a id="ln-1" name="ln-1" href="#ln-1"></a><span class="c">!! Stores wavefunction-specific data and MO coefficients (primarily from .wfx).</span>
+<a id="ln-2" name="ln-2" href="#ln-2"></a><span class="k">module </span><span class="n">wfxinfo</span><span class="w"> </span><span class="c">!especific data of wfx files </span>
+<a id="ln-3" name="ln-3" href="#ln-3"></a><span class="w">  </span><span class="k">implicit none</span>
+<a id="ln-4" name="ln-4" href="#ln-4"></a><span class="k">  </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">corr</span><span class="w">   </span><span class="c">!correlated method</span>
+<a id="ln-5" name="ln-5" href="#ln-5"></a><span class="w">  </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">noccmo</span><span class="w"> </span><span class="c">!number of occupied MOs</span>
+<a id="ln-6" name="ln-6" href="#ln-6"></a><span class="w">  </span><span class="kt">double precision</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">toteng</span>
+<a id="ln-7" name="ln-7" href="#ln-7"></a><span class="w">  </span><span class="kt">double precision</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">T</span><span class="w">   </span><span class="c">!MOs in primitives coeficients (matriu T)</span>
+<a id="ln-8" name="ln-8" href="#ln-8"></a><span class="w">  </span><span class="kt">double precision</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">T_a</span><span class="w"> </span><span class="c">!Alpha MOs coeficients</span>
+<a id="ln-9" name="ln-9" href="#ln-9"></a><span class="w">  </span><span class="kt">double precision</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">T_b</span><span class="w"> </span><span class="c">!Beta MOs coeficients</span>
+<a id="ln-10" name="ln-10" href="#ln-10"></a><span class="w">  </span><span class="kt">double precision</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">Occ</span><span class="w">   </span><span class="c">!ocupancies of orbitals</span>
+<a id="ln-11" name="ln-11" href="#ln-11"></a><span class="k">end module </span><span class="n">wfxinfo</span>
+</pre></div>
+
+      </section>
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              INCA
+ was developed by Markel Ylla<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

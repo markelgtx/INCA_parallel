@@ -1,0 +1,923 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Intracule Calculator for evaluating radial and vector intracules from quantum chemical data.">
+    <meta name="author" content="Markel Ylla" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>Prim &ndash; INCA</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">INCA <small>1.0</small></a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../page/index.html">User Manual</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/namelists.html">Namelists</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/inca.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>Prim
+      <small>Function</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.1% of total for procedures.">11 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mod_functions.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mod_functions.f90.html'>mod_functions.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/functions.html'>functions</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Prim</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/prim.html#src">Prim</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>public  function Prim(x, y, z, npr)  
+</h2>
+    
+
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~8"></span>
+              double precision,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-y~5"></span>
+              double precision,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>y</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-z~6"></span>
+              double precision,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>z</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-npr~2"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>npr</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <h3>Return Value
+        <small>
+          <span class="anchor" id="variable-prim"></span>
+          double precision
+        </small>
+      </h3>
+      
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~prim~~CallsGraph Pages: 1 -->
+<svg id="procprimCallsGraph" width="152pt" height="32pt"
+ viewBox="0.00 0.00 152.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~prim~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>proc~~prim~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 148,-28 148,4 -4,4"/>
+<!-- proc~prim -->
+<g id="proc~~prim~~CallsGraph_node1" class="node">
+<title>proc~prim</title>
+<polygon fill="none" stroke="black" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">Prim</text>
+</g>
+<!-- dexp -->
+<g id="proc~~prim~~CallsGraph_node2" class="node">
+<title>dexp</title>
+<polygon fill="#777777" stroke="#777777" points="144,-24 90,-24 90,0 144,0 144,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dexp</text>
+</g>
+<!-- proc~prim&#45;&gt;dexp -->
+<g id="proc~~prim~~CallsGraph_edge1" class="edge">
+<title>proc~prim&#45;&gt;dexp</title>
+<path fill="none" stroke="#000000" d="M54.4,-12C62.39,-12 71.31,-12 79.82,-12"/>
+<polygon fill="#000000" stroke="#000000" points="79.92,-15.5 89.92,-12 79.92,-8.5 79.92,-15.5"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="29pt"
+ viewBox="0.00 0.00 641.00 29.32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.92 0.92) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 695.5,-28 695.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="64,-24 0,-24 0,0 64,0 64,-24"/>
+<text text-anchor="middle" x="32" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="136,-24 82,-24 82,0 136,0 136,-24"/>
+<text text-anchor="middle" x="109" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="209.5,-24 154.5,-24 154.5,0 209.5,0 209.5,-24"/>
+<text text-anchor="middle" x="182" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="350,-24 228,-24 228,0 350,0 350,-24"/>
+<text text-anchor="middle" x="289" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="504,-24 368,-24 368,0 504,0 504,-24"/>
+<text text-anchor="middle" x="436" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="576,-24 522,-24 522,0 576,0 576,-24"/>
+<text text-anchor="middle" x="549" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="691.5,-24 594.5,-24 594.5,0 691.5,0 691.5,-24"/>
+<text text-anchor="middle" x="643" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~prim~~CalledByGraph Pages: 1 -->
+<svg id="procprimCalledByGraph" width="526pt" height="520pt"
+ viewBox="0.00 0.00 526.00 520.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~prim~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 516)">
+<title>proc~~prim~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-516 522,-516 522,4 -4,4"/>
+<!-- proc~prim -->
+<g id="proc~~prim~~CalledByGraph_node1" class="node">
+<title>proc~prim</title>
+<polygon fill="none" stroke="black" points="518,-227 464,-227 464,-203 518,-203 518,-227"/>
+<text text-anchor="middle" x="491" y="-212.6" font-family="Helvetica,sans-Serif" font-size="10.50">Prim</text>
+</g>
+<!-- proc~ao -->
+<g id="proc~~prim~~CalledByGraph_node2" class="node">
+<title>proc~ao</title>
+<g id="a_proc~~prim~~CalledByGraph_node2"><a xlink:href="../proc/ao.html" xlink:title="AO">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="428,-512 374,-512 374,-488 428,-488 428,-512"/>
+<text text-anchor="middle" x="401" y="-497.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">AO</text>
+</a>
+</g>
+</g>
+<!-- proc~ao&#45;&gt;proc~prim -->
+<g id="proc~~prim~~CalledByGraph_edge1" class="edge">
+<title>proc~ao&#45;&gt;proc~prim</title>
+<path fill="none" stroke="#000000" d="M416.81,-487.97C420.97,-483.92 425.13,-479.13 428,-474 472.43,-394.61 485.19,-284.24 488.71,-237.42"/>
+<polygon fill="#000000" stroke="#000000" points="492.22,-237.41 489.41,-227.19 485.24,-236.93 492.22,-237.41"/>
+</g>
+<!-- proc~dens_ops -->
+<g id="proc~~prim~~CalledByGraph_node3" class="node">
+<title>proc~dens_ops</title>
+<g id="a_proc~~prim~~CalledByGraph_node3"><a xlink:href="../proc/dens_ops.html" xlink:title="dens_ops">
+<polygon fill="#d9534f" stroke="#d9534f" points="337.5,-24 278.5,-24 278.5,0 337.5,0 337.5,-24"/>
+<text text-anchor="middle" x="308" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dens_ops</text>
+</a>
+</g>
+</g>
+<!-- proc~dens_ops&#45;&gt;proc~prim -->
+<g id="proc~~prim~~CalledByGraph_edge2" class="edge">
+<title>proc~dens_ops&#45;&gt;proc~prim</title>
+<path fill="none" stroke="#000000" d="M337.72,-19.67C364.25,-28.07 403.2,-43.95 428,-70 461.77,-105.48 478.62,-162.19 485.71,-193.12"/>
+<polygon fill="#000000" stroke="#000000" points="482.29,-193.88 487.82,-202.91 489.13,-192.4 482.29,-193.88"/>
+</g>
+<!-- proc~dprim -->
+<g id="proc~~prim~~CalledByGraph_node4" class="node">
+<title>proc~dprim</title>
+<g id="a_proc~~prim~~CalledByGraph_node4"><a xlink:href="../proc/dprim.html" xlink:title="dprim">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="428,-103 374,-103 374,-79 428,-79 428,-103"/>
+<text text-anchor="middle" x="401" y="-88.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dprim</text>
+</a>
+</g>
+</g>
+<!-- proc~dens_ops&#45;&gt;proc~dprim -->
+<g id="proc~~prim~~CalledByGraph_edge10" class="edge">
+<title>proc~dens_ops&#45;&gt;proc~dprim</title>
+<path fill="none" stroke="#000000" d="M326.44,-24.09C330.32,-26.92 334.35,-29.99 338,-33 352.93,-45.31 368.85,-60.24 380.81,-71.87"/>
+<polygon fill="#000000" stroke="#000000" points="378.47,-74.47 388.06,-78.98 383.37,-69.48 378.47,-74.47"/>
+</g>
+<!-- proc~dprim&#45;&gt;proc~prim -->
+<g id="proc~~prim~~CalledByGraph_edge3" class="edge">
+<title>proc~dprim&#45;&gt;proc~prim</title>
+<path fill="none" stroke="#000000" d="M410.76,-103.34C425.85,-124.6 456.89,-168.35 475.33,-194.33"/>
+<polygon fill="#000000" stroke="#000000" points="472.63,-196.58 481.28,-202.71 478.34,-192.53 472.63,-196.58"/>
+</g>
+<!-- proc~fwrite -->
+<g id="proc~~prim~~CalledByGraph_node5" class="node">
+<title>proc~fwrite</title>
+<g id="a_proc~~prim~~CalledByGraph_node5"><a xlink:href="../proc/fwrite.html" xlink:title="fwrite">
+<polygon fill="#d9534f" stroke="#d9534f" points="242,-289 188,-289 188,-265 242,-265 242,-289"/>
+<text text-anchor="middle" x="215" y="-274.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fwrite</text>
+</a>
+</g>
+</g>
+<!-- proc~fwrite&#45;&gt;proc~prim -->
+<g id="proc~~prim~~CalledByGraph_edge4" class="edge">
+<title>proc~fwrite&#45;&gt;proc~prim</title>
+<path fill="none" stroke="#000000" d="M216.27,-289.25C217.7,-320.88 226.41,-405.35 278,-441 299.94,-456.16 314.46,-453.53 338,-441 421.23,-396.68 467.02,-284.27 483.2,-236.74"/>
+<polygon fill="#000000" stroke="#000000" points="486.57,-237.73 486.37,-227.13 479.92,-235.54 486.57,-237.73"/>
+</g>
+<!-- proc~fwrite&#45;&gt;proc~ao -->
+<g id="proc~~prim~~CalledByGraph_edge8" class="edge">
+<title>proc~fwrite&#45;&gt;proc~ao</title>
+<path fill="none" stroke="#000000" d="M215.9,-289.38C216.32,-324.18 222.56,-423.59 278,-474 301.13,-495.03 336.96,-500.61 363.82,-501.48"/>
+<polygon fill="#000000" stroke="#000000" points="363.95,-504.98 373.99,-501.6 364.03,-497.98 363.95,-504.98"/>
+</g>
+<!-- proc~mo_a -->
+<g id="proc~~prim~~CalledByGraph_node6" class="node">
+<title>proc~mo_a</title>
+<g id="a_proc~~prim~~CalledByGraph_node6"><a xlink:href="../proc/mo_a.html" xlink:title="MO_a">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="428,-227 374,-227 374,-203 428,-203 428,-227"/>
+<text text-anchor="middle" x="401" y="-212.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">MO_a</text>
+</a>
+</g>
+</g>
+<!-- proc~fwrite&#45;&gt;proc~mo_a -->
+<g id="proc~~prim~~CalledByGraph_edge14" class="edge">
+<title>proc~fwrite&#45;&gt;proc~mo_a</title>
+<path fill="none" stroke="#000000" d="M230.25,-264.68C242.19,-255.04 260.12,-242.12 278,-235 305.57,-224.02 338.94,-219.07 363.81,-216.83"/>
+<polygon fill="#000000" stroke="#000000" points="364.21,-220.31 373.9,-216.03 363.66,-213.34 364.21,-220.31"/>
+</g>
+<!-- proc~mo_b -->
+<g id="proc~~prim~~CalledByGraph_node7" class="node">
+<title>proc~mo_b</title>
+<g id="a_proc~~prim~~CalledByGraph_node7"><a xlink:href="../proc/mo_b.html" xlink:title="MO_b">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="428,-269 374,-269 374,-245 428,-245 428,-269"/>
+<text text-anchor="middle" x="401" y="-254.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">MO_b</text>
+</a>
+</g>
+</g>
+<!-- proc~fwrite&#45;&gt;proc~mo_b -->
+<g id="proc~~prim~~CalledByGraph_edge20" class="edge">
+<title>proc~fwrite&#45;&gt;proc~mo_b</title>
+<path fill="none" stroke="#000000" d="M220.75,-289.31C229.02,-308.75 248.07,-345.89 278,-361 301.81,-373.02 314.81,-374.17 338,-361 368.87,-343.47 385.99,-303.81 394.07,-278.85"/>
+<polygon fill="#000000" stroke="#000000" points="397.46,-279.74 396.99,-269.15 390.75,-277.72 397.46,-279.74"/>
+</g>
+<!-- proc~moor -->
+<g id="proc~~prim~~CalledByGraph_node8" class="node">
+<title>proc~moor</title>
+<g id="a_proc~~prim~~CalledByGraph_node8"><a xlink:href="../proc/moor.html" xlink:title="MoOr">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="428,-185 374,-185 374,-161 428,-161 428,-185"/>
+<text text-anchor="middle" x="401" y="-170.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">MoOr</text>
+</a>
+</g>
+</g>
+<!-- proc~fwrite&#45;&gt;proc~moor -->
+<g id="proc~~prim~~CalledByGraph_edge25" class="edge">
+<title>proc~fwrite&#45;&gt;proc~moor</title>
+<path fill="none" stroke="#000000" d="M216.27,-264.75C217.7,-233.12 226.41,-148.65 278,-113 299.94,-97.84 313.28,-103 338,-113 357.78,-121 374.74,-138.67 385.9,-152.78"/>
+<polygon fill="#000000" stroke="#000000" points="383.26,-155.09 392.07,-160.98 388.85,-150.89 383.26,-155.09"/>
+</g>
+<!-- proc~dens_a -->
+<g id="proc~~prim~~CalledByGraph_node11" class="node">
+<title>proc~dens_a</title>
+<g id="a_proc~~prim~~CalledByGraph_node11"><a xlink:href="../proc/dens_a.html" xlink:title="Dens_a">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="335,-310 281,-310 281,-286 335,-286 335,-310"/>
+<text text-anchor="middle" x="308" y="-295.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Dens_a</text>
+</a>
+</g>
+</g>
+<!-- proc~fwrite&#45;&gt;proc~dens_a -->
+<g id="proc~~prim~~CalledByGraph_edge32" class="edge">
+<title>proc~fwrite&#45;&gt;proc~dens_a</title>
+<path fill="none" stroke="#000000" d="M242.32,-283.07C251.19,-285.12 261.24,-287.44 270.74,-289.63"/>
+<polygon fill="#000000" stroke="#000000" points="270.21,-293.1 280.74,-291.94 271.78,-286.28 270.21,-293.1"/>
+</g>
+<!-- proc~dens_b -->
+<g id="proc~~prim~~CalledByGraph_node12" class="node">
+<title>proc~dens_b</title>
+<g id="a_proc~~prim~~CalledByGraph_node12"><a xlink:href="../proc/dens_b.html" xlink:title="Dens_b">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="335,-432 281,-432 281,-408 335,-408 335,-432"/>
+<text text-anchor="middle" x="308" y="-417.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Dens_b</text>
+</a>
+</g>
+</g>
+<!-- proc~fwrite&#45;&gt;proc~dens_b -->
+<g id="proc~~prim~~CalledByGraph_edge33" class="edge">
+<title>proc~fwrite&#45;&gt;proc~dens_b</title>
+<path fill="none" stroke="#000000" d="M220.73,-289.11C229.75,-311.31 250.96,-359.41 278,-394 279.84,-396.35 281.9,-398.66 284.06,-400.87"/>
+<polygon fill="#000000" stroke="#000000" points="281.89,-403.64 291.56,-407.96 286.69,-398.55 281.89,-403.64"/>
+</g>
+<!-- proc~density -->
+<g id="proc~~prim~~CalledByGraph_node13" class="node">
+<title>proc~density</title>
+<g id="a_proc~~prim~~CalledByGraph_node13"><a xlink:href="../proc/density.html" xlink:title="Density">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="335,-188 281,-188 281,-164 335,-164 335,-188"/>
+<text text-anchor="middle" x="308" y="-173.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Density</text>
+</a>
+</g>
+</g>
+<!-- proc~fwrite&#45;&gt;proc~density -->
+<g id="proc~~prim~~CalledByGraph_edge35" class="edge">
+<title>proc~fwrite&#45;&gt;proc~density</title>
+<path fill="none" stroke="#000000" d="M225.14,-264.84C236.8,-249.61 257.87,-222.95 278,-202 280.3,-199.61 282.77,-197.18 285.28,-194.82"/>
+<polygon fill="#000000" stroke="#000000" points="287.71,-197.35 292.74,-188.03 282.99,-192.17 287.71,-197.35"/>
+</g>
+<!-- proc~lapl -->
+<g id="proc~~prim~~CalledByGraph_node14" class="node">
+<title>proc~lapl</title>
+<g id="a_proc~~prim~~CalledByGraph_node14"><a xlink:href="../proc/lapl.html" xlink:title="Lapl">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="335,-268 281,-268 281,-244 335,-244 335,-268"/>
+<text text-anchor="middle" x="308" y="-253.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Lapl</text>
+</a>
+</g>
+</g>
+<!-- proc~fwrite&#45;&gt;proc~lapl -->
+<g id="proc~~prim~~CalledByGraph_edge36" class="edge">
+<title>proc~fwrite&#45;&gt;proc~lapl</title>
+<path fill="none" stroke="#000000" d="M242.32,-270.93C251.19,-268.88 261.24,-266.56 270.74,-264.37"/>
+<polygon fill="#000000" stroke="#000000" points="271.78,-267.72 280.74,-262.06 270.21,-260.9 271.78,-267.72"/>
+</g>
+<!-- proc~mo_a&#45;&gt;proc~prim -->
+<g id="proc~~prim~~CalledByGraph_edge5" class="edge">
+<title>proc~mo_a&#45;&gt;proc~prim</title>
+<path fill="none" stroke="#000000" d="M428.4,-215C436.39,-215 445.31,-215 453.82,-215"/>
+<polygon fill="#000000" stroke="#000000" points="453.92,-218.5 463.92,-215 453.92,-211.5 453.92,-218.5"/>
+</g>
+<!-- proc~mo_b&#45;&gt;proc~prim -->
+<g id="proc~~prim~~CalledByGraph_edge6" class="edge">
+<title>proc~mo_b&#45;&gt;proc~prim</title>
+<path fill="none" stroke="#000000" d="M427.45,-244.85C436.21,-240.67 446.17,-235.92 455.52,-231.46"/>
+<polygon fill="#000000" stroke="#000000" points="457.09,-234.59 464.6,-227.12 454.07,-228.27 457.09,-234.59"/>
+</g>
+<!-- proc~moor&#45;&gt;proc~prim -->
+<g id="proc~~prim~~CalledByGraph_edge7" class="edge">
+<title>proc~moor&#45;&gt;proc~prim</title>
+<path fill="none" stroke="#000000" d="M427.45,-185.15C436.21,-189.33 446.17,-194.08 455.52,-198.54"/>
+<polygon fill="#000000" stroke="#000000" points="454.07,-201.73 464.6,-202.88 457.09,-195.41 454.07,-201.73"/>
+</g>
+<!-- proc~becke1 -->
+<g id="proc~~prim~~CalledByGraph_node9" class="node">
+<title>proc~becke1</title>
+<g id="a_proc~~prim~~CalledByGraph_node9"><a xlink:href="../proc/becke1.html" xlink:title="becke1">
+<polygon fill="#d9534f" stroke="#d9534f" points="242,-35 188,-35 188,-11 242,-11 242,-35"/>
+<text text-anchor="middle" x="215" y="-20.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">becke1</text>
+</a>
+</g>
+</g>
+<!-- proc~becke1&#45;&gt;proc~dens_ops -->
+<g id="proc~~prim~~CalledByGraph_edge9" class="edge">
+<title>proc~becke1&#45;&gt;proc~dens_ops</title>
+<path fill="none" stroke="#000000" d="M242.32,-19.82C250.39,-18.84 259.45,-17.75 268.18,-16.69"/>
+<polygon fill="#000000" stroke="#000000" points="268.68,-20.16 278.19,-15.48 267.84,-13.21 268.68,-20.16"/>
+</g>
+<!-- proc~cubegen -->
+<g id="proc~~prim~~CalledByGraph_node10" class="node">
+<title>proc~cubegen</title>
+<g id="a_proc~~prim~~CalledByGraph_node10"><a xlink:href="../proc/cubegen.html" xlink:title="cubegen">
+<polygon fill="#d9534f" stroke="#d9534f" points="148,-228 94,-228 94,-204 148,-204 148,-228"/>
+<text text-anchor="middle" x="121" y="-213.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">cubegen</text>
+</a>
+</g>
+</g>
+<!-- proc~cubegen&#45;&gt;proc~fwrite -->
+<g id="proc~~prim~~CalledByGraph_edge11" class="edge">
+<title>proc~cubegen&#45;&gt;proc~fwrite</title>
+<path fill="none" stroke="#000000" d="M140.18,-228.05C153.66,-236.99 172.25,-249.32 187.4,-259.36"/>
+<polygon fill="#000000" stroke="#000000" points="185.59,-262.36 195.86,-264.97 189.46,-256.53 185.59,-262.36"/>
+</g>
+<!-- proc~dens_a&#45;&gt;proc~mo_a -->
+<g id="proc~~prim~~CalledByGraph_edge12" class="edge">
+<title>proc~dens_a&#45;&gt;proc~mo_a</title>
+<path fill="none" stroke="#000000" d="M326.97,-285.94C330.74,-283.16 334.6,-280.1 338,-277 355.93,-260.68 356.5,-252.79 374,-236 374.8,-235.24 375.62,-234.47 376.45,-233.71"/>
+<polygon fill="#000000" stroke="#000000" points="378.93,-236.19 384.23,-227.02 374.37,-230.88 378.93,-236.19"/>
+</g>
+<!-- proc~dens_b&#45;&gt;proc~mo_b -->
+<g id="proc~~prim~~CalledByGraph_edge18" class="edge">
+<title>proc~dens_b&#45;&gt;proc~mo_b</title>
+<path fill="none" stroke="#000000" d="M324.93,-407.84C329.54,-403.79 334.32,-399.02 338,-394 364.82,-357.4 383.8,-307.35 393.22,-278.99"/>
+<polygon fill="#000000" stroke="#000000" points="396.63,-279.84 396.36,-269.25 389.96,-277.69 396.63,-279.84"/>
+</g>
+<!-- proc~density&#45;&gt;proc~mo_a -->
+<g id="proc~~prim~~CalledByGraph_edge13" class="edge">
+<title>proc~density&#45;&gt;proc~mo_a</title>
+<path fill="none" stroke="#000000" d="M335.32,-187.28C344.38,-191.16 354.67,-195.57 364.34,-199.72"/>
+<polygon fill="#000000" stroke="#000000" points="363.17,-203.02 373.74,-203.74 365.93,-196.59 363.17,-203.02"/>
+</g>
+<!-- proc~density&#45;&gt;proc~mo_b -->
+<g id="proc~~prim~~CalledByGraph_edge19" class="edge">
+<title>proc~density&#45;&gt;proc~mo_b</title>
+<path fill="none" stroke="#000000" d="M321.72,-188.21C334.66,-200.52 355.4,-219.94 374,-236 374.96,-236.83 375.95,-237.68 376.96,-238.52"/>
+<polygon fill="#000000" stroke="#000000" points="374.8,-241.28 384.74,-244.95 379.26,-235.88 374.8,-241.28"/>
+</g>
+<!-- proc~density&#45;&gt;proc~moor -->
+<g id="proc~~prim~~CalledByGraph_edge24" class="edge">
+<title>proc~density&#45;&gt;proc~moor</title>
+<path fill="none" stroke="#000000" d="M335.32,-175.13C344.19,-174.84 354.24,-174.51 363.74,-174.2"/>
+<polygon fill="#000000" stroke="#000000" points="363.86,-177.69 373.74,-173.87 363.63,-170.7 363.86,-177.69"/>
+</g>
+<!-- proc~lapl&#45;&gt;proc~mo_a -->
+<g id="proc~~prim~~CalledByGraph_edge15" class="edge">
+<title>proc~lapl&#45;&gt;proc~mo_a</title>
+<path fill="none" stroke="#000000" d="M335.32,-244.14C344.38,-240.06 354.67,-235.42 364.34,-231.07"/>
+<polygon fill="#000000" stroke="#000000" points="366.06,-234.13 373.74,-226.83 363.18,-227.75 366.06,-234.13"/>
+</g>
+<!-- proc~lapl&#45;&gt;proc~mo_b -->
+<g id="proc~~prim~~CalledByGraph_edge21" class="edge">
+<title>proc~lapl&#45;&gt;proc~mo_b</title>
+<path fill="none" stroke="#000000" d="M335.32,-256.29C344.19,-256.39 354.24,-256.5 363.74,-256.6"/>
+<polygon fill="#000000" stroke="#000000" points="363.7,-260.1 373.74,-256.71 363.78,-253.1 363.7,-260.1"/>
+</g>
+<!-- proc~lapl&#45;&gt;proc~moor -->
+<g id="proc~~prim~~CalledByGraph_edge26" class="edge">
+<title>proc~lapl&#45;&gt;proc~moor</title>
+<path fill="none" stroke="#000000" d="M321.18,-243.8C334.03,-231.07 355.02,-210.67 374,-194 374.96,-193.16 375.94,-192.31 376.94,-191.46"/>
+<polygon fill="#000000" stroke="#000000" points="379.25,-194.09 384.7,-185.01 374.77,-188.71 379.25,-194.09"/>
+</g>
+<!-- proc~rdm1 -->
+<g id="proc~~prim~~CalledByGraph_node15" class="node">
+<title>proc~rdm1</title>
+<g id="a_proc~~prim~~CalledByGraph_node15"><a xlink:href="../proc/rdm1.html" xlink:title="rDM1">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="335,-146 281,-146 281,-122 335,-122 335,-146"/>
+<text text-anchor="middle" x="308" y="-131.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rDM1</text>
+</a>
+</g>
+</g>
+<!-- proc~rdm1&#45;&gt;proc~mo_a -->
+<g id="proc~~prim~~CalledByGraph_edge16" class="edge">
+<title>proc~rdm1&#45;&gt;proc~mo_a</title>
+<path fill="none" stroke="#000000" d="M326.92,-146.12C330.69,-148.9 334.56,-151.95 338,-155 355.64,-170.66 356.78,-177.88 374,-194 374.8,-194.75 375.63,-195.51 376.48,-196.27"/>
+<polygon fill="#000000" stroke="#000000" points="374.41,-199.1 384.29,-202.92 378.95,-193.77 374.41,-199.1"/>
+</g>
+<!-- proc~rdm1&#45;&gt;proc~mo_b -->
+<g id="proc~~prim~~CalledByGraph_edge22" class="edge">
+<title>proc~rdm1&#45;&gt;proc~mo_b</title>
+<path fill="none" stroke="#000000" d="M328.64,-146.03C332.04,-148.7 335.34,-151.72 338,-155 362.81,-185.6 350.01,-204.75 374,-236 374.46,-236.6 374.95,-237.2 375.45,-237.79"/>
+<polygon fill="#000000" stroke="#000000" points="373.12,-240.41 382.69,-244.95 378.04,-235.43 373.12,-240.41"/>
+</g>
+<!-- proc~rdm1&#45;&gt;proc~moor -->
+<g id="proc~~prim~~CalledByGraph_edge27" class="edge">
+<title>proc~rdm1&#45;&gt;proc~moor</title>
+<path fill="none" stroke="#000000" d="M335.32,-145.28C344.38,-149.16 354.67,-153.57 364.34,-157.72"/>
+<polygon fill="#000000" stroke="#000000" points="363.17,-161.02 373.74,-161.74 365.93,-154.59 363.17,-161.02"/>
+</g>
+<!-- proc~rdm1_alf -->
+<g id="proc~~prim~~CalledByGraph_node16" class="node">
+<title>proc~rdm1_alf</title>
+<g id="a_proc~~prim~~CalledByGraph_node16"><a xlink:href="../proc/rdm1_alf.html" xlink:title="rDM1_alf">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="336,-66 280,-66 280,-42 336,-42 336,-66"/>
+<text text-anchor="middle" x="308" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rDM1_alf</text>
+</a>
+</g>
+</g>
+<!-- proc~rdm1_alf&#45;&gt;proc~mo_a -->
+<g id="proc~~prim~~CalledByGraph_edge17" class="edge">
+<title>proc~rdm1_alf&#45;&gt;proc~mo_a</title>
+<path fill="none" stroke="#000000" d="M315.14,-66.14C321.1,-78.02 330.36,-96.67 338,-113 354.69,-148.68 350.01,-162.75 374,-194 374.46,-194.6 374.95,-195.2 375.45,-195.79"/>
+<polygon fill="#000000" stroke="#000000" points="373.12,-198.41 382.69,-202.95 378.04,-193.43 373.12,-198.41"/>
+</g>
+<!-- proc~rdm1_alf&#45;&gt;proc~moor -->
+<g id="proc~~prim~~CalledByGraph_edge28" class="edge">
+<title>proc~rdm1_alf&#45;&gt;proc~moor</title>
+<path fill="none" stroke="#000000" d="M323.84,-66.02C328.61,-70.21 333.75,-75.09 338,-80 357.87,-102.94 376.61,-132.56 388.17,-152.14"/>
+<polygon fill="#000000" stroke="#000000" points="385.2,-153.99 393.25,-160.87 391.25,-150.47 385.2,-153.99"/>
+</g>
+<!-- proc~rdm1_bet -->
+<g id="proc~~prim~~CalledByGraph_node17" class="node">
+<title>proc~rdm1_bet</title>
+<g id="a_proc~~prim~~CalledByGraph_node17"><a xlink:href="../proc/rdm1_bet.html" xlink:title="rDM1_bet">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="338,-352 278,-352 278,-328 338,-328 338,-352"/>
+<text text-anchor="middle" x="308" y="-337.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rDM1_bet</text>
+</a>
+</g>
+</g>
+<!-- proc~rdm1_bet&#45;&gt;proc~mo_b -->
+<g id="proc~~prim~~CalledByGraph_edge23" class="edge">
+<title>proc~rdm1_bet&#45;&gt;proc~mo_b</title>
+<path fill="none" stroke="#000000" d="M326.52,-328C330.39,-325.16 334.41,-322.07 338,-319 353.54,-305.75 369.82,-289.36 381.8,-276.76"/>
+<polygon fill="#000000" stroke="#000000" points="384.35,-279.15 388.65,-269.47 379.25,-274.36 384.35,-279.15"/>
+</g>
+<!-- proc~rdm1_bet&#45;&gt;proc~moor -->
+<g id="proc~~prim~~CalledByGraph_edge29" class="edge">
+<title>proc~rdm1_bet&#45;&gt;proc~moor</title>
+<path fill="none" stroke="#000000" d="M329.61,-327.78C332.76,-325.2 335.71,-322.26 338,-319 371.23,-271.69 342.03,-242.17 374,-194 374.34,-193.49 374.7,-192.98 375.07,-192.48"/>
+<polygon fill="#000000" stroke="#000000" points="377.77,-194.71 382.06,-185.02 372.67,-189.93 377.77,-194.71"/>
+</g>
+<!-- proc~c1holeapp -->
+<g id="proc~~prim~~CalledByGraph_node18" class="node">
+<title>proc~c1holeapp</title>
+<g id="a_proc~~prim~~CalledByGraph_node18"><a xlink:href="../proc/c1holeapp.html" xlink:title="c1holeapp">
+<polygon fill="#d9534f" stroke="#d9534f" points="152,-146 90,-146 90,-122 152,-122 152,-146"/>
+<text text-anchor="middle" x="121" y="-131.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">c1holeapp</text>
+</a>
+</g>
+</g>
+<!-- proc~c1holeapp&#45;&gt;proc~becke1 -->
+<g id="proc~~prim~~CalledByGraph_edge30" class="edge">
+<title>proc~c1holeapp&#45;&gt;proc~becke1</title>
+<path fill="none" stroke="#000000" d="M132.2,-121.7C148.03,-102.59 178.67,-65.62 197.63,-42.75"/>
+<polygon fill="#000000" stroke="#000000" points="200.35,-44.95 204.04,-35.02 194.96,-40.49 200.35,-44.95"/>
+</g>
+<!-- proc~c1holeapp&#45;&gt;proc~density -->
+<g id="proc~~prim~~CalledByGraph_edge34" class="edge">
+<title>proc~c1holeapp&#45;&gt;proc~density</title>
+<path fill="none" stroke="#000000" d="M152.14,-140.84C184.52,-148.19 235.99,-159.88 270.61,-167.74"/>
+<polygon fill="#000000" stroke="#000000" points="270.24,-171.24 280.77,-170.05 271.79,-164.42 270.24,-171.24"/>
+</g>
+<!-- proc~c1holeapp&#45;&gt;proc~rdm1 -->
+<g id="proc~~prim~~CalledByGraph_edge37" class="edge">
+<title>proc~c1holeapp&#45;&gt;proc~rdm1</title>
+<path fill="none" stroke="#000000" d="M152.14,-134C184.52,-134 235.99,-134 270.61,-134"/>
+<polygon fill="#000000" stroke="#000000" points="270.77,-137.5 280.77,-134 270.77,-130.5 270.77,-137.5"/>
+</g>
+<!-- proc~c1holeapp&#45;&gt;proc~rdm1_alf -->
+<g id="proc~~prim~~CalledByGraph_edge38" class="edge">
+<title>proc~c1holeapp&#45;&gt;proc~rdm1_alf</title>
+<path fill="none" stroke="#000000" d="M150.1,-121.85C182.25,-107.95 235.01,-85.13 270.37,-69.84"/>
+<polygon fill="#000000" stroke="#000000" points="272.06,-72.92 279.85,-65.74 269.28,-66.5 272.06,-72.92"/>
+</g>
+<!-- program~inca -->
+<g id="proc~~prim~~CalledByGraph_node19" class="node">
+<title>program~inca</title>
+<g id="a_proc~~prim~~CalledByGraph_node19"><a xlink:href="../program/inca.html" xlink:title="inca">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="54,-167 0,-167 0,-143 54,-143 54,-167"/>
+<text text-anchor="middle" x="27" y="-152.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">inca</text>
+</a>
+</g>
+</g>
+<!-- program~inca&#45;&gt;proc~cubegen -->
+<g id="proc~~prim~~CalledByGraph_edge31" class="edge">
+<title>program~inca&#45;&gt;proc~cubegen</title>
+<path fill="none" stroke="#000000" d="M46.18,-167.05C59.66,-175.99 78.25,-188.32 93.4,-198.36"/>
+<polygon fill="#000000" stroke="#000000" points="91.59,-201.36 101.86,-203.97 95.46,-195.53 91.59,-201.36"/>
+</g>
+<!-- program~inca&#45;&gt;proc~c1holeapp -->
+<g id="proc~~prim~~CalledByGraph_edge39" class="edge">
+<title>program~inca&#45;&gt;proc~c1holeapp</title>
+<path fill="none" stroke="#000000" d="M54.12,-149.04C62.22,-147.19 71.35,-145.11 80.17,-143.09"/>
+<polygon fill="#000000" stroke="#000000" points="80.95,-146.5 89.92,-140.87 79.39,-139.68 80.95,-146.5"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="29pt"
+ viewBox="0.00 0.00 641.00 29.32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.92 0.92) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 695.5,-28 695.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="64,-24 0,-24 0,0 64,0 64,-24"/>
+<text text-anchor="middle" x="32" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="136,-24 82,-24 82,0 136,0 136,-24"/>
+<text text-anchor="middle" x="109" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="209.5,-24 154.5,-24 154.5,0 209.5,0 209.5,-24"/>
+<text text-anchor="middle" x="182" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="350,-24 228,-24 228,0 350,0 350,-24"/>
+<text text-anchor="middle" x="289" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="504,-24 368,-24 368,0 504,0 504,-24"/>
+<text text-anchor="middle" x="436" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="576,-24 522,-24 522,0 576,0 576,-24"/>
+<text text-anchor="middle" x="549" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="691.5,-24 594.5,-24 594.5,0 691.5,0 691.5,-24"/>
+<text text-anchor="middle" x="643" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">function </span><span class="n">Prim</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">npr</span><span class="p">)</span><span class="w"> </span>
+<span class="w">        </span><span class="k">implicit none</span>
+<span class="k">        </span><span class="kt">double precision</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">Prim</span>
+<span class="w">        </span><span class="kt">double precision</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">z</span>
+<span class="w">        </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">npr</span>
+<span class="w">        </span><span class="kt">double precision</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">xa</span><span class="p">,</span><span class="w"> </span><span class="n">ya</span><span class="p">,</span><span class="w"> </span><span class="n">za</span>
+<span class="w">        </span><span class="n">xa</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cartes</span><span class="p">(</span><span class="n">Ra</span><span class="p">(</span><span class="n">npr</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">        </span><span class="n">ya</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cartes</span><span class="p">(</span><span class="n">Ra</span><span class="p">(</span><span class="n">npr</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">        </span><span class="n">za</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cartes</span><span class="p">(</span><span class="n">Ra</span><span class="p">(</span><span class="n">npr</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span>
+<span class="w">    </span>
+<span class="w">        </span><span class="n">Prim</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">xa</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="nb">dble</span><span class="p">(</span><span class="n">TMN</span><span class="p">(</span><span class="n">npr</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span><span class="o">*</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">             </span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">ya</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="nb">dble</span><span class="p">(</span><span class="n">TMN</span><span class="p">(</span><span class="n">npr</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span><span class="o">*</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">             </span><span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="n">za</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="nb">dble</span><span class="p">(</span><span class="n">TMN</span><span class="p">(</span><span class="n">npr</span><span class="p">,</span><span class="mi">3</span><span class="p">)))</span><span class="o">*</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">             </span><span class="nb">dexp</span><span class="p">(</span><span class="o">-</span><span class="n">Alpha</span><span class="p">(</span><span class="n">npr</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="n">x</span><span class="o">-</span><span class="n">xa</span><span class="p">)</span><span class="o">**</span><span class="mf">2.d0</span><span class="o">+</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">ya</span><span class="p">)</span><span class="o">**</span><span class="mf">2.d0</span><span class="o">+</span><span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="n">za</span><span class="p">)</span><span class="o">**</span><span class="mf">2.d0</span><span class="p">))</span><span class="w">               </span>
+<span class="w">    </span><span class="k">end function </span><span class="n">Prim</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              INCA
+ was developed by Markel Ylla<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

@@ -1,64 +1,83 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-program inca !main program
-!!!!!reads .wfx and .log files and performs calculations about this info
-use inputdat  !information about the calculations we want to do
-implicit none
-integer :: a !defines to subroutine cubefile what function we want to represent: prim, ao, mo, dens
-logical :: normalize_dm2p
+program inca 
+  !! Main driver program for INCA.
+  !! Reads .wfx and .log files and performs intracule calculations.
+  use inputdat    ! global flags
+  use intrainfo   ! intracule specific parameters
+  use input_reader! namelist parsing
+  use read_files
+  use cubefile
+  use intracule
+  use c1hole
+  implicit none
 
-call readinput()  
+  character(len=80) :: input_file_name
+  integer :: cube_mode ! defines to subroutine cubefile what function we want to represent
+  logical :: normalize_dm2p
 
-if (readwfx) call filewfx(wfxfilename)  !reads info from a wfx file 
-if (readfchk) call filefchk(fchkfilename) !reads info from a fchk file
-if (readbas) call filebas(basfilename)  !reads info from a bas file
-if (readlog) call filelog(logfilename)  !reads info from a log file
-
-if (cube) then
-  if (primcube) then  
-      a=1
-      call cubefile(a,nameprim) !Generate cubefile with a Primitive
+  ! ==========================================================
+  ! SAFETY CHECK: Did the user provide an input file?
+  ! ==========================================================
+  if (command_argument_count() == 0) then
+     write(*,*) "====================================================="
+     write(*,*) " INCA: Intracule Calculator"
+     write(*,*) "====================================================="
+     write(*,*) " ERROR: No input file provided."
+     write(*,*) " USAGE: ./inca.exe <input_file.txt>"
+     write(*,*) "====================================================="
+     stop
   end if
-  if (aocube) then 
-      a=2
-      call cubefile(a,nameao)  !Generate cubefile with AO
-  end if
-  if (mocube) then 
-      a=3
-      call cubefile(a,namemo) !Generate cubefile with a MO 
-  end if  
-  if (denscube) then
-      a=5
-      call cubefile(a,namedens) !Generate cubefile with density from MO
-  end if
-  !if (gradient) then 
-  !  call gradient(0,0,0,gradx,grady,gradz) !not impletented
-  !end if
-  if (laplacian) then 
-     a=6     
-     call cubefile(a,namelap) !generate a cubefile with laplacian
-  end if
-end if
 
-if (intracalc) then !compute the intracule
-  if (.not.readbas) then
-    write(*,*) "CAUTION: Primitive info comes from .wfx or .fchk file"
-    write(*,*) " i primtive may not coincide with that of the .dm2p file"
+  ! get the name of the input file from the command line 
+  call getarg(1,input_file_name) 
+  input_file_name = trim(input_file_name)
+
+  ! call the routine to read the input file and populate variables 
+  call read_all_input(input_file_name)
+
+  if (readwfx) call filewfx(wfxfilename)  
+  if (readfchk) call filefchk(fchkfilename) 
+  if (readbas) call filebas(basfilename)  
+  if (readlog) call filelog(logfilename)  
+
+  if (cube) then
+    if (primcube) then  
+        cube_mode=1
+        call cubegen(cube_mode,nameprim) 
+    end if
+    if (aocube) then 
+        cube_mode=2
+        call cubegen(cube_mode,nameao)  
+    end if
+    if (mocube) then 
+        cube_mode=3
+        call cubegen(cube_mode,namemo) 
+    end if  
+    if (denscube) then
+        cube_mode=5
+        call cubegen(cube_mode,namedens) 
+    end if
+    if (laplacian) then 
+       cube_mode=6     
+       call cubegen(cube_mode,namelap) 
+    end if
   end if
-  call readintra() !read input information about intracule
-  normalize_dm2p=.true. 
-  call intracule(normalize_dm2p)  
-end if
 
-if (c1calc) then !Becke-Roussel (on halt)
-  call c1hole(70,1.d0)
-end if
+  if (intracalc) then 
+    if (.not.readbas) then
+      write(*,*) "CAUTION: Primitive info comes from .wfx or .fchk file"
+      write(*,*) " i primtive may not coincide with that of the .dm2p file"
+    end if
+    
+    ! Set up the grids now that atomic numbers are loaded 
+    call setup_grids()
+    
+    normalize_dm2p=.true.
+    call calculate_intracule(normalize_dm2p)  
+  end if
 
+  if (c1calc) then  !Becke Roussel approximation
+    !call c1hole(70,1.d0)
+    call c1holeapp(70,1.d0)  !70 is the number of points in the grid, 1.d0 is the scaling factor for the grid
+  end if
 end program inca
-
-
-
-
-
-
-

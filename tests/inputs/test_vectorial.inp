@@ -1,0 +1,20 @@
+
+&files
+  fchkfilename = '{fchk_file}',
+  basfilename  = '{bas_file}',
+  dm2name      = '{dm2p_file}',
+  cubeintraname = '{prefix}_vector.cube'
+/
+&intracule_job
+  intracalc   = .true.,
+  cubeintra   = .true.,
+  thresh      = 1.0d-12,
+  multicenter = .false.,
+  nrad        = 50,
+  nang        = 110,
+  center_i    = 0.0d0, 0.0d0, 0.0d0,
+  step_i      = 0.1d0, 0.1d0, 0.1d0,
+  np_i        = 20, 20, 20
+/
+&cube_job
+/

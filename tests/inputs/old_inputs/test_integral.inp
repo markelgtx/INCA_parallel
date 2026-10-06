@@ -1,0 +1,16 @@
+Test_Integral
+$fchkfile
+{fchk_file}
+$basfile
+{bas_file}
+$intracule
+$Integral screening threshold
+1.d-12
+$DM2P
+{dm2p_file}
+$radial_integral
+$Multicenter
+$Gauss-Legendre
+50
+$Gauss-Lebedev
+110

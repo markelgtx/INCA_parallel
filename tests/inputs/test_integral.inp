@@ -1,0 +1,16 @@
+&files
+  fchkfilename = '{fchk_file}',
+  basfilename  = '{bas_file}',
+  dm2name      = '{dm2p_file}'
+/
+&intracule_job
+  intracalc       = .true.,
+  radial_integral = .true.,
+  thresh          = 1.0d-12,
+  multicenter     = .true.,
+  nrad            = 50,
+  nang            = 110
+/
+&cube_job
+/
+

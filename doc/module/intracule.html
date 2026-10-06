@@ -1,0 +1,768 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Intracule Calculator for evaluating radial and vector intracules from quantum chemical data.">
+    <meta name="author" content="Markel Ylla" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>intracule &ndash; INCA</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">INCA <small>1.0</small></a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../page/index.html">User Manual</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/namelists.html">Namelists</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/inca.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>intracule
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title="15.5% of total for modules and submodules.">524 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mod_intracule.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mod_intracule.f90.html'>mod_intracule.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">intracule</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#subs-0"
+         aria-expanded="false" aria-controls="subs-0">
+         <h4 class="card-header bg-primary text-white">Subroutines</h4>
+      </a>
+      <div id="subs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/intracule.html#proc-calculate_intracule">calculate_intracule</a>
+            <a class="list-group-item" href="../module/intracule.html#proc-radial_smearing">radial_smearing</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      <hr>
+<p>Computes vector or radial intracule, or radial integration over grid points.</p>
+<hr>
+<p>Reconstructs Radial Intracule P(u) from 3D Multicenter Grid using Gaussian Smearing</p>
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item"><a href='intrastuff.html'>intrastuff</a></li>
+                  <li class="list-inline-item"><a href='numbers.html'>numbers</a></li>
+                  <li class="list-inline-item"><a href='geninfo.html'>geninfo</a></li>
+                  <li class="list-inline-item"><a href='intrainfo.html'>intrainfo</a></li>
+                  <li class="list-inline-item"><a href='https://www.openmp.org/spec-html/5.1/openmpch3.html#x156-1890003'>omp_lib</a></li>
+                  <li class="list-inline-item"><a href='wfxinfo.html'>wfxinfo</a></li>
+                  <li class="list-inline-item"><a href='build_grid.html'>build_grid</a></li>
+                  <li class="list-inline-item"><a href='quadratures.html'>quadratures</a></li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: module~~intracule~~UsesGraph Pages: 1 -->
+<svg id="moduleintraculeUsesGraph" width="263pt" height="256pt"
+ viewBox="0.00 0.00 263.00 256.17" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~intracule~~UsesGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 252.17)">
+<title>module~~intracule~~UsesGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-252.17 259,-252.17 259,4 -4,4"/>
+<!-- module~intracule -->
+<g id="module~~intracule~~UsesGraph_node1" class="node">
+<title>module~intracule</title>
+<polygon fill="none" stroke="black" points="255,-148 201,-148 201,-124 255,-124 255,-148"/>
+<text text-anchor="middle" x="228" y="-133.6" font-family="Helvetica,sans-Serif" font-size="10.50">intracule</text>
+</g>
+<!-- module~build_grid -->
+<g id="module~~intracule~~UsesGraph_node2" class="node">
+<title>module~build_grid</title>
+<g id="a_module~~intracule~~UsesGraph_node2"><a xlink:href="../module/build_grid.html" xlink:title="build_grid">
+<polygon fill="#337ab7" stroke="#337ab7" points="165,-230 106,-230 106,-206 165,-206 165,-230"/>
+<text text-anchor="middle" x="135.5" y="-215.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">build_grid</text>
+</a>
+</g>
+</g>
+<!-- module~intracule&#45;&gt;module~build_grid -->
+<g id="module~~intracule~~UsesGraph_edge1" class="edge">
+<title>module~intracule&#45;&gt;module~build_grid</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M215.59,-148.21C203.5,-160.92 183.61,-181.13 165,-197 164,-197.85 162.97,-198.71 161.92,-199.56"/>
+<polygon fill="#000000" stroke="#000000" points="159.44,-197.05 153.68,-205.95 163.73,-202.59 159.44,-197.05"/>
+</g>
+<!-- module~geninfo -->
+<g id="module~~intracule~~UsesGraph_node3" class="node">
+<title>module~geninfo</title>
+<g id="a_module~~intracule~~UsesGraph_node3"><a xlink:href="../module/geninfo.html" xlink:title="geninfo">
+<polygon fill="#337ab7" stroke="#337ab7" points="62,-188 8,-188 8,-164 62,-164 62,-188"/>
+<text text-anchor="middle" x="35" y="-173.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">geninfo</text>
+</a>
+</g>
+</g>
+<!-- module~intracule&#45;&gt;module~geninfo -->
+<g id="module~~intracule~~UsesGraph_edge2" class="edge">
+<title>module~intracule&#45;&gt;module~geninfo</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M134.5,-136C109.82,-138.31 83.92,-149.21 64.88,-159.05"/>
+<polygon fill="#000000" stroke="#000000" points="63.01,-156.08 55.85,-163.89 66.32,-162.24 63.01,-156.08"/>
+</g>
+<!-- module~intrainfo -->
+<g id="module~~intracule~~UsesGraph_node4" class="node">
+<title>module~intrainfo</title>
+<g id="a_module~~intracule~~UsesGraph_node4"><a xlink:href="../module/intrainfo.html" xlink:title="intrainfo">
+<polygon fill="#337ab7" stroke="#337ab7" points="162.5,-108 108.5,-108 108.5,-84 162.5,-84 162.5,-108"/>
+<text text-anchor="middle" x="135.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">intrainfo</text>
+</a>
+</g>
+</g>
+<!-- module~intracule&#45;&gt;module~intrainfo -->
+<g id="module~~intracule~~UsesGraph_edge3" class="edge">
+<title>module~intracule&#45;&gt;module~intrainfo</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M200.82,-124.43C191.82,-120.45 181.58,-115.92 171.96,-111.67"/>
+<polygon fill="#000000" stroke="#000000" points="173.18,-108.39 162.62,-107.54 170.35,-114.79 173.18,-108.39"/>
+</g>
+<!-- module~intrastuff -->
+<g id="module~~intracule~~UsesGraph_node5" class="node">
+<title>module~intrastuff</title>
+<g id="a_module~~intracule~~UsesGraph_node5"><a xlink:href="../module/intrastuff.html" xlink:title="intrastuff">
+<polygon fill="#337ab7" stroke="#337ab7" points="162.5,-188 108.5,-188 108.5,-164 162.5,-164 162.5,-188"/>
+<text text-anchor="middle" x="135.5" y="-173.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">intrastuff</text>
+</a>
+</g>
+</g>
+<!-- module~intracule&#45;&gt;module~intrastuff -->
+<g id="module~~intracule~~UsesGraph_edge4" class="edge">
+<title>module~intracule&#45;&gt;module~intrastuff</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M200.82,-147.57C191.82,-151.55 181.58,-156.08 171.96,-160.33"/>
+<polygon fill="#000000" stroke="#000000" points="170.35,-157.21 162.62,-164.46 173.18,-163.61 170.35,-157.21"/>
+</g>
+<!-- module~numbers -->
+<g id="module~~intracule~~UsesGraph_node6" class="node">
+<title>module~numbers</title>
+<g id="a_module~~intracule~~UsesGraph_node6"><a xlink:href="../module/numbers.html" xlink:title="numbers">
+<polygon fill="#337ab7" stroke="#337ab7" points="62.5,-146 7.5,-146 7.5,-122 62.5,-122 62.5,-146"/>
+<text text-anchor="middle" x="35" y="-131.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">numbers</text>
+</a>
+</g>
+</g>
+<!-- module~intracule&#45;&gt;module~numbers -->
+<g id="module~~intracule~~UsesGraph_edge5" class="edge">
+<title>module~intracule&#45;&gt;module~numbers</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M200.8,-134.71C182.7,-134.14 158.09,-133.98 136.5,-136"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M134.5,-136C114.19,-137.9 91.43,-137.6 72.9,-136.73"/>
+<polygon fill="#000000" stroke="#000000" points="72.99,-133.23 62.82,-136.18 72.61,-140.22 72.99,-133.23"/>
+</g>
+<!-- module~quadratures -->
+<g id="module~~intracule~~UsesGraph_node7" class="node">
+<title>module~quadratures</title>
+<g id="a_module~~intracule~~UsesGraph_node7"><a xlink:href="../module/quadratures.html" xlink:title="quadratures">
+<polygon fill="#337ab7" stroke="#337ab7" points="70,-230 0,-230 0,-206 70,-206 70,-230"/>
+<text text-anchor="middle" x="35" y="-215.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">quadratures</text>
+</a>
+</g>
+</g>
+<!-- module~intracule&#45;&gt;module~quadratures -->
+<g id="module~~intracule~~UsesGraph_edge6" class="edge">
+<title>module~intracule&#45;&gt;module~quadratures</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M223.95,-148.04C217.5,-170.7 200.07,-219.18 165,-239 135.27,-255.81 95.9,-245.59 68.51,-234.32"/>
+<polygon fill="#000000" stroke="#000000" points="69.57,-230.96 59,-230.17 66.77,-237.37 69.57,-230.96"/>
+</g>
+<!-- module~wfxinfo -->
+<g id="module~~intracule~~UsesGraph_node8" class="node">
+<title>module~wfxinfo</title>
+<g id="a_module~~intracule~~UsesGraph_node8"><a xlink:href="../module/wfxinfo.html" xlink:title="wfxinfo">
+<polygon fill="#337ab7" stroke="#337ab7" points="162.5,-66 108.5,-66 108.5,-42 162.5,-42 162.5,-66"/>
+<text text-anchor="middle" x="135.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">wfxinfo</text>
+</a>
+</g>
+</g>
+<!-- module~intracule&#45;&gt;module~wfxinfo -->
+<g id="module~~intracule~~UsesGraph_edge7" class="edge">
+<title>module~intracule&#45;&gt;module~wfxinfo</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M215.59,-123.79C203.5,-111.08 183.61,-90.87 165,-75 164,-74.15 162.97,-73.29 161.92,-72.44"/>
+<polygon fill="#000000" stroke="#000000" points="163.73,-69.41 153.68,-66.05 159.44,-74.95 163.73,-69.41"/>
+</g>
+<!-- omp_lib -->
+<g id="module~~intracule~~UsesGraph_node9" class="node">
+<title>omp_lib</title>
+<g id="a_module~~intracule~~UsesGraph_node9"><a xlink:href="https://www.openmp.org/spec-html/5.1/openmpch3.html#x156-1890003" xlink:title="omp_lib">
+<polygon fill="#337ab7" stroke="#337ab7" points="162.5,-24 108.5,-24 108.5,0 162.5,0 162.5,-24"/>
+<text text-anchor="middle" x="135.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">omp_lib</text>
+</a>
+</g>
+</g>
+<!-- module~intracule&#45;&gt;omp_lib -->
+<g id="module~~intracule~~UsesGraph_edge8" class="edge">
+<title>module~intracule&#45;&gt;omp_lib</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M221.64,-123.87C212.25,-103.51 191.28,-61.85 165,-33 164.37,-32.3 163.71,-31.62 163.03,-30.94"/>
+<polygon fill="#000000" stroke="#000000" points="165.02,-28.04 155.18,-24.11 160.43,-33.32 165.02,-28.04"/>
+</g>
+<!-- module~build_grid&#45;&gt;module~quadratures -->
+<g id="module~~intracule~~UsesGraph_edge9" class="edge">
+<title>module~build_grid&#45;&gt;module~quadratures</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M105.74,-218C97.75,-218 88.87,-218 80.2,-218"/>
+<polygon fill="#000000" stroke="#000000" points="80.19,-214.5 70.19,-218 80.19,-221.5 80.19,-214.5"/>
+</g>
+<!-- module~intrastuff&#45;&gt;module~geninfo -->
+<g id="module~~intracule~~UsesGraph_edge10" class="edge">
+<title>module~intrastuff&#45;&gt;module~geninfo</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M108.36,-176C97.34,-176 84.32,-176 72.39,-176"/>
+<polygon fill="#000000" stroke="#000000" points="72.26,-172.5 62.26,-176 72.26,-179.5 72.26,-172.5"/>
+</g>
+<!-- module~intrastuff&#45;&gt;module~numbers -->
+<g id="module~~intracule~~UsesGraph_edge11" class="edge">
+<title>module~intrastuff&#45;&gt;module~numbers</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M108.36,-164.86C97.21,-160.1 84.01,-154.47 71.96,-149.33"/>
+<polygon fill="#000000" stroke="#000000" points="73.17,-146.05 62.6,-145.34 70.43,-152.49 73.17,-146.05"/>
+</g>
+<!-- module~intrastuff&#45;&gt;module~quadratures -->
+<g id="module~~intracule~~UsesGraph_edge12" class="edge">
+<title>module~intrastuff&#45;&gt;module~quadratures</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M108.36,-187.14C97.77,-191.66 85.32,-196.97 73.77,-201.9"/>
+<polygon fill="#000000" stroke="#000000" points="72.16,-198.78 64.34,-205.92 74.91,-205.21 72.16,-198.78"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="490pt" height="32pt"
+ viewBox="0.00 0.00 489.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 485.5,-28 485.5,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="139.5,-24 72.5,-24 72.5,0 139.5,0 139.5,-24"/>
+<text text-anchor="middle" x="106" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="222,-24 158,-24 158,0 222,0 222,-24"/>
+<text text-anchor="middle" x="190" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="294,-24 240,-24 240,0 294,0 294,-24"/>
+<text text-anchor="middle" x="267" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="366,-24 312,-24 312,0 366,0 366,-24"/>
+<text text-anchor="middle" x="339" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="481.5,-24 384.5,-24 384.5,0 481.5,0 481.5,-24"/>
+<text text-anchor="middle" x="433" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+          <div class="card">
+      <h3 class="card-header card-title bg-light">Used by</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: module~~intracule~~UsedByGraph Pages: 1 -->
+<svg id="moduleintraculeUsedByGraph" width="152pt" height="32pt"
+ viewBox="0.00 0.00 152.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~intracule~~UsedByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>module~~intracule~~UsedByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 148,-28 148,4 -4,4"/>
+<!-- module~intracule -->
+<g id="module~~intracule~~UsedByGraph_node1" class="node">
+<title>module~intracule</title>
+<polygon fill="none" stroke="black" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">intracule</text>
+</g>
+<!-- program~inca -->
+<g id="module~~intracule~~UsedByGraph_node2" class="node">
+<title>program~inca</title>
+<g id="a_module~~intracule~~UsedByGraph_node2"><a xlink:href="../program/inca.html" xlink:title="inca">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="144,-24 90,-24 90,0 144,0 144,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">inca</text>
+</a>
+</g>
+</g>
+<!-- program~inca&#45;&gt;module~intracule -->
+<g id="module~~intracule~~UsedByGraph_edge1" class="edge">
+<title>program~inca&#45;&gt;module~intracule</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M89.6,-12C81.61,-12 72.69,-12 64.18,-12"/>
+<polygon fill="#000000" stroke="#000000" points="64.08,-8.5 54.08,-12 64.08,-15.5 64.08,-8.5"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsedByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsedByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="490pt" height="32pt"
+ viewBox="0.00 0.00 489.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 485.5,-28 485.5,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="139.5,-24 72.5,-24 72.5,0 139.5,0 139.5,-24"/>
+<text text-anchor="middle" x="106" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="222,-24 158,-24 158,0 222,0 222,-24"/>
+<text text-anchor="middle" x="190" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="294,-24 240,-24 240,0 294,0 294,-24"/>
+<text text-anchor="middle" x="267" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="366,-24 312,-24 312,0 366,0 366,-24"/>
+<text text-anchor="middle" x="339" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="481.5,-24 384.5,-24 384.5,0 481.5,0 481.5,-24"/>
+<text text-anchor="middle" x="433" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      <br>
+
+
+
+
+
+
+
+
+        <section>
+          <h2>Subroutines</h2>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-calculate_intracule"></span> <h3>public  subroutine <a href='../proc/calculate_intracule.html'>calculate_intracule</a>(normalize_dm2p)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>!!!!!!!!!!!!!Following Cioslowski and Liu algorithm!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</p><a href="../proc/calculate_intracule.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-normalize_dm2p"></span>
+              logical,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>normalize_dm2p</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-radial_smearing"></span> <h3>public  subroutine <a href='../proc/radial_smearing.html'>radial_smearing</a>(coords, weights, density, n_grid, u_max, n_bins, sigma, filename)  
+</h3></div>
+    <div class="card-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-coords"></span>
+              double precision,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(3, n_grid)
+            </td>
+            <td>::</td>
+            <td><strong>coords</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-weights"></span>
+              double precision,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(n_grid)
+            </td>
+            <td>::</td>
+            <td><strong>weights</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-density"></span>
+              double precision,
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(n_grid)
+            </td>
+            <td>::</td>
+            <td><strong>density</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_grid"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_grid</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-u_max~2"></span>
+              double precision,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>u_max</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n_bins"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n_bins</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sigma"></span>
+              double precision,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sigma</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-filename"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>filename</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              INCA
+ was developed by Markel Ylla<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

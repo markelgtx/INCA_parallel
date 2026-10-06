@@ -1,0 +1,1140 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Intracule Calculator for evaluating radial and vector intracules from quantum chemical data.">
+    <meta name="author" content="Markel Ylla" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>c1holeapp &ndash; INCA</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">INCA <small>1.0</small></a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../page/index.html">User Manual</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/namelists.html">Namelists</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/inca.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>c1holeapp
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 1.6% of total for procedures.">138 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mod_c1hole.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mod_c1hole.f90.html'>mod_c1hole.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/c1hole.html'>c1hole</a></li>
+            <li class="breadcrumb-item active" aria-current="page">c1holeapp</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/c1holeapp.html#src">c1holeapp</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>public  subroutine c1holeapp(nrad, sfalpha)  
+</h2>
+    
+
+    <p>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  <br>
+!!!Sanity checks!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</p>
+<p>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!end of test 1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!Test 2: Compute exchange hole at reference point:!!!!!!!!!!!!!
+!!!!!!!!-With Becke model
+!!!!!!! -With 1rdm^2/density
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!end of test 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</p>
+<p>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! <br>
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!Compute C1 part of Coulomb Hole!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</p>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nrad~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nrad</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sfalpha~3"></span>
+              double precision,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sfalpha</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~c1holeapp~~CallsGraph Pages: 1 -->
+<svg id="procc1holeappCallsGraph" width="545pt" height="435pt"
+ viewBox="0.00 0.00 545.00 435.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~c1holeapp~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 431)">
+<title>proc~~c1holeapp~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-431 541,-431 541,4 -4,4"/>
+<!-- proc~c1holeapp -->
+<g id="proc~~c1holeapp~~CallsGraph_node1" class="node">
+<title>proc~c1holeapp</title>
+<polygon fill="none" stroke="black" points="62,-242 0,-242 0,-218 62,-218 62,-242"/>
+<text text-anchor="middle" x="31" y="-227.6" font-family="Helvetica,sans-Serif" font-size="10.50">c1holeapp</text>
+</g>
+<!-- dacos -->
+<g id="proc~~c1holeapp~~CallsGraph_node2" class="node">
+<title>dacos</title>
+<polygon fill="#777777" stroke="#777777" points="264.5,-427 210.5,-427 210.5,-403 264.5,-403 264.5,-427"/>
+<text text-anchor="middle" x="237.5" y="-412.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dacos</text>
+</g>
+<!-- proc~c1holeapp&#45;&gt;dacos -->
+<g id="proc~~c1holeapp~~CallsGraph_edge1" class="edge">
+<title>proc~c1holeapp&#45;&gt;dacos</title>
+<path fill="none" stroke="#000000" d="M32.9,-242.38C35.88,-273.61 48.3,-355.88 98,-395 126.77,-417.65 169.68,-420.56 200.1,-419.13"/>
+<polygon fill="#000000" stroke="#000000" points="200.54,-422.6 210.29,-418.46 200.09,-415.62 200.54,-422.6"/>
+</g>
+<!-- dcos -->
+<g id="proc~~c1holeapp~~CallsGraph_node3" class="node">
+<title>dcos</title>
+<polygon fill="#777777" stroke="#777777" points="264.5,-385 210.5,-385 210.5,-361 264.5,-361 264.5,-385"/>
+<text text-anchor="middle" x="237.5" y="-370.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dcos</text>
+</g>
+<!-- proc~c1holeapp&#45;&gt;dcos -->
+<g id="proc~~c1holeapp~~CallsGraph_edge2" class="edge">
+<title>proc~c1holeapp&#45;&gt;dcos</title>
+<path fill="none" stroke="#000000" d="M62.17,-231.2C93.08,-233.93 140.87,-242.51 172,-269 201.08,-293.74 185.45,-316.19 208,-347 209.71,-349.33 211.65,-351.61 213.69,-353.8"/>
+<polygon fill="#000000" stroke="#000000" points="211.27,-356.32 220.88,-360.78 216.15,-351.3 211.27,-356.32"/>
+</g>
+<!-- dsin -->
+<g id="proc~~c1holeapp~~CallsGraph_node4" class="node">
+<title>dsin</title>
+<polygon fill="#777777" stroke="#777777" points="162,-344 108,-344 108,-320 162,-320 162,-344"/>
+<text text-anchor="middle" x="135" y="-329.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dsin</text>
+</g>
+<!-- proc~c1holeapp&#45;&gt;dsin -->
+<g id="proc~~c1holeapp~~CallsGraph_edge3" class="edge">
+<title>proc~c1holeapp&#45;&gt;dsin</title>
+<path fill="none" stroke="#000000" d="M39.81,-242.13C51.14,-259.05 73.46,-290.01 98,-311 99.29,-312.1 100.64,-313.17 102.03,-314.22"/>
+<polygon fill="#000000" stroke="#000000" points="100.08,-317.12 110.32,-319.83 104,-311.33 100.08,-317.12"/>
+</g>
+<!-- ld1202 -->
+<g id="proc~~c1holeapp~~CallsGraph_node5" class="node">
+<title>ld1202</title>
+<polygon fill="#777777" stroke="#777777" points="162,-302 108,-302 108,-278 162,-278 162,-302"/>
+<text text-anchor="middle" x="135" y="-287.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">ld1202</text>
+</g>
+<!-- proc~c1holeapp&#45;&gt;ld1202 -->
+<g id="proc~~c1holeapp~~CallsGraph_edge4" class="edge">
+<title>proc~c1holeapp&#45;&gt;ld1202</title>
+<path fill="none" stroke="#000000" d="M52.64,-242.14C67.57,-250.93 87.96,-262.92 104.59,-272.7"/>
+<polygon fill="#000000" stroke="#000000" points="103,-275.82 113.39,-277.88 106.54,-269.79 103,-275.82"/>
+</g>
+<!-- proc~becke1 -->
+<g id="proc~~c1holeapp~~CallsGraph_node6" class="node">
+<title>proc~becke1</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node6"><a xlink:href="../proc/becke1.html" xlink:title="becke1">
+<polygon fill="#d9534f" stroke="#d9534f" points="162,-222 108,-222 108,-198 162,-198 162,-222"/>
+<text text-anchor="middle" x="135" y="-207.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">becke1</text>
+</a>
+</g>
+</g>
+<!-- proc~c1holeapp&#45;&gt;proc~becke1 -->
+<g id="proc~~c1holeapp~~CallsGraph_edge5" class="edge">
+<title>proc~c1holeapp&#45;&gt;proc~becke1</title>
+<path fill="none" stroke="#000000" d="M62.05,-224.11C73.32,-221.9 86.25,-219.36 98,-217.06"/>
+<polygon fill="#000000" stroke="#000000" points="98.82,-220.46 107.96,-215.11 97.48,-213.59 98.82,-220.46"/>
+</g>
+<!-- proc~beckex -->
+<g id="proc~~c1holeapp~~CallsGraph_node7" class="node">
+<title>proc~beckex</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node7"><a xlink:href="../proc/beckex.html" xlink:title="beckex">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="357,-24 303,-24 303,0 357,0 357,-24"/>
+<text text-anchor="middle" x="330" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">beckex</text>
+</a>
+</g>
+</g>
+<!-- proc~c1holeapp&#45;&gt;proc~beckex -->
+<g id="proc~~c1holeapp~~CallsGraph_edge6" class="edge">
+<title>proc~c1holeapp&#45;&gt;proc~beckex</title>
+<path fill="none" stroke="#000000" d="M33.19,-217.88C36.85,-187.24 50.75,-106.03 98,-63 152,-13.82 242.46,-8.36 292.66,-9.61"/>
+<polygon fill="#000000" stroke="#000000" points="292.61,-13.11 302.73,-9.96 292.86,-6.11 292.61,-13.11"/>
+</g>
+<!-- proc~density -->
+<g id="proc~~c1holeapp~~CallsGraph_node8" class="node">
+<title>proc~density</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node8"><a xlink:href="../proc/density.html" xlink:title="Density">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="162,-96 108,-96 108,-72 162,-72 162,-96"/>
+<text text-anchor="middle" x="135" y="-81.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Density</text>
+</a>
+</g>
+</g>
+<!-- proc~c1holeapp&#45;&gt;proc~density -->
+<g id="proc~~c1holeapp~~CallsGraph_edge7" class="edge">
+<title>proc~c1holeapp&#45;&gt;proc~density</title>
+<path fill="none" stroke="#000000" d="M35.82,-217.97C43.92,-193.99 64.88,-139.55 98,-105 98.9,-104.06 99.85,-103.15 100.85,-102.27"/>
+<polygon fill="#000000" stroke="#000000" points="103.17,-104.9 109.03,-96.08 98.94,-99.32 103.17,-104.9"/>
+</g>
+<!-- proc~rdm1 -->
+<g id="proc~~c1holeapp~~CallsGraph_node9" class="node">
+<title>proc~rdm1</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node9"><a xlink:href="../proc/rdm1.html" xlink:title="rDM1">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="162,-138 108,-138 108,-114 162,-114 162,-138"/>
+<text text-anchor="middle" x="135" y="-123.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rDM1</text>
+</a>
+</g>
+</g>
+<!-- proc~c1holeapp&#45;&gt;proc~rdm1 -->
+<g id="proc~~c1holeapp~~CallsGraph_edge8" class="edge">
+<title>proc~c1holeapp&#45;&gt;proc~rdm1</title>
+<path fill="none" stroke="#000000" d="M39.56,-217.84C50.74,-200.55 73.08,-168.57 98,-147 99.28,-145.89 100.62,-144.81 102.01,-143.76"/>
+<polygon fill="#000000" stroke="#000000" points="103.99,-146.65 110.29,-138.13 100.05,-140.86 103.99,-146.65"/>
+</g>
+<!-- proc~rdm1_alf -->
+<g id="proc~~c1holeapp~~CallsGraph_node10" class="node">
+<title>proc~rdm1_alf</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node10"><a xlink:href="../proc/rdm1_alf.html" xlink:title="rDM1_alf">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="163,-180 107,-180 107,-156 163,-156 163,-180"/>
+<text text-anchor="middle" x="135" y="-165.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rDM1_alf</text>
+</a>
+</g>
+</g>
+<!-- proc~c1holeapp&#45;&gt;proc~rdm1_alf -->
+<g id="proc~~c1holeapp~~CallsGraph_edge9" class="edge">
+<title>proc~c1holeapp&#45;&gt;proc~rdm1_alf</title>
+<path fill="none" stroke="#000000" d="M51.26,-217.84C64.38,-209.6 82.17,-198.53 98,-189 99.96,-187.82 101.99,-186.61 104.04,-185.39"/>
+<polygon fill="#000000" stroke="#000000" points="106.16,-188.21 113,-180.12 102.61,-182.17 106.16,-188.21"/>
+</g>
+<!-- proc~sub_gauleg -->
+<g id="proc~~c1holeapp~~CallsGraph_node11" class="node">
+<title>proc~sub_gauleg</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node11"><a xlink:href="../proc/sub_gauleg.html" xlink:title="sub_GauLeg">
+<polygon fill="#d9534f" stroke="#d9534f" points="172,-386 98,-386 98,-362 172,-362 172,-386"/>
+<text text-anchor="middle" x="135" y="-371.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sub_GauLeg</text>
+</a>
+</g>
+</g>
+<!-- proc~c1holeapp&#45;&gt;proc~sub_gauleg -->
+<g id="proc~~c1holeapp~~CallsGraph_edge10" class="edge">
+<title>proc~c1holeapp&#45;&gt;proc~sub_gauleg</title>
+<path fill="none" stroke="#000000" d="M35.99,-242.2C44.28,-265.98 65.35,-319.17 98,-353 98.9,-353.94 99.86,-354.85 100.85,-355.73"/>
+<polygon fill="#000000" stroke="#000000" points="98.96,-358.68 109.05,-361.9 103.17,-353.09 98.96,-358.68"/>
+</g>
+<!-- dexp -->
+<g id="proc~~c1holeapp~~CallsGraph_node12" class="node">
+<title>dexp</title>
+<polygon fill="#777777" stroke="#777777" points="537,-200 483,-200 483,-176 537,-176 537,-200"/>
+<text text-anchor="middle" x="510" y="-185.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dexp</text>
+</g>
+<!-- proc~becke1&#45;&gt;dexp -->
+<g id="proc~~c1holeapp~~CallsGraph_edge11" class="edge">
+<title>proc~becke1&#45;&gt;dexp</title>
+<path fill="none" stroke="#000000" d="M156.23,-222.06C161.49,-225.42 167.06,-229.2 172,-233 189.21,-246.23 189.99,-253.89 208,-266 297.9,-326.47 355.02,-371.25 447,-314 465.96,-302.2 489.53,-242.78 501.4,-209.92"/>
+<polygon fill="#000000" stroke="#000000" points="504.78,-210.88 504.83,-200.28 498.18,-208.54 504.78,-210.88"/>
+</g>
+<!-- proc~dens_ops -->
+<g id="proc~~c1holeapp~~CallsGraph_node13" class="node">
+<title>proc~dens_ops</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node13"><a xlink:href="../proc/dens_ops.html" xlink:title="dens_ops">
+<polygon fill="#d9534f" stroke="#d9534f" points="267,-218 208,-218 208,-194 267,-194 267,-218"/>
+<text text-anchor="middle" x="237.5" y="-203.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dens_ops</text>
+</a>
+</g>
+</g>
+<!-- proc~becke1&#45;&gt;proc~dens_ops -->
+<g id="proc~~c1holeapp~~CallsGraph_edge12" class="edge">
+<title>proc~becke1&#45;&gt;proc~dens_ops</title>
+<path fill="none" stroke="#000000" d="M162.14,-208.96C172.94,-208.53 185.68,-208.02 197.54,-207.55"/>
+<polygon fill="#000000" stroke="#000000" points="197.81,-211.04 207.66,-207.15 197.53,-204.05 197.81,-211.04"/>
+</g>
+<!-- proc~newtr -->
+<g id="proc~~c1holeapp~~CallsGraph_node17" class="node">
+<title>proc~newtr</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node17"><a xlink:href="../proc/newtr.html" xlink:title="newtr">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="357,-302 303,-302 303,-278 357,-278 357,-302"/>
+<text text-anchor="middle" x="330" y="-287.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">newtr</text>
+</a>
+</g>
+</g>
+<!-- proc~becke1&#45;&gt;proc~newtr -->
+<g id="proc~~c1holeapp~~CallsGraph_edge13" class="edge">
+<title>proc~becke1&#45;&gt;proc~newtr</title>
+<path fill="none" stroke="#000000" d="M162.03,-220.79C195.84,-234.81 255.04,-259.34 293.1,-275.12"/>
+<polygon fill="#000000" stroke="#000000" points="292.19,-278.53 302.77,-279.13 294.87,-272.06 292.19,-278.53"/>
+</g>
+<!-- proc~beckex&#45;&gt;dexp -->
+<g id="proc~~c1holeapp~~CallsGraph_edge14" class="edge">
+<title>proc~beckex&#45;&gt;dexp</title>
+<path fill="none" stroke="#000000" d="M349.1,-24.09C373.02,-40.53 415.75,-71.65 447,-104 466.09,-123.76 484.31,-149.57 496,-167.34"/>
+<polygon fill="#000000" stroke="#000000" points="493.11,-169.32 501.48,-175.82 498.99,-165.52 493.11,-169.32"/>
+</g>
+<!-- proc~mo_a -->
+<g id="proc~~c1holeapp~~CallsGraph_node14" class="node">
+<title>proc~mo_a</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node14"><a xlink:href="../proc/mo_a.html" xlink:title="MO_a">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="264.5,-106 210.5,-106 210.5,-82 264.5,-82 264.5,-106"/>
+<text text-anchor="middle" x="237.5" y="-91.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">MO_a</text>
+</a>
+</g>
+</g>
+<!-- proc~density&#45;&gt;proc~mo_a -->
+<g id="proc~~c1holeapp~~CallsGraph_edge15" class="edge">
+<title>proc~density&#45;&gt;proc~mo_a</title>
+<path fill="none" stroke="#000000" d="M162.14,-86.6C173.77,-87.76 187.67,-89.14 200.27,-90.4"/>
+<polygon fill="#000000" stroke="#000000" points="200.19,-93.9 210.49,-91.41 200.88,-86.94 200.19,-93.9"/>
+</g>
+<!-- proc~mo_b -->
+<g id="proc~~c1holeapp~~CallsGraph_node15" class="node">
+<title>proc~mo_b</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node15"><a xlink:href="../proc/mo_b.html" xlink:title="MO_b">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="264.5,-64 210.5,-64 210.5,-40 264.5,-40 264.5,-64"/>
+<text text-anchor="middle" x="237.5" y="-49.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">MO_b</text>
+</a>
+</g>
+</g>
+<!-- proc~density&#45;&gt;proc~mo_b -->
+<g id="proc~~c1holeapp~~CallsGraph_edge16" class="edge">
+<title>proc~density&#45;&gt;proc~mo_b</title>
+<path fill="none" stroke="#000000" d="M162.14,-75.68C173.89,-71.94 187.94,-67.46 200.65,-63.41"/>
+<polygon fill="#000000" stroke="#000000" points="202.02,-66.65 210.49,-60.28 199.9,-59.98 202.02,-66.65"/>
+</g>
+<!-- proc~moor -->
+<g id="proc~~c1holeapp~~CallsGraph_node16" class="node">
+<title>proc~moor</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node16"><a xlink:href="../proc/moor.html" xlink:title="MoOr">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="264.5,-148 210.5,-148 210.5,-124 264.5,-124 264.5,-148"/>
+<text text-anchor="middle" x="237.5" y="-133.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">MoOr</text>
+</a>
+</g>
+</g>
+<!-- proc~density&#45;&gt;proc~moor -->
+<g id="proc~~c1holeapp~~CallsGraph_edge17" class="edge">
+<title>proc~density&#45;&gt;proc~moor</title>
+<path fill="none" stroke="#000000" d="M159.31,-96.06C172.53,-102.9 189.29,-111.57 203.81,-119.09"/>
+<polygon fill="#000000" stroke="#000000" points="202.48,-122.34 212.97,-123.82 205.7,-116.12 202.48,-122.34"/>
+</g>
+<!-- proc~rdm1&#45;&gt;proc~mo_a -->
+<g id="proc~~c1holeapp~~CallsGraph_edge18" class="edge">
+<title>proc~rdm1&#45;&gt;proc~mo_a</title>
+<path fill="none" stroke="#000000" d="M162.14,-117.68C173.89,-113.94 187.94,-109.46 200.65,-105.41"/>
+<polygon fill="#000000" stroke="#000000" points="202.02,-108.65 210.49,-102.28 199.9,-101.98 202.02,-108.65"/>
+</g>
+<!-- proc~rdm1&#45;&gt;proc~mo_b -->
+<g id="proc~~c1holeapp~~CallsGraph_edge19" class="edge">
+<title>proc~rdm1&#45;&gt;proc~mo_b</title>
+<path fill="none" stroke="#000000" d="M158.52,-113.79C163.09,-111.06 167.78,-108.06 172,-105 189.33,-92.43 191.37,-86.47 208,-73 209.02,-72.17 210.07,-71.34 211.14,-70.5"/>
+<polygon fill="#000000" stroke="#000000" points="213.59,-73.03 219.43,-64.19 209.35,-67.46 213.59,-73.03"/>
+</g>
+<!-- proc~rdm1&#45;&gt;proc~moor -->
+<g id="proc~~c1holeapp~~CallsGraph_edge20" class="edge">
+<title>proc~rdm1&#45;&gt;proc~moor</title>
+<path fill="none" stroke="#000000" d="M162.14,-128.6C173.77,-129.76 187.67,-131.14 200.27,-132.4"/>
+<polygon fill="#000000" stroke="#000000" points="200.19,-135.9 210.49,-133.41 200.88,-128.94 200.19,-135.9"/>
+</g>
+<!-- proc~rdm1_alf&#45;&gt;proc~mo_a -->
+<g id="proc~~c1holeapp~~CallsGraph_edge21" class="edge">
+<title>proc~rdm1_alf&#45;&gt;proc~mo_a</title>
+<path fill="none" stroke="#000000" d="M158.52,-155.79C163.09,-153.06 167.78,-150.06 172,-147 189.33,-134.43 191.37,-128.47 208,-115 209.02,-114.17 210.07,-113.34 211.14,-112.5"/>
+<polygon fill="#000000" stroke="#000000" points="213.59,-115.03 219.43,-106.19 209.35,-109.46 213.59,-115.03"/>
+</g>
+<!-- proc~rdm1_alf&#45;&gt;proc~moor -->
+<g id="proc~~c1holeapp~~CallsGraph_edge22" class="edge">
+<title>proc~rdm1_alf&#45;&gt;proc~moor</title>
+<path fill="none" stroke="#000000" d="M163.2,-159.34C174.76,-155.66 188.39,-151.32 200.75,-147.38"/>
+<polygon fill="#000000" stroke="#000000" points="201.86,-150.7 210.32,-144.34 199.73,-144.03 201.86,-150.7"/>
+</g>
+<!-- proc~sub_gauleg&#45;&gt;dacos -->
+<g id="proc~~c1holeapp~~CallsGraph_edge23" class="edge">
+<title>proc~sub_gauleg&#45;&gt;dacos</title>
+<path fill="none" stroke="#000000" d="M165.61,-386.08C176.65,-390.58 189.29,-395.74 200.82,-400.44"/>
+<polygon fill="#000000" stroke="#000000" points="199.6,-403.72 210.18,-404.26 202.24,-397.24 199.6,-403.72"/>
+</g>
+<!-- proc~sub_gauleg&#45;&gt;dcos -->
+<g id="proc~~c1holeapp~~CallsGraph_edge24" class="edge">
+<title>proc~sub_gauleg&#45;&gt;dcos</title>
+<path fill="none" stroke="#000000" d="M172.28,-373.64C181.33,-373.55 191.04,-373.45 200.1,-373.36"/>
+<polygon fill="#000000" stroke="#000000" points="200.39,-376.86 210.36,-373.26 200.32,-369.86 200.39,-376.86"/>
+</g>
+<!-- proc~dprim -->
+<g id="proc~~c1holeapp~~CallsGraph_node18" class="node">
+<title>proc~dprim</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node18"><a xlink:href="../proc/dprim.html" xlink:title="dprim">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="357,-218 303,-218 303,-194 357,-194 357,-218"/>
+<text text-anchor="middle" x="330" y="-203.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dprim</text>
+</a>
+</g>
+</g>
+<!-- proc~dens_ops&#45;&gt;proc~dprim -->
+<g id="proc~~c1holeapp~~CallsGraph_edge25" class="edge">
+<title>proc~dens_ops&#45;&gt;proc~dprim</title>
+<path fill="none" stroke="#000000" d="M267.13,-206C275.23,-206 284.16,-206 292.65,-206"/>
+<polygon fill="#000000" stroke="#000000" points="292.7,-209.5 302.7,-206 292.7,-202.5 292.7,-209.5"/>
+</g>
+<!-- proc~prim -->
+<g id="proc~~c1holeapp~~CallsGraph_node21" class="node">
+<title>proc~prim</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node21"><a xlink:href="../proc/prim.html" xlink:title="Prim">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="447,-137 393,-137 393,-113 447,-113 447,-137"/>
+<text text-anchor="middle" x="420" y="-122.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Prim</text>
+</a>
+</g>
+</g>
+<!-- proc~dens_ops&#45;&gt;proc~prim -->
+<g id="proc~~c1holeapp~~CallsGraph_edge26" class="edge">
+<title>proc~dens_ops&#45;&gt;proc~prim</title>
+<path fill="none" stroke="#000000" d="M265.52,-193.87C296.99,-179.75 349.05,-156.39 383.69,-140.85"/>
+<polygon fill="#000000" stroke="#000000" points="385.28,-143.97 392.97,-136.68 382.41,-137.58 385.28,-143.97"/>
+</g>
+<!-- proc~sd -->
+<g id="proc~~c1holeapp~~CallsGraph_node23" class="node">
+<title>proc~sd</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node23"><a xlink:href="../proc/sd.html" xlink:title="sd">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="357,-260 303,-260 303,-236 357,-236 357,-260"/>
+<text text-anchor="middle" x="330" y="-245.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sd</text>
+</a>
+</g>
+</g>
+<!-- proc~dens_ops&#45;&gt;proc~sd -->
+<g id="proc~~c1holeapp~~CallsGraph_edge27" class="edge">
+<title>proc~dens_ops&#45;&gt;proc~sd</title>
+<path fill="none" stroke="#000000" d="M264.68,-218.15C273.68,-222.33 283.92,-227.08 293.54,-231.54"/>
+<polygon fill="#000000" stroke="#000000" points="292.34,-234.84 302.88,-235.88 295.29,-228.49 292.34,-234.84"/>
+</g>
+<!-- proc~mo_a&#45;&gt;proc~prim -->
+<g id="proc~~c1holeapp~~CallsGraph_edge28" class="edge">
+<title>proc~mo_a&#45;&gt;proc~prim</title>
+<path fill="none" stroke="#000000" d="M264.75,-98.51C295.76,-103.83 347.55,-112.73 382.47,-118.73"/>
+<polygon fill="#000000" stroke="#000000" points="382.27,-122.24 392.72,-120.49 383.46,-115.34 382.27,-122.24"/>
+</g>
+<!-- proc~mo_b&#45;&gt;proc~prim -->
+<g id="proc~~c1holeapp~~CallsGraph_edge29" class="edge">
+<title>proc~mo_b&#45;&gt;proc~prim</title>
+<path fill="none" stroke="#000000" d="M264.75,-62.61C296.03,-75.27 348.44,-96.46 383.37,-110.59"/>
+<polygon fill="#000000" stroke="#000000" points="382.14,-113.87 392.72,-114.37 384.76,-107.38 382.14,-113.87"/>
+</g>
+<!-- proc~moor&#45;&gt;proc~prim -->
+<g id="proc~~c1holeapp~~CallsGraph_edge30" class="edge">
+<title>proc~moor&#45;&gt;proc~prim</title>
+<path fill="none" stroke="#000000" d="M264.75,-134.4C295.76,-132.51 347.55,-129.35 382.47,-127.23"/>
+<polygon fill="#000000" stroke="#000000" points="382.95,-130.7 392.72,-126.6 382.53,-123.72 382.95,-130.7"/>
+</g>
+<!-- proc~f -->
+<g id="proc~~c1holeapp~~CallsGraph_node19" class="node">
+<title>proc~f</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node19"><a xlink:href="../proc/f.html" xlink:title="f">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="447,-221 393,-221 393,-197 447,-197 447,-221"/>
+<text text-anchor="middle" x="420" y="-206.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">f</text>
+</a>
+</g>
+</g>
+<!-- proc~newtr&#45;&gt;proc~f -->
+<g id="proc~~c1holeapp~~CallsGraph_edge31" class="edge">
+<title>proc~newtr&#45;&gt;proc~f</title>
+<path fill="none" stroke="#000000" d="M346.71,-277.92C350.18,-275.09 353.78,-272.01 357,-269 374.22,-252.88 375.78,-246.12 393,-230 393.8,-229.25 394.63,-228.49 395.48,-227.73"/>
+<polygon fill="#000000" stroke="#000000" points="397.95,-230.23 403.29,-221.08 393.41,-224.9 397.95,-230.23"/>
+</g>
+<!-- proc~fp -->
+<g id="proc~~c1holeapp~~CallsGraph_node20" class="node">
+<title>proc~fp</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node20"><a xlink:href="../proc/fp.html" xlink:title="fp">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="447,-263 393,-263 393,-239 447,-239 447,-263"/>
+<text text-anchor="middle" x="420" y="-248.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fp</text>
+</a>
+</g>
+</g>
+<!-- proc~newtr&#45;&gt;proc~fp -->
+<g id="proc~~c1holeapp~~CallsGraph_edge32" class="edge">
+<title>proc~newtr&#45;&gt;proc~fp</title>
+<path fill="none" stroke="#000000" d="M357.4,-278.3C365.66,-274.64 374.9,-270.54 383.66,-266.66"/>
+<polygon fill="#000000" stroke="#000000" points="385.19,-269.81 392.92,-262.56 382.36,-263.41 385.19,-269.81"/>
+</g>
+<!-- proc~q -->
+<g id="proc~~c1holeapp~~CallsGraph_node22" class="node">
+<title>proc~q</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node22"><a xlink:href="../proc/q.html" xlink:title="q">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="447,-305 393,-305 393,-281 447,-281 447,-305"/>
+<text text-anchor="middle" x="420" y="-290.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">q</text>
+</a>
+</g>
+</g>
+<!-- proc~newtr&#45;&gt;proc~q -->
+<g id="proc~~c1holeapp~~CallsGraph_edge33" class="edge">
+<title>proc~newtr&#45;&gt;proc~q</title>
+<path fill="none" stroke="#000000" d="M357.4,-290.9C365.39,-291.17 374.31,-291.48 382.82,-291.77"/>
+<polygon fill="#000000" stroke="#000000" points="382.81,-295.27 392.92,-292.11 383.04,-288.27 382.81,-295.27"/>
+</g>
+<!-- proc~dprim&#45;&gt;proc~prim -->
+<g id="proc~~c1holeapp~~CallsGraph_edge35" class="edge">
+<title>proc~dprim&#45;&gt;proc~prim</title>
+<path fill="none" stroke="#000000" d="M343.27,-193.88C358.39,-178.97 383.3,-154.58 393,-146 393.83,-145.27 394.67,-144.53 395.53,-143.79"/>
+<polygon fill="#000000" stroke="#000000" points="397.98,-146.31 403.41,-137.21 393.49,-140.93 397.98,-146.31"/>
+</g>
+<!-- proc~expr -->
+<g id="proc~~c1holeapp~~CallsGraph_node25" class="node">
+<title>proc~expr</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node25"><a xlink:href="../proc/expr.html" xlink:title="expr">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="447,-179 393,-179 393,-155 447,-155 447,-179"/>
+<text text-anchor="middle" x="420" y="-164.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">expr</text>
+</a>
+</g>
+</g>
+<!-- proc~dprim&#45;&gt;proc~expr -->
+<g id="proc~~c1holeapp~~CallsGraph_edge34" class="edge">
+<title>proc~dprim&#45;&gt;proc~expr</title>
+<path fill="none" stroke="#000000" d="M357.4,-194.3C365.66,-190.64 374.9,-186.54 383.66,-182.66"/>
+<polygon fill="#000000" stroke="#000000" points="385.19,-185.81 392.92,-178.56 382.36,-179.41 385.19,-185.81"/>
+</g>
+<!-- proc~f&#45;&gt;dexp -->
+<g id="proc~~c1holeapp~~CallsGraph_edge36" class="edge">
+<title>proc~f&#45;&gt;dexp</title>
+<path fill="none" stroke="#000000" d="M447.4,-202.7C455.48,-200.77 464.51,-198.62 473.1,-196.57"/>
+<polygon fill="#000000" stroke="#000000" points="474,-199.95 482.92,-194.22 472.38,-193.14 474,-199.95"/>
+</g>
+<!-- proc~fp&#45;&gt;dexp -->
+<g id="proc~~c1holeapp~~CallsGraph_edge37" class="edge">
+<title>proc~fp&#45;&gt;dexp</title>
+<path fill="none" stroke="#000000" d="M437.97,-238.85C450.99,-229.53 469.18,-216.51 483.89,-205.98"/>
+<polygon fill="#000000" stroke="#000000" points="485.99,-208.78 492.08,-200.11 481.92,-203.09 485.99,-208.78"/>
+</g>
+<!-- proc~prim&#45;&gt;dexp -->
+<g id="proc~~c1holeapp~~CallsGraph_edge38" class="edge">
+<title>proc~prim&#45;&gt;dexp</title>
+<path fill="none" stroke="#000000" d="M437.97,-137.15C450.99,-146.47 469.18,-159.49 483.89,-170.02"/>
+<polygon fill="#000000" stroke="#000000" points="481.92,-172.91 492.08,-175.89 485.99,-167.22 481.92,-172.91"/>
+</g>
+<!-- proc~d -->
+<g id="proc~~c1holeapp~~CallsGraph_node24" class="node">
+<title>proc~d</title>
+<g id="a_proc~~c1holeapp~~CallsGraph_node24"><a xlink:href="../proc/d.html" xlink:title="D">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="537,-305 483,-305 483,-281 537,-281 537,-305"/>
+<text text-anchor="middle" x="510" y="-290.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">D</text>
+</a>
+</g>
+</g>
+<!-- proc~q&#45;&gt;proc~d -->
+<g id="proc~~c1holeapp~~CallsGraph_edge39" class="edge">
+<title>proc~q&#45;&gt;proc~d</title>
+<path fill="none" stroke="#000000" d="M447.4,-293C455.39,-293 464.31,-293 472.82,-293"/>
+<polygon fill="#000000" stroke="#000000" points="472.92,-296.5 482.92,-293 472.92,-289.5 472.92,-296.5"/>
+</g>
+<!-- proc~sd&#45;&gt;proc~expr -->
+<g id="proc~~c1holeapp~~CallsGraph_edge40" class="edge">
+<title>proc~sd&#45;&gt;proc~expr</title>
+<path fill="none" stroke="#000000" d="M346.71,-235.92C350.18,-233.09 353.78,-230.01 357,-227 374.22,-210.88 375.78,-204.12 393,-188 393.8,-187.25 394.63,-186.49 395.48,-185.73"/>
+<polygon fill="#000000" stroke="#000000" points="397.95,-188.23 403.29,-179.08 393.41,-182.9 397.95,-188.23"/>
+</g>
+<!-- proc~expr&#45;&gt;dexp -->
+<g id="proc~~c1holeapp~~CallsGraph_edge41" class="edge">
+<title>proc~expr&#45;&gt;dexp</title>
+<path fill="none" stroke="#000000" d="M447.4,-173.3C455.48,-175.23 464.51,-177.38 473.1,-179.43"/>
+<polygon fill="#000000" stroke="#000000" points="472.38,-182.86 482.92,-181.78 474,-176.05 472.38,-182.86"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="29pt"
+ viewBox="0.00 0.00 641.00 29.32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.92 0.92) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 695.5,-28 695.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="64,-24 0,-24 0,0 64,0 64,-24"/>
+<text text-anchor="middle" x="32" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="136,-24 82,-24 82,0 136,0 136,-24"/>
+<text text-anchor="middle" x="109" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="209.5,-24 154.5,-24 154.5,0 209.5,0 209.5,-24"/>
+<text text-anchor="middle" x="182" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="350,-24 228,-24 228,0 350,0 350,-24"/>
+<text text-anchor="middle" x="289" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="504,-24 368,-24 368,0 504,0 504,-24"/>
+<text text-anchor="middle" x="436" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="576,-24 522,-24 522,0 576,0 576,-24"/>
+<text text-anchor="middle" x="549" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="691.5,-24 594.5,-24 594.5,0 691.5,0 691.5,-24"/>
+<text text-anchor="middle" x="643" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~c1holeapp~~CalledByGraph Pages: 1 -->
+<svg id="procc1holeappCalledByGraph" width="160pt" height="32pt"
+ viewBox="0.00 0.00 160.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~c1holeapp~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>proc~~c1holeapp~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 156,-28 156,4 -4,4"/>
+<!-- proc~c1holeapp -->
+<g id="proc~~c1holeapp~~CalledByGraph_node1" class="node">
+<title>proc~c1holeapp</title>
+<polygon fill="none" stroke="black" points="152,-24 90,-24 90,0 152,0 152,-24"/>
+<text text-anchor="middle" x="121" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">c1holeapp</text>
+</g>
+<!-- program~inca -->
+<g id="proc~~c1holeapp~~CalledByGraph_node2" class="node">
+<title>program~inca</title>
+<g id="a_proc~~c1holeapp~~CalledByGraph_node2"><a xlink:href="../program/inca.html" xlink:title="inca">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">inca</text>
+</a>
+</g>
+</g>
+<!-- program~inca&#45;&gt;proc~c1holeapp -->
+<g id="proc~~c1holeapp~~CalledByGraph_edge1" class="edge">
+<title>program~inca&#45;&gt;proc~c1holeapp</title>
+<path fill="none" stroke="#000000" d="M54.12,-12C62.14,-12 71.15,-12 79.88,-12"/>
+<polygon fill="#000000" stroke="#000000" points="79.92,-15.5 89.92,-12 79.92,-8.5 79.92,-15.5"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="29pt"
+ viewBox="0.00 0.00 641.00 29.32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.92 0.92) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 695.5,-28 695.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="64,-24 0,-24 0,0 64,0 64,-24"/>
+<text text-anchor="middle" x="32" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="136,-24 82,-24 82,0 136,0 136,-24"/>
+<text text-anchor="middle" x="109" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="209.5,-24 154.5,-24 154.5,0 209.5,0 209.5,-24"/>
+<text text-anchor="middle" x="182" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="350,-24 228,-24 228,0 350,0 350,-24"/>
+<text text-anchor="middle" x="289" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="504,-24 368,-24 368,0 504,0 504,-24"/>
+<text text-anchor="middle" x="436" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="576,-24 522,-24 522,0 576,0 576,-24"/>
+<text text-anchor="middle" x="549" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="691.5,-24 594.5,-24 594.5,0 691.5,0 691.5,-24"/>
+<text text-anchor="middle" x="643" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">          </span><span class="k">subroutine </span><span class="n">c1holeapp</span><span class="p">(</span><span class="n">nrad</span><span class="p">,</span><span class="n">sfalpha</span><span class="p">)</span>
+<span class="w">              </span><span class="k">implicit none</span>
+<span class="w">              </span><span class="c">!radial quadrature!!!!!!!!</span>
+<span class="w">              </span><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">nrad</span>
+<span class="w">              </span><span class="kt">double precision</span><span class="p">,</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">sfalpha</span>
+<span class="w">              </span><span class="c">!Local variables</span>
+<span class="w">              </span><span class="kt">double precision</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(</span><span class="n">nrad</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">rad</span><span class="p">,</span><span class="w"> </span><span class="n">wr</span>
+<span class="w">              </span><span class="c">!angular quadrature!!!!!!!</span>
+<span class="w">              </span><span class="kt">double precision</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(</span><span class="mi">1202</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">wa</span><span class="p">,</span><span class="w"> </span><span class="n">lbx</span><span class="p">,</span><span class="w"> </span><span class="n">lby</span><span class="p">,</span><span class="w"> </span><span class="n">lbz</span><span class="p">,</span><span class="w"> </span><span class="n">phi</span><span class="p">,</span><span class="n">theta</span>
+<span class="w">              </span><span class="kt">double precision</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(</span><span class="mi">1202</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">cosin</span><span class="p">,</span><span class="w"> </span><span class="n">sinsin</span><span class="p">,</span><span class="w"> </span><span class="n">cost</span>
+<span class="w">              </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">nang</span>
+<span class="w">              </span><span class="kt">double precision</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">xs</span>
+<span class="w">              </span><span class="c">!grid points!!!!!!!!!!!!!!</span>
+<span class="w">              </span><span class="kt">double precision</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">px</span><span class="p">,</span><span class="n">py</span><span class="p">,</span><span class="n">pz</span>
+<span class="w">              </span><span class="kt">double precision</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span>
+<span class="w">              </span><span class="c">!functions!!!!!!!!!!!!!!!!</span>
+<span class="w">              </span><span class="kt">double precision</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">hc1</span>
+<span class="w">              </span><span class="kt">double precision</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dens</span><span class="p">,</span><span class="w"> </span><span class="n">xchole</span>
+<span class="w">              </span><span class="c">!!!!!!!!!!!!!!!!!!!!!!!!!/</span>
+<span class="w">              </span><span class="kt">double precision</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rdmv1</span><span class="p">,</span><span class="w"> </span><span class="n">rho2</span><span class="p">,</span><span class="w"> </span><span class="n">rho2s</span><span class="p">,</span><span class="w"> </span><span class="n">rdmv2</span><span class="w"> </span><span class="c">!vector 1rdm and pair dens</span>
+<span class="w">              </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">s</span>
+<span class="w">              </span><span class="kt">double precision</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">kk</span><span class="p">,</span><span class="w"> </span><span class="n">xcint</span><span class="p">,</span><span class="w"> </span><span class="n">xcint2</span><span class="p">,</span><span class="w"> </span><span class="n">radint</span><span class="p">,</span><span class="w"> </span><span class="n">radint2</span><span class="c">!densint, rdm1int, radint2</span>
+<span class="w">              </span><span class="kt">double precision</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="n">alf</span>
+<span class="w">              </span><span class="kt">character</span><span class="o">*</span><span class="mi">40</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">outputname</span>
+<span class="w">              </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i1</span><span class="p">,</span><span class="w"> </span><span class="n">npoints</span>
+<span class="w">              </span><span class="c">!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="w">              </span><span class="c">!!!!!!obtain radial nodes and weights for integrations!!!!!!!!!!!</span>
+<span class="w">          </span>
+<span class="w">              </span><span class="k">call </span><span class="n">sub_GauLeg</span><span class="p">(</span><span class="o">-</span><span class="mf">1.d0</span><span class="p">,</span><span class="mf">1.d0</span><span class="p">,</span><span class="n">rad</span><span class="p">,</span><span class="n">wr</span><span class="p">,</span><span class="n">nrad</span><span class="p">)</span>
+<span class="w">              </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nrad</span>
+<span class="w">                   </span><span class="n">r</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="mf">1.d0</span><span class="o">+</span><span class="n">rad</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mf">1.d0</span><span class="o">-</span><span class="n">rad</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="o">*</span><span class="n">sfalpha</span>
+<span class="w">                   </span><span class="n">wr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="mf">2.d0</span><span class="o">*</span><span class="n">sfalpha</span><span class="o">/</span><span class="p">((</span><span class="mf">1.d0</span><span class="o">-</span><span class="n">rad</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="o">**</span><span class="mf">2.d0</span><span class="p">))</span><span class="o">*</span><span class="n">wr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="w">              </span><span class="k">end do</span>
+<span class="w">          </span>
+<span class="w">              </span><span class="c">!obtain angular nodes (angles) and weights</span>
+<span class="w">              </span><span class="n">lbx</span><span class="o">=</span><span class="mf">0.d0</span>
+<span class="w">              </span><span class="n">lby</span><span class="o">=</span><span class="mf">0.d0</span><span class="w"> </span>
+<span class="w">              </span><span class="n">lbz</span><span class="o">=</span><span class="mf">0.d0</span>
+<span class="w">              </span><span class="n">nang</span><span class="o">=</span><span class="mi">1202</span>
+<span class="w">              </span><span class="c">!call LD0006(lbx,lby,lbz,Wa,nAng)  !6 grid points</span>
+<span class="w">              </span><span class="c">!call LD0110(lbx,lby,lbz,wa,nang)</span>
+<span class="w">              </span><span class="c">!call LD0590(lbx,lby,lbz,wa,nAng) !590</span>
+<span class="w">              </span><span class="k">call </span><span class="n">LD1202</span><span class="p">(</span><span class="n">lbx</span><span class="p">,</span><span class="n">lby</span><span class="p">,</span><span class="n">lbz</span><span class="p">,</span><span class="n">wa</span><span class="p">,</span><span class="n">nAng</span><span class="p">)</span>
+<span class="w">          </span>
+<span class="w">              </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nang</span>
+<span class="w">                   </span><span class="n">theta</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">=</span><span class="nb">dacos</span><span class="p">(</span><span class="n">lbz</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<span class="w">                   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">dsin</span><span class="p">(</span><span class="n">theta</span><span class="p">(</span><span class="n">i</span><span class="p">)).</span><span class="n">ne</span><span class="p">.</span><span class="mf">0.d0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                        </span><span class="n">xs</span><span class="o">=</span><span class="n">lbx</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">/</span><span class="nb">dsin</span><span class="p">(</span><span class="n">theta</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<span class="w">                        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">xs</span><span class="p">.</span><span class="n">gt</span><span class="p">.</span><span class="mf">1.d0</span><span class="p">)</span><span class="w"> </span><span class="n">xs</span><span class="o">=</span><span class="mf">1.d0</span>
+<span class="w">                        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">xs</span><span class="p">.</span><span class="n">lt</span><span class="p">.</span><span class="o">-</span><span class="mf">1.d0</span><span class="p">)</span><span class="w"> </span><span class="n">xs</span><span class="o">=-</span><span class="mf">1.d0</span>
+<span class="w">                        </span><span class="n">phi</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">=</span><span class="nb">dacos</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
+<span class="w">                        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">lby</span><span class="p">(</span><span class="n">i</span><span class="p">).</span><span class="n">lt</span><span class="p">.</span><span class="mf">0.d0</span><span class="p">)</span><span class="w"> </span><span class="n">phi</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">=-</span><span class="n">phi</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="w">                   </span><span class="k">else</span>
+<span class="k">                        </span><span class="n">phi</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">=</span><span class="mf">0.d0</span>
+<span class="w">                   </span><span class="k">end if   </span>
+<span class="k">                   </span><span class="n">wa</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">=</span><span class="n">wa</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="mf">4.d0</span><span class="o">*</span><span class="n">pi</span><span class="w"> </span>
+<span class="w">              </span><span class="k">end do</span>
+<span class="k">          </span>
+<span class="k">              open</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="k">file</span><span class="o">=</span><span class="s2">&quot;angular_grid&quot;</span><span class="p">)</span>
+<span class="w">              </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nang</span>
+<span class="w">                     </span><span class="n">x</span><span class="o">=</span><span class="nb">dcos</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="o">*</span><span class="nb">dsin</span><span class="p">(</span><span class="n">theta</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<span class="w">                     </span><span class="n">y</span><span class="o">=</span><span class="nb">dsin</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="o">*</span><span class="nb">dsin</span><span class="p">(</span><span class="n">theta</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<span class="w">                     </span><span class="n">z</span><span class="o">=</span><span class="nb">dcos</span><span class="p">(</span><span class="n">theta</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<span class="w">                     </span><span class="k">write</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span>
+<span class="w">                     </span><span class="n">cosin</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">=</span><span class="n">x</span>
+<span class="w">                     </span><span class="n">sinsin</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">=</span><span class="n">y</span>
+<span class="w">                     </span><span class="n">cost</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">=</span><span class="n">z</span>
+<span class="w">              </span><span class="k">end do</span>
+<span class="k">              close</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="w">          </span>
+<span class="w">          </span><span class="c">!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    </span>
+<span class="w">          </span><span class="c">!!!!!Sanity checks!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="w">          </span>
+<span class="w">              </span><span class="c">!Test 1: integrate the density and 1rdm diagonal (must be = nelec)</span>
+<span class="w">              </span><span class="n">radint</span><span class="o">=</span><span class="mf">0.d0</span>
+<span class="w">              </span><span class="n">radint2</span><span class="o">=</span><span class="mf">0.d0</span>
+<span class="w">              </span><span class="c">!do i=1,nrad</span>
+<span class="w">              </span><span class="c">!   densint=0.d0</span>
+<span class="w">              </span><span class="c">!   rdm1int=0.d0</span>
+<span class="w">              </span><span class="c">!   do k=1,nang</span>
+<span class="w">              </span><span class="c">!       x=r(i)*dcos(phi(k))*dsin(theta(k))</span>
+<span class="w">              </span><span class="c">!       y=r(i)*dsin(phi(k))*dsin(theta(k))</span>
+<span class="w">              </span><span class="c">!       z=r(i)*dcos(theta(k))</span>
+<span class="w">              </span><span class="c">!       densint=densint+wa(k)*Density(x,y,z)</span>
+<span class="w">              </span><span class="c">!       rdm1int=rdm1int+wa(k)*rDM1(x,y,z,x,y,z)</span>
+<span class="w">              </span><span class="c">!   end do    </span>
+<span class="w">              </span><span class="c">!   radint=radint+wr(i)*densint*r(i)**2.d0   </span>
+<span class="w">              </span><span class="c">!   radint2=radint2+wr(i)*rdm1int*r(i)**2.d0</span>
+<span class="w">             </span><span class="c">! end do  </span>
+<span class="w">             </span><span class="c">! write(*,*) &quot;----------Test 1-------------&quot; </span>
+<span class="w">             </span><span class="c">! write(*,*) &quot;integral of density=&quot;, radint,&quot;=?&quot;, nelec</span>
+<span class="w">             </span><span class="c">! write(*,*) &quot;integral of diagonal 1rdm=&quot;, radint2</span>
+<span class="w">              </span><span class="c">!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="w">              </span><span class="c">!!!!!!!!!end of test 1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="w">              </span><span class="c">!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="w">               </span><span class="k">open</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="k">file</span><span class="o">=</span><span class="s1">&#39;refpoints.inp&#39;</span><span class="p">)</span>
+<span class="w">               </span><span class="k">read</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">npoints</span>
+<span class="w">               </span><span class="k">do </span><span class="n">i1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">npoints</span><span class="w">      </span>
+<span class="w">               </span><span class="k">read</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="w"> </span><span class="n">outputname</span>
+<span class="w">              </span><span class="c">!!!!!!Test 2: Compute exchange hole at reference point:!!!!!!!!!!!!!</span>
+<span class="w">              </span><span class="c">!!!!!!!!!!-With Becke model</span>
+<span class="w">              </span><span class="c">!!!!!!!!! -With 1rdm^2/density</span>
+<span class="w">                </span><span class="k">open</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="k">file</span><span class="o">=</span><span class="n">outputname</span><span class="p">)</span>
+<span class="w">                </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;Reference point&quot;</span>
+<span class="w">                </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span>
+<span class="w">                </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;------------------&quot;</span>
+<span class="w">                </span><span class="k">call </span><span class="n">becke1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">alf</span><span class="p">)</span>
+<span class="w">                </span><span class="n">Dens</span><span class="o">=</span><span class="n">Density</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span><span class="o">/</span><span class="mf">2.d0</span>
+<span class="w">                </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;b=&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">b</span>
+<span class="w">                </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;a=&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">alf</span>
+<span class="w">                </span><span class="n">kk</span><span class="o">=</span><span class="mf">0.0001d0</span><span class="w"> </span><span class="c">!interelectronic distance</span>
+<span class="w">                </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;Loop over distances&quot;</span>
+<span class="w">                </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">1000</span>
+<span class="w">                    </span><span class="n">kk</span><span class="o">=</span><span class="n">kk</span><span class="o">+</span><span class="mf">0.005d0</span>
+<span class="w">                    </span><span class="n">xchole</span><span class="o">=</span><span class="n">beckex</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="n">alf</span><span class="p">,</span><span class="n">kk</span><span class="p">)</span><span class="w">   </span><span class="c">!exchange hole model</span>
+<span class="w">                    </span><span class="n">rdmv1</span><span class="o">=</span><span class="mf">0.d0</span>
+<span class="w">                    </span><span class="k">do </span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nang</span><span class="w"> </span><span class="c">!angular integral of the squared 1rdm</span>
+<span class="w">                          </span><span class="n">px</span><span class="o">=</span><span class="n">x</span><span class="o">+</span><span class="n">kk</span><span class="o">*</span><span class="n">cosin</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="w">  </span><span class="c">!dcos(phi(k))*dsin(theta(k))</span>
+<span class="w">                          </span><span class="n">py</span><span class="o">=</span><span class="n">y</span><span class="o">+</span><span class="n">kk</span><span class="o">*</span><span class="n">sinsin</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="c">!dsin(phi(k))*dsin(theta(k))</span>
+<span class="w">                          </span><span class="n">pz</span><span class="o">=</span><span class="n">z</span><span class="o">+</span><span class="n">kk</span><span class="o">*</span><span class="n">cost</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="w">   </span><span class="c">!dcos(theta(k))</span>
+<span class="w">                          </span><span class="n">rdmv1</span><span class="o">=</span><span class="n">rdmv1</span><span class="o">+</span><span class="n">wa</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">rDM1_alf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">px</span><span class="p">,</span><span class="n">py</span><span class="p">,</span><span class="n">pz</span><span class="p">)</span><span class="o">*</span><span class="n">rDM1_alf</span><span class="p">(</span><span class="n">px</span><span class="p">,</span><span class="n">py</span><span class="p">,</span><span class="n">pz</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">))</span>
+<span class="w">                    </span><span class="k">end do</span>
+<span class="k">                    write</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">kk</span><span class="p">,</span><span class="w"> </span><span class="n">xchole</span><span class="p">,</span><span class="w"> </span><span class="n">rdmv1</span><span class="o">/</span><span class="p">((</span><span class="n">Dens</span><span class="p">)</span><span class="o">*</span><span class="mf">4.d0</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span><span class="w"> </span><span class="c">!write both models</span>
+<span class="w">                </span><span class="k">end do</span>
+<span class="w">                </span><span class="c">!STOP  ! &lt;--- (Note: I commented this out so your loops can actually finish, uncomment if you want it to halt here)</span>
+<span class="w">             </span><span class="c">!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="w">             </span><span class="c">!!!!!!end of test 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="w">             </span><span class="c">!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="w">             </span><span class="c">!Test 3: Integrate xchole, becke model and 1rdm^2/dens!!!!!!!!!!!!!!!!</span>
+<span class="w">                </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;End of test 2&quot;</span>
+<span class="w">                </span><span class="n">xcint</span><span class="o">=</span><span class="mf">0.d0</span>
+<span class="w">                </span><span class="n">xcint2</span><span class="o">=</span><span class="mf">0.d0</span>
+<span class="w">                </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nrad</span>
+<span class="w">                    </span><span class="n">rdmv1</span><span class="o">=</span><span class="mf">0.d0</span>
+<span class="w">                    </span><span class="n">rdmv2</span><span class="o">=</span><span class="mf">0.d0</span>
+<span class="w">                    </span><span class="k">do </span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nang</span>
+<span class="w">                       </span><span class="n">px</span><span class="o">=</span><span class="n">x</span><span class="o">+</span><span class="n">r</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="nb">dcos</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="n">k</span><span class="p">))</span><span class="o">*</span><span class="nb">dsin</span><span class="p">(</span><span class="n">theta</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+<span class="w">                       </span><span class="n">py</span><span class="o">=</span><span class="n">y</span><span class="o">+</span><span class="n">r</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="nb">dsin</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="n">k</span><span class="p">))</span><span class="o">*</span><span class="nb">dsin</span><span class="p">(</span><span class="n">theta</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+<span class="w">                       </span><span class="n">pz</span><span class="o">=</span><span class="n">z</span><span class="o">+</span><span class="n">r</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="nb">dcos</span><span class="p">(</span><span class="n">theta</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+<span class="w">                       </span><span class="n">rdmv1</span><span class="o">=</span><span class="n">rdmv1</span><span class="o">+</span><span class="n">wa</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">rDM1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">px</span><span class="p">,</span><span class="n">py</span><span class="p">,</span><span class="n">pz</span><span class="p">)</span><span class="o">*</span><span class="n">rDM1</span><span class="p">(</span><span class="n">px</span><span class="p">,</span><span class="n">py</span><span class="p">,</span><span class="n">pz</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">))</span>
+<span class="w">                    </span><span class="k">end do</span>
+<span class="k">                    </span><span class="n">xcint2</span><span class="o">=</span><span class="n">xcint2</span><span class="o">+</span><span class="n">wr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">r</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">**</span><span class="mf">2.d0</span><span class="o">*</span><span class="p">(</span><span class="n">rdmv1</span><span class="p">)</span>
+<span class="w">                    </span><span class="n">xchole</span><span class="o">=</span><span class="n">beckex</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="n">alf</span><span class="p">,</span><span class="n">r</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+<span class="w">                    </span><span class="n">xcint</span><span class="o">=</span><span class="n">xcint</span><span class="o">+</span><span class="n">wr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">xchole</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">**</span><span class="mf">2.d0</span><span class="p">)</span><span class="o">*</span><span class="mf">4.d0</span><span class="o">*</span><span class="n">pi</span>
+<span class="w">                </span><span class="k">end do</span>
+<span class="k">                write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;----------Test 3-------------&quot;</span>
+<span class="w">                </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;Integral of exchange hole=&quot;</span>
+<span class="w">                </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;Becke Model=&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">xcint</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">uhf</span><span class="p">)</span><span class="w"> </span><span class="k">then </span>
+<span class="k">                      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;1rdm^2/dens=&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">xcint2</span><span class="o">/</span><span class="p">(</span><span class="n">dens</span><span class="p">)</span>
+<span class="w">                </span><span class="k">else        </span>
+<span class="k">                      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;1rdm^2/dens&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">xcint2</span><span class="o">/</span><span class="p">(</span><span class="n">dens</span><span class="o">/</span><span class="mf">2.d0</span><span class="p">)</span>
+<span class="w">                </span><span class="k">end if</span><span class="w">        </span>
+<span class="w">              </span><span class="c">!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="w">              </span><span class="c">!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   </span>
+<span class="w">              </span><span class="k">close</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w">  </span>
+<span class="w">              </span><span class="c">!see the plot of the exchange hole vs the distance at (x,y,z) point.</span>
+<span class="w">              </span><span class="k">end do</span>
+<span class="k">              close</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="w">              </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;-----Test xchole done-----------&quot;</span>
+<span class="w">          </span><span class="c">!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="w">          </span><span class="c">!!!!Compute C1 part of Coulomb Hole!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="w">          </span><span class="c">!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="w">              </span><span class="k">open</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="k">file</span><span class="o">=</span><span class="s2">&quot;c1hole.out&quot;</span><span class="p">)</span>
+<span class="w">              </span><span class="n">kk</span><span class="o">=</span><span class="mf">0.00001d0</span><span class="w">   </span><span class="c">!interelectronic distance</span>
+<span class="w">              </span><span class="k">do </span><span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">45</span><span class="w"> </span><span class="c">!for 20 interelectronic distances (EXAMPLE)</span>
+<span class="w">                   </span><span class="n">hc1</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">=</span><span class="mf">0.d0</span><span class="w">     </span>
+<span class="w">                   </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nrad</span><span class="w">       </span><span class="c">!loop for radial nodes (integrate over r reference dist)</span>
+<span class="w">                        </span><span class="n">rho2s</span><span class="o">=</span><span class="mf">0.d0</span><span class="w">   </span><span class="c">!spherically averaged pair density at r dist and s dist.</span>
+<span class="w">                        </span><span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nang</span><span class="w">  </span><span class="c">!loop for angular nodes (to average r)</span>
+<span class="w">                             </span><span class="n">x</span><span class="o">=</span><span class="n">r</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="nb">dcos</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="n">j</span><span class="p">))</span><span class="o">*</span><span class="nb">dsin</span><span class="p">(</span><span class="n">theta</span><span class="p">(</span><span class="n">j</span><span class="p">))</span><span class="w">  </span><span class="c">!compute x,y,z points (\Vec{r})</span>
+<span class="w">                             </span><span class="n">y</span><span class="o">=</span><span class="n">r</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="nb">dsin</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="n">j</span><span class="p">))</span><span class="o">*</span><span class="nb">dsin</span><span class="p">(</span><span class="n">theta</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
+<span class="w">                             </span><span class="n">z</span><span class="o">=</span><span class="n">r</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="nb">dcos</span><span class="p">(</span><span class="n">theta</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
+<span class="w">                             </span><span class="n">rdmv1</span><span class="o">=</span><span class="mf">0.d0</span><span class="w"> </span><span class="c">!spherically averaged density at s distance at r point. </span>
+<span class="w">                             </span><span class="k">do </span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nang</span>
+<span class="w">                                  </span><span class="c">!compute interelectronic separation vector (px,py,pz) (to average s)</span>
+<span class="w">                                  </span><span class="n">px</span><span class="o">=</span><span class="n">x</span><span class="o">+</span><span class="n">kk</span><span class="o">*</span><span class="nb">dcos</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="n">k</span><span class="p">))</span><span class="o">*</span><span class="nb">dsin</span><span class="p">(</span><span class="n">theta</span><span class="p">(</span><span class="n">k</span><span class="p">))</span><span class="w"> </span><span class="c">!u are averaging coord 2, not distance s!!!</span>
+<span class="w">                                  </span><span class="n">py</span><span class="o">=</span><span class="n">y</span><span class="o">+</span><span class="n">kk</span><span class="o">*</span><span class="nb">dsin</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="n">k</span><span class="p">))</span><span class="o">*</span><span class="nb">dsin</span><span class="p">(</span><span class="n">theta</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+<span class="w">                                  </span><span class="n">pz</span><span class="o">=</span><span class="n">z</span><span class="o">+</span><span class="n">kk</span><span class="o">*</span><span class="nb">dcos</span><span class="p">(</span><span class="n">theta</span><span class="p">(</span><span class="n">k</span><span class="p">))</span><span class="w">                                           </span>
+<span class="w">                                  </span><span class="c">!spherical average of s</span>
+<span class="w">                                  </span><span class="n">rdmv1</span><span class="o">=</span><span class="n">rdmv1</span><span class="o">+</span><span class="n">wa</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">rDM1_alf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">px</span><span class="p">,</span><span class="n">py</span><span class="p">,</span><span class="n">pz</span><span class="p">)</span><span class="o">*</span><span class="n">rDM1_alf</span><span class="p">(</span><span class="n">px</span><span class="p">,</span><span class="n">py</span><span class="p">,</span><span class="n">pz</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+<span class="w">                             </span><span class="k">end do</span>
+<span class="w">                            </span><span class="c">! write(*,*) &quot;Point:&quot;, x,y,z</span>
+<span class="w">                             </span><span class="k">call </span><span class="n">becke1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">alf</span><span class="p">)</span>
+<span class="w">                            </span><span class="c">! write(*,*) &quot;b=,alf=&quot;, b, alf</span>
+<span class="w">                             </span><span class="n">xchole</span><span class="o">=</span><span class="n">beckex</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="n">alf</span><span class="p">,</span><span class="n">kk</span><span class="p">)</span>
+<span class="w">                             </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;Xchole,edmv1=&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">xchole</span><span class="p">,</span><span class="w"> </span><span class="n">rdmv1</span>
+<span class="w">                             </span><span class="n">rho2</span><span class="o">=</span><span class="p">(</span><span class="n">rdmv1</span><span class="o">/</span><span class="p">(</span><span class="mf">4.d0</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span><span class="o">-</span><span class="n">xchole</span><span class="o">*</span><span class="p">((</span><span class="n">Density</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span><span class="o">/</span><span class="mf">2.d0</span><span class="p">)))</span><span class="o">*</span><span class="mf">2.d0</span><span class="w"> </span><span class="c">!c1 part of Coulomb hole: hc(\Vec{r},s)</span>
+<span class="w">                             </span><span class="n">rho2s</span><span class="o">=</span><span class="n">rho2s</span><span class="o">+</span><span class="n">wa</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">rho2</span><span class="w">   </span><span class="c">!spherical average of \Vec{r}</span>
+<span class="w">                             </span><span class="c">!write(*,*) &quot;rho2s=&quot;, rho2s</span>
+<span class="w">                        </span><span class="k">end do</span>
+<span class="w">                        </span><span class="c">!write(*,*) &quot;-----rho2s=&quot;, rho2s</span>
+<span class="w">                        </span><span class="c">!write(*,*) &quot;---hc1=&quot;, hc1(s)</span>
+<span class="w">                        </span><span class="n">hc1</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">=</span><span class="n">hc1</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">+</span><span class="n">wr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">rho2s</span><span class="o">*</span><span class="n">r</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">**</span><span class="mf">2.d0</span><span class="w"> </span><span class="c">!radial average of r</span>
+<span class="w">                   </span><span class="k">end do</span>
+<span class="k">                   write</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">kk</span><span class="p">,</span><span class="w"> </span><span class="n">hc1</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">*</span><span class="n">kk</span><span class="o">**</span><span class="mf">2.d0</span>
+<span class="w">                   </span><span class="n">kk</span><span class="o">=</span><span class="n">kk</span><span class="o">+</span><span class="mf">0.1d0</span>
+<span class="w">              </span><span class="k">end do </span>
+<span class="k">          end subroutine </span><span class="n">c1holeapp</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              INCA
+ was developed by Markel Ylla<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>
