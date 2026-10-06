@@ -2,8 +2,10 @@
 *.o
 *.mod
 *.exe
+.fortls
 obj/
 # scratch / outputs
+.vscode/
 work/
 trash/
 tests/parallel_test/benchmark/
@@ -19,3 +21,5 @@ tests/data/H3_FCI_cc-pVTZ.*
 tests/data/Li_FCI_cc-pVTZ.*
 tests/data/03a.dm2p
 tests/data/03a*
+.fortls
+.vscode/
