@@ -2,7 +2,7 @@ title: User Manual
 
 # INCA User Manual
 
-INCA uses a standard Fortran `NAMELIST` input structure. The input file must begin with `&input` and end with `/`. Variables are order-independent, case-insensitive, and separated by commas or newlines. 
+INCA uses a standard Fortran `NAMELIST` input structure. The input file contains three namelist blocks, `&files`, `&intracule_job` and `&cube_job` (all three must be present, each ended by `/`). Variables are order-independent, case-insensitive, and separated by commas or newlines. 
 
 ## 1. General Configuration
 
@@ -30,7 +30,7 @@ INCA uses a standard Fortran `NAMELIST` input structure. The input file must beg
 * **`intracule_two_points`**: Evaluates the vector intracule between exactly two coordinates. (Requires `x_point1`, `y_point1`, `z_point1` and `x_point2`, `y_point2`, `z_point2`).
 
 ### General Grid & Math Parameters
-* **`thresh`** *(real)*: Threshold for Cioslowski-Liu integral screening (Default: `1.0d-12`).
+* **`thresh`** *(real)*: Threshold for Cioslowski-Liu integral screening (Default: `1.0d-8`).
 * **`nosym`** *(logical)*: Disables spatial symmetry optimization.
 
 

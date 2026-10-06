@@ -10,6 +10,12 @@ From repo root:
 python3 tests/run_tests.py
 ```
 
+`make test` does the same. The methane test (`tests/data/ch4.*`) ships with the
+repository. The H3 and Li tests need large files (~260 MB) that are not in the
+repository; download them from Zenodo
+(<!-- TODO: Zenodo DOI link -->) and unzip them into `tests/data/`. If they are
+absent those tests are reported as SKIPPED, not failed.
+
 The harness uses paths relative to `tests/` and will create `tests/work/` on each run.
 
 ## Current Input Format
@@ -29,4 +35,3 @@ Golden references live in `tests/refs/`. Missing references are treated as failu
 ## Notes
 
 - Legacy inputs in `tests/inputs/old_inputs/` are not used by the current code.
-- Scripts `test.sh`, `test2.sh`, and `tests/parallel_test/*` still reference `roda.exe` and the legacy input format. They are not part of the current automated test path.

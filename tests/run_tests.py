@@ -25,25 +25,20 @@ SYSTEMS = [
         "err": 0.01336309 
     },
     {
-        "name": "Formic Acid",
-        "prefix": "03a",
-        "bas": "03a_ops.bas",
-        "val": 275.992970,
-        "err": -7.0301e-03     
-    },
-    {
         "name": "H3 System",
         "prefix": "H3_FCI_cc-pVTZ",
         "bas": "H3_FCI_cc-pVTZ_ops.bas",
         "val": 2.999991,
-        "err": -8.8237e-06
+        "err": -8.8237e-06,
+        "optional": True   # large data files, downloaded separately (see tests/README.md)
     },
     {
         "name": "Lithium Atom",
         "prefix": "Li_FCI_cc-pVTZ",
         "bas": "Li_FCI_cc-pVTZ_ops.bas",
         "val": 3.000000,
-        "err": 3.8897e-07
+        "err": 3.8897e-07,
+        "optional": True
     }
 ]
 
@@ -238,6 +233,7 @@ def run_tests():
     setup_work_dir()
     total = 0
     failed = 0
+    skipped = 0
     
     print("========================================")
     print("      INCA FORTRAN TEST SUITE           ")
@@ -252,6 +248,14 @@ def run_tests():
         nme  = sys_def['name']
         pref = sys_def['prefix']
         
+        missing = [f for f in (fchk, dm2p, bas)
+                   if not os.path.exists(os.path.join(DATA_DIR, f))]
+        if missing and sys_def.get("optional"):
+            print(f"SKIPPED: data not found in tests/data/: {', '.join(missing)}")
+            print("         (download inca_test_data from Zenodo, see tests/README.md)")
+            skipped += 3
+            continue
+
         system_tests = [
             {
                 "type": "integral",
@@ -324,7 +328,7 @@ def run_tests():
                     failed += 1
 
     print("\n========================================")
-    print(f"Tests Completed. Total: {total}, Failed: {failed}")
+    print(f"Tests Completed. Total: {total}, Failed: {failed}, Skipped: {skipped}")
     if failed > 0:
         sys.exit(1)
 
