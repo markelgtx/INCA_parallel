@@ -63,7 +63,7 @@ By default, INCA uses a **Single Center** expansion at the origin.
 ### Automatic Multicenter Grid
 * **`multicenter = .true.`**: Enables automated multicenter partitioning (Salvador TFVC scheme).
 * **`nrad`**, **`nang`** *(integers)*: Global radial and angular points per center.
-* **`nohydro`** *(logical)*: Drops the centers formed with hydrogen atoms (Default: `.true.`; currently set in the code, not read from the input file).
+* **`nohydro`** *(logical)*: Drops the centers formed with hydrogen atoms (Default: `.true.`; set `nohydro = .false.` to keep them).
 * **`betaone`** *(logical)*: Forces alternate Becke partition stiffness.
 
 ### Manual Multicenter Grid

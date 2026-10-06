@@ -39,7 +39,7 @@ contains
 
       namelist /intracule_job/ calc_type, c1calc, &
                                intracule_at_zero, intracule_two_points, &
-                               thresh, nosym, x_point1, y_point1, z_point1, &
+                               thresh, nosym, nohydro, x_point1, y_point1, z_point1, &
                                x_point2, y_point2, z_point2, multicenter, &
                                manual_grid, nrad, nang, nquad_in, cent_in, &
                                nradc_in, nangc_in, sfalpha_in, Ps_in, nblock, &
