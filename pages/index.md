@@ -14,18 +14,18 @@ INCA uses a standard Fortran `NAMELIST` input structure. The input file contains
 * **`outname`** *(string)*: Custom master output log filename.
 
 ### Task Flags
-* **`intracalc`** *(logical)*: Triggers the intracule evaluation engine.
+* **`calc_type`** *(string)*: Triggers the intracule evaluation engine; selects `radial_integral`, `radial_plot` or `cubeintra` (see below).
 * **`cube`** *(logical)*: Triggers standard 1-electron 3D cubefile generation.
 * **`c1calc`** *(logical)*: Triggers Exchange-Correlation hole evaluation.
 
 ---
 
-## 2. Intracule Options (`intracalc = .true.`)
+## 2. Intracule Options (`calc_type`)
 
 ### Calculation Types
-* **`radial_integral`**: Computes the total integrated radial intracule and $V_{ee}$.
-* **`radial_plot`**: Evaluates the radial intracule $I(s)$ over a 1D scan grid.
-* **`cubeintra`**: Evaluates the vectorial intracule on a 3D grid.
+* **`calc_type = 'radial_integral'`**: Computes the total integrated radial intracule and $V_{ee}$.
+* **`calc_type = 'radial_plot'`**: Evaluates the radial intracule $I(s)$ over a 1D scan grid.
+* **`calc_type = 'cubeintra'`**: Evaluates the vectorial intracule on a 3D grid.
 * **`intracule_at_zero`**: Evaluates the probability solely at $s = 0$.
 * **`intracule_two_points`**: Evaluates the vector intracule between exactly two coordinates. (Requires `x_point1`, `y_point1`, `z_point1` and `x_point2`, `y_point2`, `z_point2`).
 
@@ -37,7 +37,7 @@ INCA uses a standard Fortran `NAMELIST` input structure. The input file contains
 *Note: Angular integrations utilize high-precision Lebedev spherical quadratures.*
 
 ### Radial Plot Block Settings
-Used when `radial_plot = .true.`. Allows for varying grid resolutions (e.g., fine grid near $s=0$, coarse grid at long range).
+Used when `calc_type = 'radial_plot'`. Allows for varying grid resolutions (e.g., fine grid near $s=0$, coarse grid at long range).
 * **`nblock`** *(integer)*: Number of scan regions.
 * **`scan_start(i)`**, **`scan_end(i)`**, **`scan_step(i)`** *(real)*: Boundaries and step size for block `i`.
 * **`scan_nang(i)`** *(integer)*: Number of Lebedev angular points for block `i` (e.g., 6, 110, 590, 1202).
@@ -46,7 +46,7 @@ Used when `radial_plot = .true.`. Allows for varying grid resolutions (e.g., fin
 
 ## 3. Advanced Grid Topologies (For Developers)
 
-Used when `radial_integral = .true.`. 
+Used when `calc_type = 'radial_integral'`. 
 By default, INCA uses a **Single Center** expansion at the origin. 
 
 ### Automatic Multicenter Grid

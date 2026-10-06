@@ -70,8 +70,7 @@ Radial integral with an automatic multicenter grid:
   dm2name      = 'ch4.dm2p'
 /
 &intracule_job
-  intracalc       = .true.,
-  radial_integral = .true.,
+  calc_type       = 'radial_integral',
   thresh          = 1.0d-12,
   multicenter     = .true.,
   nrad            = 50,
@@ -87,10 +86,10 @@ Main keywords (full description in the User Manual, `pages/index.md`):
 |-------|---------|---------|
 | `&files` | `fchkfilename`, `wfxfilename`, `basfilename`, `dm2name`, `logfilename` | Input files (a `.fchk` or `.wfx` is required) |
 | `&files` | `outname`, `r_plot_name`, `cubeintraname` | Output names (default: derived from the input name) |
-| `&intracule_job` | `intracalc` | Enable the intracule engine |
-| | `radial_integral` | Total integral of the radial intracule |
-| | `radial_plot` | Radial intracule I(s) on a 1D scan (`nblock`, `scan_start/end/step/nang`) |
-| | `cubeintra` | Vector intracule on a 3D grid (`center_i`, `step_i`, `np_i`) |
+| `&intracule_job` | `calc_type` | Intracule calculation: `'radial_integral'`, `'radial_plot'` or `'cubeintra'` (leave out for no intracule) |
+| | `calc_type='radial_integral'` | Total integral of the radial intracule |
+| | `calc_type='radial_plot'` | Radial intracule I(s) on a 1D scan (`nblock`, `scan_start/end/step/nang`) |
+| | `calc_type='cubeintra'` | Vector intracule on a 3D grid (`center_i`, `step_i`, `np_i`) |
 | | `multicenter`, `manual_grid` | Automatic or manual multicenter integration grid |
 | | `nrad`, `nang`, `thresh` | Radial points, Lebedev points, integral screening threshold |
 | `&cube_job` | `cube`, `denscube`, `mocube`, ... | One-electron cube files |

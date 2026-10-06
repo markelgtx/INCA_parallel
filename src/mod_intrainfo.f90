@@ -3,6 +3,7 @@ module intrainfo
 !input variables for intracule calculation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 implicit none
 character*40 :: dm2name, outname
+character(len=32) :: calc_type = ""   !radial_integral / radial_plot / cubeintra
 double precision :: thresh
 double precision :: trsh1, trsh2 !thresholds for DM2prim
 !!!!!Radial integral parameters!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

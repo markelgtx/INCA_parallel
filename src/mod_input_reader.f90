@@ -37,8 +37,8 @@ contains
       namelist /files/ wfxfilename, fchkfilename, basfilename, &
                        logfilename, dm2name, outname, cubeintraname, r_plot_name
 
-      namelist /intracule_job/ intracalc, c1calc, radial_integral, radial_plot, &
-                               cubeintra, intracule_at_zero, intracule_two_points, &
+      namelist /intracule_job/ calc_type, c1calc, &
+                               intracule_at_zero, intracule_two_points, &
                                thresh, nosym, x_point1, y_point1, z_point1, &
                                x_point2, y_point2, z_point2, multicenter, &
                                manual_grid, nrad, nang, nquad_in, cent_in, &
@@ -57,6 +57,7 @@ contains
       denscube = .false.; primcube = .false.; aocube = .false.; mocube = .false.
       gradient = .false.; laplacian = .false.      
       radial_integral = .false.; radial_plot = .false.; cubeintra = .false.
+      calc_type = ""
       intracule_at_zero = .false.; intracule_two_points = .false.
       definite = .false.; multicenter = .true.; manual_grid = .false.
       betaone = .false.; nohydro = .true.; nosym = .false.
@@ -93,6 +94,24 @@ contains
       readfchk = (len_trim(fchkfilename) > 0)
       readbas  = (len_trim(basfilename) > 0)
       readlog  = (len_trim(logfilename) > 0)
+
+      ! --- Intracule calculation type ---
+      call lower_case(calc_type)
+      select case (trim(calc_type))
+      case ("")
+         continue
+      case ("radial_integral")
+         radial_integral = .true.
+      case ("radial_plot")
+         radial_plot = .true.
+      case ("cubeintra")
+         cubeintra = .true.
+      case default
+         write(*,*) "ERROR: Unknown calc_type '", trim(calc_type), "'."
+         write(*,*) "Valid values: radial_integral, radial_plot, cubeintra."
+         stop 1
+      end select
+      intracalc = (len_trim(calc_type) > 0) .or. intracule_at_zero .or. intracule_two_points
 
       if (.not.readwfx .and. .not.readfchk) then
          write(*,*) "ERROR: No wavefunction file specified. Please provide a .wfx or .fchk file."
@@ -141,6 +160,15 @@ contains
       end if
       
    contains
+
+      subroutine lower_case(str)
+         character(len=*), intent(inout) :: str
+         integer :: k
+         do k = 1, len(str)
+            if (str(k:k) >= 'A' .and. str(k:k) <= 'Z') &
+               str(k:k) = achar(iachar(str(k:k)) + 32)
+         end do
+      end subroutine lower_case
 
       subroutine stop_bad_block(blockname)
          character(len=*), intent(in) :: blockname

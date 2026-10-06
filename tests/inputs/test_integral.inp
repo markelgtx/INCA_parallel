@@ -4,8 +4,7 @@
   dm2name      = '{dm2p_file}'
 /
 &intracule_job
-  intracalc       = .true.,
-  radial_integral = .true.,
+  calc_type       = 'radial_integral',
   thresh          = 1.0d-12,
   multicenter     = .true.,
   nrad            = 50,
