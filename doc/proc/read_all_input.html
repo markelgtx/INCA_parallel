@@ -1,0 +1,745 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Intracule Calculator for evaluating radial and vector intracules from quantum chemical data.">
+    <meta name="author" content="Markel Ylla" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>read_all_input &ndash; INCA</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">INCA <small>1.0</small></a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../page/index.html">User Manual</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/namelists.html">Namelists</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/inca.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>read_all_input
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.9% of total for procedures.">76 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mod_input_reader.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mod_input_reader.f90.html'>mod_input_reader.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/input_reader.html'>input_reader</a></li>
+            <li class="breadcrumb-item active" aria-current="page">read_all_input</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#namelists-0"
+         aria-expanded="false" aria-controls="namelists-0">
+         <h4 class="card-header bg-primary text-white">Namelists</h4>
+      </a>
+      <div id="namelists-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../proc/read_all_input.html#namelist-input_files">input_files</a>
+            <a class="list-group-item" href="../proc/read_all_input.html#namelist-output_files">output_files</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/read_all_input.html#src">read_all_input</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>public  subroutine read_all_input(filename)  
+</h2>
+    
+
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-filename~2"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>filename</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~read_all_input~~CalledByGraph Pages: 1 -->
+<svg id="procread_all_inputCalledByGraph" width="178pt" height="32pt"
+ viewBox="0.00 0.00 178.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~read_all_input~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>proc~~read_all_input~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 174,-28 174,4 -4,4"/>
+<!-- proc~read_all_input -->
+<g id="proc~~read_all_input~~CalledByGraph_node1" class="node">
+<title>proc~read_all_input</title>
+<polygon fill="none" stroke="black" points="170,-24 90,-24 90,0 170,0 170,-24"/>
+<text text-anchor="middle" x="130" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">read_all_input</text>
+</g>
+<!-- program~inca -->
+<g id="proc~~read_all_input~~CalledByGraph_node2" class="node">
+<title>program~inca</title>
+<g id="a_proc~~read_all_input~~CalledByGraph_node2"><a xlink:href="../program/inca.html" xlink:title="inca">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">inca</text>
+</a>
+</g>
+</g>
+<!-- program~inca&#45;&gt;proc~read_all_input -->
+<g id="proc~~read_all_input~~CalledByGraph_edge1" class="edge">
+<title>program~inca&#45;&gt;proc~read_all_input</title>
+<path fill="none" stroke="#000000" d="M54.01,-12C61.82,-12 70.67,-12 79.48,-12"/>
+<polygon fill="#000000" stroke="#000000" points="79.73,-15.5 89.73,-12 79.73,-8.5 79.73,-15.5"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="29pt"
+ viewBox="0.00 0.00 641.00 29.32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.92 0.92) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 695.5,-28 695.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="64,-24 0,-24 0,0 64,0 64,-24"/>
+<text text-anchor="middle" x="32" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="136,-24 82,-24 82,0 136,0 136,-24"/>
+<text text-anchor="middle" x="109" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="209.5,-24 154.5,-24 154.5,0 209.5,0 209.5,-24"/>
+<text text-anchor="middle" x="182" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="350,-24 228,-24 228,0 350,0 350,-24"/>
+<text text-anchor="middle" x="289" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="504,-24 368,-24 368,0 504,0 504,-24"/>
+<text text-anchor="middle" x="436" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="576,-24 522,-24 522,0 576,0 576,-24"/>
+<text text-anchor="middle" x="549" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="691.5,-24 594.5,-24 594.5,0 691.5,0 691.5,-24"/>
+<text text-anchor="middle" x="643" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+      <section>
+        <h2>Namelists</h2>
+            <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="namelist-input_files"></span>
+      <h3>Namelist <a href='../namelist/input_files.html'>input_files</a></h3>
+    </div>
+    <div class="card-body">
+        
+  <br class="visible-xs visible-sm hidden-md">
+  <section>
+    <h2>Variables</h2>
+    <table class="table table-striped" id="namelist-input_files">
+      <thead><tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+      </tr></thead>
+      <tbody>
+              <tr id="variable-wfxfilename">
+      <td><a href="#variable-wfxfilename">wfxfilename</a></td>
+      <td>character(len=40)</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-fchkfilename">
+      <td><a href="#variable-fchkfilename">fchkfilename</a></td>
+      <td>character(len=40)</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-basfilename">
+      <td><a href="#variable-basfilename">basfilename</a></td>
+      <td>character(len=40)</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-logfilename">
+      <td><a href="#variable-logfilename">logfilename</a></td>
+      <td>character(len=40)</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-dm2name">
+      <td><a href="#variable-dm2name">dm2name</a></td>
+      <td>character(len=40)</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+      </tbody>
+    </table>
+  </section>
+
+    </div>
+  </div>
+
+            <div class="card">
+    <div class="card-header codesum">
+      <span class="anchor" id="namelist-output_files"></span>
+      <h3>Namelist <a href='../namelist/output_files.html'>output_files</a></h3>
+    </div>
+    <div class="card-body">
+        
+  <br class="visible-xs visible-sm hidden-md">
+  <section>
+    <h2>Variables</h2>
+    <table class="table table-striped" id="namelist-output_files">
+      <thead><tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Default</th>
+          <th>Description</th>
+      </tr></thead>
+      <tbody>
+              <tr id="variable-outname">
+      <td><a href="#variable-outname">outname</a></td>
+      <td>character(len=40)</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-cubeintraname">
+      <td><a href="#variable-cubeintraname">cubeintraname</a></td>
+      <td>character(len=40)</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-r_plot_name">
+      <td><a href="#variable-r_plot_name">r_plot_name</a></td>
+      <td>character(len=40)</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-intracalc">
+      <td><a href="#variable-intracalc">intracalc</a></td>
+      <td>logical</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-c1calc">
+      <td><a href="#variable-c1calc">c1calc</a></td>
+      <td>logical</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-cube">
+      <td><a href="#variable-cube">cube</a></td>
+      <td>logical</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-denscube">
+      <td><a href="#variable-denscube">denscube</a></td>
+      <td>logical</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-primcube">
+      <td><a href="#variable-primcube">primcube</a></td>
+      <td>logical</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-aocube">
+      <td><a href="#variable-aocube">aocube</a></td>
+      <td>logical</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-mocube">
+      <td><a href="#variable-mocube">MOcube</a></td>
+      <td>logical</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-gradient">
+      <td><a href="#variable-gradient">gradient</a></td>
+      <td>logical</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-laplacian">
+      <td><a href="#variable-laplacian">laplacian</a></td>
+      <td>logical</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-npr">
+      <td><a href="#variable-npr">npr</a></td>
+      <td>integer</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-cao">
+      <td><a href="#variable-cao">cao</a></td>
+      <td>integer</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-mo">
+      <td><a href="#variable-mo">mo</a></td>
+      <td>integer</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-center">
+      <td><a href="#variable-center">center</a></td>
+      <td>double precision</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-step~2">
+      <td><a href="#variable-step~2">step</a></td>
+      <td>double precision</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="variable-np~3">
+      <td><a href="#variable-np~3">np</a></td>
+      <td>integer</td>
+      <td>None</td>
+      <td></td>
+    </tr>
+
+              <tr id="namelist">
+      <td><a href="#namelist">namelist</a></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+
+      </tbody>
+    </table>
+  </section>
+
+    </div>
+  </div>
+
+      </section>
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">read_all_input</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="w">      </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="w"> </span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">filename</span>
+<span class="w">      </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">ios</span><span class="p">,</span><span class="w"> </span><span class="n">dot_idx</span><span class="w">      </span>
+<span class="w">      </span><span class="c">! --- Define the comprehenive NAMELIST variables ---</span>
+<span class="w">      </span><span class="k">namelist</span><span class="w"> </span><span class="o">/</span><span class="n">input_files</span><span class="o">/</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">      </span><span class="c">! Strings / Files</span>
+<span class="w">         </span><span class="n">wfxfilename</span><span class="p">,</span><span class="w"> </span><span class="n">fchkfilename</span><span class="p">,</span><span class="w"> </span><span class="n">basfilename</span><span class="p">,</span><span class="w"> </span><span class="n">logfilename</span><span class="p">,</span><span class="w"> </span><span class="n">dm2name</span>
+<span class="w">      </span><span class="k">namelist</span><span class="w"> </span><span class="o">/</span><span class="n">output_files</span><span class="o">/</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">         </span><span class="n">outname</span><span class="p">,</span><span class="w"> </span><span class="n">cubeintraname</span><span class="p">,</span><span class="w"> </span><span class="n">r_plot_name</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">      </span><span class="c">! Main Job Flags</span>
+<span class="w">         </span><span class="n">intracalc</span><span class="p">,</span><span class="w"> </span><span class="n">c1calc</span><span class="p">,</span><span class="w"> </span><span class="n">cube</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">      </span><span class="c">!Standard Cube Options   </span>
+<span class="w">         </span><span class="n">denscube</span><span class="p">,</span><span class="w"> </span><span class="n">primcube</span><span class="p">,</span><span class="w"> </span><span class="n">aocube</span><span class="p">,</span><span class="w"> </span><span class="n">mocube</span><span class="p">,</span><span class="w"> </span><span class="n">gradient</span><span class="p">,</span><span class="w"> </span><span class="n">laplacian</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">         </span><span class="n">npr</span><span class="p">,</span><span class="w"> </span><span class="n">cao</span><span class="p">,</span><span class="w"> </span><span class="n">mo</span><span class="p">,</span><span class="w"> </span><span class="n">center</span><span class="p">,</span><span class="w"> </span><span class="n">step</span><span class="p">,</span><span class="w"> </span><span class="n">np</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">      </span><span class="c">! Intracule calculation options</span>
+<span class="w">      </span><span class="k">namelist</span><span class="w"> </span><span class="o">/</span><span class="n">intracule_job</span><span class="o">/</span><span class="w"> </span><span class="p">&amp;</span><span class="w">   </span>
+<span class="w">         </span><span class="n">radial_integral</span><span class="p">,</span><span class="w"> </span><span class="n">radial_plot</span><span class="p">,</span><span class="w"> </span><span class="n">cubeintra</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">         </span><span class="n">intracule_at_zero</span><span class="p">,</span><span class="w"> </span><span class="n">intracule_two_points</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">      </span><span class="c">!  Primitive quartet options</span>
+<span class="w">         </span><span class="n">thresh</span><span class="p">,</span><span class="w"> </span><span class="n">nosym</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">      </span><span class="c">!  Two points for the intracule</span>
+<span class="w">         </span><span class="n">x_point1</span><span class="p">,</span><span class="w"> </span><span class="n">y_point1</span><span class="p">,</span><span class="w"> </span><span class="n">z_point1</span><span class="p">,</span><span class="w"> </span><span class="n">x_point2</span><span class="p">,</span><span class="w"> </span><span class="n">y_point2</span><span class="p">,</span><span class="w"> </span><span class="n">z_point2</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">      </span><span class="c">!  Radial integral grid configuration flags</span>
+<span class="w">         </span><span class="n">multicenter</span><span class="p">,</span><span class="w"> </span><span class="n">manual_grid</span><span class="p">,</span><span class="w"> </span><span class="n">nrad</span><span class="p">,</span><span class="w"> </span><span class="n">nang</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">      </span><span class="c">!  Manual gtid arrays</span>
+<span class="w">         </span><span class="n">nquad_in</span><span class="p">,</span><span class="w"> </span><span class="n">cent_in</span><span class="p">,</span><span class="w"> </span><span class="n">nradc_in</span><span class="p">,</span><span class="w"> </span><span class="n">nangc_in</span><span class="p">,</span><span class="w"> </span><span class="n">sfalpha_in</span><span class="p">,</span><span class="w"> </span><span class="n">Ps_in</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">      </span><span class="c">!  Radial Scan Block Arrays</span>
+<span class="w">         </span><span class="n">nblock</span><span class="p">,</span><span class="w"> </span><span class="n">scan_start</span><span class="p">,</span><span class="w"> </span><span class="n">scan_end</span><span class="p">,</span><span class="w"> </span><span class="n">scan_step</span><span class="p">,</span><span class="w"> </span><span class="n">scan_nang</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"> </span>
+<span class="w">      </span><span class="c">!  Vectorial plot options</span>
+<span class="w">         </span><span class="n">center_i</span><span class="p">,</span><span class="w"> </span><span class="n">step_i</span><span class="p">,</span><span class="w"> </span><span class="n">np_i</span><span class="p">,</span><span class="w">            </span>
+<span class="w">      </span>
+<span class="w">      </span><span class="c">! ==========================================================</span>
+<span class="w">      </span><span class="c">! Set Defaults</span>
+<span class="w">      </span><span class="c">! ==========================================================</span>
+<span class="w">      </span><span class="n">thresh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0d-8</span>
+<span class="w">      </span><span class="n">intracalc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.;</span><span class="w"> </span><span class="n">c1calc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.;</span><span class="w"> </span><span class="n">cube</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">      </span><span class="n">denscube</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.;</span><span class="w"> </span><span class="n">primcube</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.;</span><span class="w"> </span><span class="n">aocube</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.;</span><span class="w"> </span><span class="n">mocube</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.;</span><span class="w"> </span><span class="n">gradient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.;</span><span class="w"> </span><span class="n">laplacian</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w">      </span>
+<span class="w">      </span><span class="n">radial_integral</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.;</span><span class="w"> </span><span class="n">radial_plot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.;</span><span class="w"> </span><span class="n">cubeintra</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">      </span><span class="n">intracule_at_zero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.;</span><span class="w"> </span><span class="n">intracule_two_points</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">      </span><span class="n">definite</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.;</span><span class="w"> </span><span class="n">multicenter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.;</span><span class="w"> </span><span class="n">manual_grid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">      </span><span class="n">betaone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.;</span><span class="w"> </span><span class="n">nohydro</span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.;</span><span class="w"> </span><span class="n">nosym</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">      </span><span class="n">nrad</span><span class="o">=</span><span class="mi">50</span><span class="p">;</span><span class="w"> </span><span class="n">nang</span><span class="o">=</span><span class="mi">590</span><span class="p">;</span><span class="w"> </span><span class="n">nblock</span><span class="o">=</span><span class="mi">1</span><span class="w">   </span>
+
+<span class="w">      </span><span class="c">!Read the file</span>
+<span class="w">      </span><span class="k">open</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="k">file</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;old&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">iostat</span><span class="o">=</span><span class="n">ios</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ios</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;ERROR: Could not open input file: &quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="w">         </span><span class="k">stop</span>
+<span class="k">      end if</span>
+<span class="k">      read</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">nml</span><span class="o">=</span><span class="n">input_files</span><span class="p">,</span><span class="w"> </span><span class="n">iostat</span><span class="o">=</span><span class="n">ios</span><span class="p">)</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ios</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;ERROR: Malformed NAMELIST in &quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="w">         </span><span class="k">stop</span>
+<span class="k">      end if</span>
+<span class="k">      close</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="w">      </span><span class="c">! --- Post-processing string and logicals ---</span>
+<span class="w">      </span><span class="n">readwfx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">wfxfilename</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">      </span><span class="n">readfchk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">fchkfilename</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">      </span><span class="n">readbas</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">basfilename</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">      </span><span class="n">readlog</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">logfilename</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="n">readwfx</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="n">readfchk</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="s2">&quot;ERROR: No wavefunction file specified. Please provide a .wfx or .fchk file.&quot;</span>
+<span class="w">         </span><span class="k">stop</span>
+<span class="k">      end if</span><span class="w">  </span>
+
+<span class="w">      </span><span class="c">! --- Smart output Filename Generation ---</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">outname</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         </span><span class="n">dot_idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">index</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">back</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dot_idx</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">outname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">filename</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">dot_idx</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot;.out&quot;</span>
+<span class="w">         </span><span class="k">else</span>
+<span class="k">            </span><span class="n">outname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot;.out&quot;</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">      end if</span>
+
+<span class="k">      if</span><span class="w"> </span><span class="p">(</span><span class="nb">len_trim</span><span class="p">(</span><span class="n">r_plot_name</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         </span><span class="n">dot_idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">index</span><span class="p">(</span><span class="nb">trim</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">back</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span>
+<span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dot_idx</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">             </span><span class="n">r_plot_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">filename</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">dot_idx</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot;.rad&quot;</span>
+<span class="w">         </span><span class="k">else</span>
+<span class="k">             </span><span class="n">r_plot_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="s2">&quot;.rad&quot;</span>
+<span class="w">         </span><span class="k">end if</span>
+<span class="k">      end if</span>
+<span class="w">      </span>
+<span class="w">      </span><span class="c">! --- Allocate Radial Scan Dynamic Arrays ---</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">radial_plot</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         allocate</span><span class="p">(</span><span class="n">n_an_per_part</span><span class="p">(</span><span class="n">nblock</span><span class="p">))</span>
+<span class="w">         </span><span class="k">allocate</span><span class="p">(</span><span class="n">tart</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">nblock</span><span class="p">))</span>
+<span class="w">         </span><span class="k">allocate</span><span class="p">(</span><span class="n">stp</span><span class="p">(</span><span class="n">nblock</span><span class="p">))</span>
+<span class="w">         </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nblock</span>
+<span class="w">            </span><span class="n">tart</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scan_start</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="w">            </span><span class="n">tart</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scan_end</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="w">            </span><span class="n">stp</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scan_step</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="w">            </span><span class="n">n_an_per_part</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scan_nang</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="w">         </span><span class="k">end do</span>
+<span class="k">      end if</span>
+<span class="w">      </span><span class="c">!character(len=20) :: calc_type = &#39;none&#39;                                </span>
+<span class="w">      </span><span class="c">!wfxfilename = &#39;&#39;</span>
+<span class="w">      </span><span class="c">!fchkfilename = &#39;&#39;</span>
+<span class="w">      </span><span class="c">!basfilename = &#39;&#39;</span>
+<span class="w">      </span><span class="c">!logfilename = &#39;&#39;</span>
+<span class="w">      </span><span class="c">!dm2name = &#39;&#39;</span>
+<span class="w">      </span><span class="c">!outname = &#39;&#39;</span>
+<span class="w">      </span><span class="c">!cubeintraname = &#39;&#39;</span>
+<span class="w">      </span><span class="c">!r_plot_name = &#39;&#39;</span>
+<span class="w">      </span><span class="c">! ==========================================================</span>
+<span class="w">      </span><span class="c">! --- Open and read the file ---</span>
+<span class="w">      </span><span class="c">!open(unit=10, file=filename, status=&#39;old&#39;, action=&#39;read&#39;)</span>
+<span class="w">      </span><span class="c">!read(10, nml=files, iostat=ios)</span>
+<span class="w">      </span><span class="c">!if (ios /= 0 .and. ios &gt; 0) write(*,*) &quot;WARNING: Formatting issue in &amp;files namelist!&quot;</span>
+<span class="w">      </span><span class="c">!read(10, nml=intracule_job, iostat=ios)</span>
+<span class="w">      </span><span class="c">!if (ios /= 0 .and. ios &gt; 0) write(*,*) &quot;WARNING: Formatting issue in &amp;intracule_job namelist!&quot;</span>
+<span class="w">      </span><span class="c">!close(10)      </span>
+<span class="w">      </span><span class="c">! Restoring your default outname logic</span>
+<span class="w">      </span><span class="c">!if (len_trim(outname) == 0) then</span>
+<span class="w">      </span><span class="c">!   outname = trim(filename) // &#39;.out&#39;</span>
+<span class="w">         </span><span class="c">! --- Clean Master Output Filename ---</span>
+<span class="w">      </span><span class="c">!   block</span>
+<span class="w">      </span><span class="c">!      integer :: dot_idx</span>
+<span class="w">      </span><span class="c">!      dot_idx = index(trim(filename), &#39;.&#39;, back=.true.)</span>
+<span class="w">      </span><span class="c">!      if (dot_idx &gt; 0) then</span>
+<span class="w">      </span><span class="c">!         outname = filename(1:dot_idx-1) // &quot;.out&quot;</span>
+<span class="w">      </span><span class="c">!      else</span>
+<span class="w">      </span><span class="c">!         outname = trim(filename) // &quot;.out&quot;</span>
+<span class="w">      </span><span class="c">!      end if</span>
+<span class="w">      </span><span class="c">!   end block</span>
+<span class="w">      </span><span class="c">!end if</span>
+<span class="w">      </span><span class="c">! --- Translation Layer: Map defaults and logicals ---</span>
+<span class="w">      </span><span class="c">!readwfx  = (len_trim(wfxfilename) &gt; 0)</span>
+<span class="w">      </span><span class="c">!readfchk = (len_trim(fchkfilename) &gt; 0)</span>
+<span class="w">      </span><span class="c">!readbas  = (len_trim(basfilename) &gt; 0)</span>
+<span class="w">      </span><span class="c">!readlog  = (len_trim(logfilename) &gt; 0)      </span>
+<span class="w">      </span><span class="c">!if (len_trim(calc_type) &gt; 0 .and. trim(calc_type) /= &#39;none&#39;) intracalc = .true.      </span>
+<span class="w">      </span><span class="c">!radial_plot = (trim(calc_type) == &#39;radial_plot&#39;)</span>
+<span class="w">      </span><span class="c">!radial_integral = (trim(calc_type) == &#39;radial_integral&#39;)</span>
+<span class="w">      </span><span class="c">!cubeintra = (trim(calc_type) == &#39;vectorial_plot&#39;)  </span>
+<span class="w">      </span><span class="c">! --- Allocate and populate dynamic arrays for plots ---</span>
+<span class="w">      </span><span class="c">!if (radial_plot) then</span>
+<span class="w">      </span><span class="c">!   allocate(n_an_per_part(nblock))</span>
+<span class="w">      </span><span class="c">!   allocate(tart(2, nblock))</span>
+<span class="w">      </span><span class="c">!   allocate(stp(nblock))  </span>
+<span class="w">      </span><span class="c">!   do i = 1, nblock</span>
+<span class="w">      </span><span class="c">!      tart(1, i) = tmp_start(i)</span>
+<span class="w">      </span><span class="c">!      tart(2, i) = tmp_end(i)</span>
+<span class="w">      </span><span class="c">!      stp(i) = tmp_step(i)</span>
+<span class="w">      </span><span class="c">!      n_an_per_part(i) = tmp_nang(i)</span>
+<span class="w">      </span><span class="c">!   end do</span>
+<span class="w">      </span><span class="c">!end if</span>
+<span class="w">      </span>
+<span class="w">   </span><span class="k">end subroutine </span><span class="n">read_all_input</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              INCA
+ was developed by Markel Ylla<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

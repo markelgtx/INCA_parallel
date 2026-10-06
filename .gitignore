@@ -1,13 +1,20 @@
-# Ignore everything
-*
-
-# But not this file
-!.gitignore
-
-# Allow src/ folder itself
-!src/
-
-# Allow Fortran source files inside src/
-!src/**/*.f90
-!src/**/*.f
-
+# build products
+*.o
+*.mod
+*.exe
+obj/
+# scratch / outputs
+work/
+trash/
+tests/parallel_test/benchmark/
+tests/parallel_test/temp_output.log
+tests/parallel_test/time_log.txt
+tests/parallel_test/gridpoints.dat
+*.cube
+!tests/refs/*.cube
+# editor / OS
+*~
+.DS_Store
+tests/data/H3_FCI_cc-pVTZ.*
+tests/data/Li_FCI_cc-pVTZ.*
+tests/data/03a.dm2p

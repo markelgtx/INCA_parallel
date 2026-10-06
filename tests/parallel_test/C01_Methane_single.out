@@ -1,0 +1,12 @@
+ --------------RADIAL INTEGRAL----------------
+ Number of centres           1
+           1 :::   0.0000000000000000        0.0000000000000000        0.0000000000000000     
+ Weights for centres   1.1634343484430693E-313
+ Alpha parameter   1.0000000000000000     
+ Gauss-Legendre nodes          70
+ Gauss-Lebedev nodes         590
+ ---------------------------------------------
+TOTAL VALUE OF INTRACULE =    4.4999998731571722E+01
+TOTAL VALUE OF Vee =    2.6115021417021701E+01
+ Radial_integral error=  -1.2684282779673595E-006
+          10          45

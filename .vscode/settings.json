@@ -1,0 +1,6 @@
+{
+    "fortran.linter.includePaths": [
+      "src",
+      "obj"
+    ]
+  }

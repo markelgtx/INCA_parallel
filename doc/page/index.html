@@ -1,0 +1,197 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Intracule Calculator for evaluating radial and vector intracules from quantum chemical data.">
+    <meta name="author" content="Markel Ylla" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>User Manual &ndash; INCA</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">INCA <small>1.0</small></a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="index.html">User Manual</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/namelists.html">Namelists</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/inca.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>User Manual</h1>
+    <div class="container p-2 mb-4 bg-light border rounded-3">
+      <div class="row align-items-center justify-content-between">
+        <div class="col">
+          <ul class="list-inline" style="margin-bottom:0px; display:inline">
+          </ul>
+        </div>
+        <div class="col">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-end mb-0">
+              <li class="breadcrumb-item active" aria-current="page">User Manual</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col-9" id='text'>
+      <h1>INCA User Manual</h1>
+<p>INCA uses a standard Fortran <code>NAMELIST</code> input structure. The input file must begin with <code>&amp;input</code> and end with <code>/</code>. Variables are order-independent, case-insensitive, and separated by commas or newlines. </p>
+<h2>1. General Configuration</h2>
+<h3>File I/O</h3>
+<ul>
+<li><strong><code>wfxfilename</code></strong> <em>(string)</em>: Path to the input <code>.wfx</code> file.</li>
+<li><strong><code>fchkfilename</code></strong> <em>(string)</em>: Path to the input <code>.fchk</code> file.</li>
+<li><strong><code>basfilename</code></strong> <em>(string)</em>: Path to custom basis set <code>.bas</code>.</li>
+<li><strong><code>dm2name</code></strong> <em>(string)</em>: Path to <code>.dm2p</code> stream file.</li>
+<li><strong><code>outname</code></strong> <em>(string)</em>: Custom master output log filename.</li>
+</ul>
+<h3>Task Flags</h3>
+<ul>
+<li><strong><code>intracalc</code></strong> <em>(logical)</em>: Triggers the intracule evaluation engine.</li>
+<li><strong><code>cube</code></strong> <em>(logical)</em>: Triggers standard 1-electron 3D cubefile generation.</li>
+<li><strong><code>c1calc</code></strong> <em>(logical)</em>: Triggers Exchange-Correlation hole evaluation.</li>
+</ul>
+<hr>
+<h2>2. Intracule Options (<code>intracalc = .true.</code>)</h2>
+<h3>Calculation Types</h3>
+<ul>
+<li><strong><code>radial_integral</code></strong>: Computes the total integrated radial intracule and $V_{ee}$.</li>
+<li><strong><code>radial_plot</code></strong>: Evaluates the radial intracule $I(s)$ over a 1D scan grid.</li>
+<li><strong><code>cubeintra</code></strong>: Evaluates the vectorial intracule on a 3D grid.</li>
+<li><strong><code>intracule_at_zero</code></strong>: Evaluates the probability solely at $s = 0$.</li>
+<li><strong><code>intracule_two_points</code></strong>: Evaluates the vector intracule between exactly two coordinates. (Requires <code>x_point1</code>, <code>y_point1</code>, <code>z_point1</code> and <code>x_point2</code>, <code>y_point2</code>, <code>z_point2</code>).</li>
+</ul>
+<h3>General Grid &amp; Math Parameters</h3>
+<ul>
+<li><strong><code>thresh</code></strong> <em>(real)</em>: Threshold for Cioslowski-Liu integral screening (Default: <code>1.0d-12</code>).</li>
+<li><strong><code>nosym</code></strong> <em>(logical)</em>: Disables spatial symmetry optimization.</li>
+</ul>
+<p><em>Note: Angular integrations utilize high-precision Lebedev spherical quadratures.</em></p>
+<h3>Radial Plot Block Settings</h3>
+<p>Used when <code>radial_plot = .true.</code>. Allows for varying grid resolutions (e.g., fine grid near $s=0$, coarse grid at long range).
+* <strong><code>nblock</code></strong> <em>(integer)</em>: Number of scan regions.
+* <strong><code>scan_start(i)</code></strong>, <strong><code>scan_end(i)</code></strong>, <strong><code>scan_step(i)</code></strong> <em>(real)</em>: Boundaries and step size for block <code>i</code>.
+* <strong><code>scan_nang(i)</code></strong> <em>(integer)</em>: Number of Lebedev angular points for block <code>i</code> (e.g., 6, 110, 590, 1202).</p>
+<hr>
+<h2>3. Advanced Grid Topologies (For Developers)</h2>
+<p>Used when <code>radial_integral = .true.</code>. 
+By default, INCA uses a <strong>Single Center</strong> expansion at the origin. </p>
+<h3>Automatic Multicenter Grid</h3>
+<ul>
+<li><strong><code>multicenter = .true.</code></strong>: Enables automated multicenter partitioning (Salvador TFVC scheme).</li>
+<li><strong><code>nrad</code></strong>, <strong><code>nang</code></strong> <em>(integers)</em>: Global radial and angular points per center.</li>
+<li><strong><code>nohydro</code></strong> <em>(logical)</em>: Excludes Hydrogen atoms as integration centers (Default: <code>.true.</code>).</li>
+<li><strong><code>betaone</code></strong> <em>(logical)</em>: Forces alternate Becke partition stiffness.</li>
+</ul>
+<h3>Manual Multicenter Grid</h3>
+<ul>
+<li><strong><code>multicenter = .true.</code></strong> AND <strong><code>manual_grid = .true.</code></strong>: Allows explicit definition of integration centers.</li>
+<li><strong><code>nquad_in</code></strong> <em>(integer)</em>: Total number of centers.</li>
+<li><strong><code>cent_in(1:3, i)</code></strong> <em>(real)</em>: Cartesian X, Y, Z for center <code>i</code>.</li>
+<li><strong><code>nradc_in(i)</code></strong>, <strong><code>nangc_in(i)</code></strong> <em>(integers)</em>: Grid points specific to center <code>i</code>.</li>
+<li><strong><code>sfalpha_in(i)</code></strong>, <strong><code>Ps_in(i)</code></strong> <em>(reals)</em>: Scaling factors and center weights.</li>
+</ul>
+<h3>Definite Integrals</h3>
+<ul>
+<li><strong><code>definite = .true.</code></strong>: Evaluates the integral only within bounds <code>a</code> and <code>b</code> (Must be single-center).</li>
+</ul>
+<hr>
+<h2>4. Cubefile Options (<code>cube = .true.</code>)</h2>
+<ul>
+<li><strong><code>denscube</code></strong>, <strong><code>primcube</code></strong>, <strong><code>aocube</code></strong>, <strong><code>mocube</code></strong>, <strong><code>gradient</code></strong>, <strong><code>laplacian</code></strong> <em>(logicals)</em>: Selects the property to export.</li>
+<li><strong><code>npr</code></strong>, <strong><code>cao</code></strong>, <strong><code>mo</code></strong> <em>(integers)</em>: Selects the specific primitive, AO, or MO index to plot.</li>
+<li><strong><code>center(1:3)</code></strong>, <strong><code>step(1:3)</code></strong>, <strong><code>np(1:3)</code></strong>: Defines the 3D bounding box origin, step size, and number of voxels per axis.</li>
+</ul>
+    </div>
+  </div>
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              INCA
+ was developed by Markel Ylla<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

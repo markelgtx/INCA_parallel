@@ -1,0 +1,19 @@
+&files
+  fchkfilename = '{fchk_file}',
+  basfilename  = '{bas_file}',
+  dm2name      = '{dm2p_file}',
+  r_plot_name  = '{prefix}_scan.rad'
+/
+&intracule_job
+  intracalc   = .true.,
+  radial_plot = .true.,
+  thresh      = 1.0d-12,
+  
+  nblock        = 1,
+  scan_start(1) = 0.0d0,
+  scan_end(1)   = 5.0d0,
+  scan_step(1)  = 0.05d0,
+  scan_nang(1)  = 110
+/
+&cube_job
+/

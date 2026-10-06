@@ -1,0 +1,476 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Intracule Calculator for evaluating radial and vector intracules from quantum chemical data.">
+    <meta name="author" content="Markel Ylla" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>mod_quadratures.f90 &ndash; INCA</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">INCA <small>1.0</small></a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../page/index.html">User Manual</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/namelists.html">Namelists</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/inca.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>mod_quadratures.f90
+      <small>Source File</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.6% of total for source files.">51 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mod_quadratures.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+            <li class="breadcrumb-item active" aria-current="page">mod_quadratures.f90</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#mods-0"
+         aria-expanded="false" aria-controls="mods-0">
+         <h4 class="card-header bg-primary text-white">Modules</h4>
+      </a>
+      <div id="mods-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/quadratures.html">quadratures</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../sourcefile/mod_quadratures.f90.html#src">mod_quadratures.f90</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    <div class="col-md-9" id='text'>
+      <p>Module for quadrature grids and weights, and local decomposition variables</p>
+      <br>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Files dependent on this one</h3>
+          </div>
+          <div class="card-body">
+            <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: sourcefile~~mod_quadratures.f90~~AfferentGraph Pages: 1 -->
+<svg id="sourcefilemod_quadraturesf90AfferentGraph" width="532pt" height="154pt"
+ viewBox="0.00 0.00 532.00 154.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="sourcefile~~mod_quadratures.f90~~AfferentGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 150)">
+<title>sourcefile~~mod_quadratures.f90~~AfferentGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-150 528,-150 528,4 -4,4"/>
+<!-- sourcefile~mod_quadratures.f90 -->
+<g id="sourcefile~~mod_quadratures.f90~~AfferentGraph_node1" class="node">
+<title>sourcefile~mod_quadratures.f90</title>
+<polygon fill="none" stroke="black" points="115,-86 0,-86 0,-62 115,-62 115,-86"/>
+<text text-anchor="middle" x="57.5" y="-71.6" font-family="Helvetica,sans-Serif" font-size="10.50">mod_quadratures.f90</text>
+</g>
+<!-- sourcefile~mod_build_grid.f90 -->
+<g id="sourcefile~~mod_quadratures.f90~~AfferentGraph_node2" class="node">
+<title>sourcefile~mod_build_grid.f90</title>
+<g id="a_sourcefile~~mod_quadratures.f90~~AfferentGraph_node2"><a xlink:href="../sourcefile/mod_build_grid.f90.html" xlink:title="mod_build_grid.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="255,-66 151,-66 151,-42 255,-42 255,-66"/>
+<text text-anchor="middle" x="203" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mod_build_grid.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mod_build_grid.f90&#45;&gt;sourcefile~mod_quadratures.f90 -->
+<g id="sourcefile~~mod_quadratures.f90~~AfferentGraph_edge1" class="edge">
+<title>sourcefile~mod_build_grid.f90&#45;&gt;sourcefile~mod_quadratures.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M150.6,-61.16C142.39,-62.31 133.8,-63.51 125.29,-64.69"/>
+<polygon fill="#000000" stroke="#000000" points="124.81,-61.22 115.38,-66.07 125.77,-68.16 124.81,-61.22"/>
+</g>
+<!-- sourcefile~mod_c1hole.f90 -->
+<g id="sourcefile~~mod_quadratures.f90~~AfferentGraph_node3" class="node">
+<title>sourcefile~mod_c1hole.f90</title>
+<g id="a_sourcefile~~mod_quadratures.f90~~AfferentGraph_node3"><a xlink:href="../sourcefile/mod_c1hole.f90.html" xlink:title="mod_c1hole.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="247.5,-146 158.5,-146 158.5,-122 247.5,-122 247.5,-146"/>
+<text text-anchor="middle" x="203" y="-131.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mod_c1hole.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mod_c1hole.f90&#45;&gt;sourcefile~mod_quadratures.f90 -->
+<g id="sourcefile~~mod_quadratures.f90~~AfferentGraph_edge2" class="edge">
+<title>sourcefile~mod_c1hole.f90&#45;&gt;sourcefile~mod_quadratures.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M172.96,-121.86C151.08,-112.71 120.86,-100.08 96.97,-90.09"/>
+<polygon fill="#000000" stroke="#000000" points="98.07,-86.75 87.5,-86.12 95.37,-93.21 98.07,-86.75"/>
+</g>
+<!-- sourcefile~mod_input_reader.f90 -->
+<g id="sourcefile~~mod_quadratures.f90~~AfferentGraph_node4" class="node">
+<title>sourcefile~mod_input_reader.f90</title>
+<g id="a_sourcefile~~mod_quadratures.f90~~AfferentGraph_node4"><a xlink:href="../sourcefile/mod_input_reader.f90.html" xlink:title="mod_input_reader.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="409,-106 291,-106 291,-82 409,-82 409,-106"/>
+<text text-anchor="middle" x="350" y="-91.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mod_input_reader.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mod_input_reader.f90&#45;&gt;sourcefile~mod_quadratures.f90 -->
+<g id="sourcefile~~mod_quadratures.f90~~AfferentGraph_edge3" class="edge">
+<title>sourcefile~mod_input_reader.f90&#45;&gt;sourcefile~mod_quadratures.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M290.79,-93.93C264.31,-93.92 232.57,-93.92 204,-94"/>
+</g>
+<!-- sourcefile~mod_intracule.f90 -->
+<g id="sourcefile~~mod_quadratures.f90~~AfferentGraph_node5" class="node">
+<title>sourcefile~mod_intracule.f90</title>
+<g id="a_sourcefile~~mod_quadratures.f90~~AfferentGraph_node5"><a xlink:href="../sourcefile/mod_intracule.f90.html" xlink:title="mod_intracule.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="399,-64 301,-64 301,-40 399,-40 399,-64"/>
+<text text-anchor="middle" x="350" y="-49.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mod_intracule.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mod_intracule.f90&#45;&gt;sourcefile~mod_quadratures.f90 -->
+<g id="sourcefile~~mod_quadratures.f90~~AfferentGraph_edge4" class="edge">
+<title>sourcefile~mod_intracule.f90&#45;&gt;sourcefile~mod_quadratures.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M315.58,-64.01C279.94,-76.41 225.69,-93.94 204,-94"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M202,-94C176.8,-94.07 149.34,-91.02 125.26,-87.28"/>
+<polygon fill="#000000" stroke="#000000" points="125.59,-83.79 115.16,-85.65 124.47,-90.7 125.59,-83.79"/>
+</g>
+<!-- sourcefile~mod_intracule.f90&#45;&gt;sourcefile~mod_build_grid.f90 -->
+<g id="sourcefile~~mod_quadratures.f90~~AfferentGraph_edge6" class="edge">
+<title>sourcefile~mod_intracule.f90&#45;&gt;sourcefile~mod_build_grid.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M300.72,-52.67C289.38,-52.82 277.14,-52.99 265.31,-53.15"/>
+<polygon fill="#000000" stroke="#000000" points="265.01,-49.66 255.05,-53.3 265.1,-56.66 265.01,-49.66"/>
+</g>
+<!-- sourcefile~mod_intrastuff.f90 -->
+<g id="sourcefile~~mod_quadratures.f90~~AfferentGraph_node6" class="node">
+<title>sourcefile~mod_intrastuff.f90</title>
+<g id="a_sourcefile~~mod_quadratures.f90~~AfferentGraph_node6"><a xlink:href="../sourcefile/mod_intrastuff.f90.html" xlink:title="mod_intrastuff.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="252.5,-24 153.5,-24 153.5,0 252.5,0 252.5,-24"/>
+<text text-anchor="middle" x="203" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mod_intrastuff.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~mod_intracule.f90&#45;&gt;sourcefile~mod_intrastuff.f90 -->
+<g id="sourcefile~~mod_quadratures.f90~~AfferentGraph_edge10" class="edge">
+<title>sourcefile~mod_intracule.f90&#45;&gt;sourcefile~mod_intrastuff.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M305.5,-40C290.37,-35.83 273.22,-31.1 257.39,-26.73"/>
+<polygon fill="#000000" stroke="#000000" points="258.3,-23.35 247.72,-24.06 256.43,-30.1 258.3,-23.35"/>
+</g>
+<!-- sourcefile~mod_intrastuff.f90&#45;&gt;sourcefile~mod_quadratures.f90 -->
+<g id="sourcefile~~mod_quadratures.f90~~AfferentGraph_edge5" class="edge">
+<title>sourcefile~mod_intrastuff.f90&#45;&gt;sourcefile~mod_quadratures.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M172.28,-24.08C165.29,-26.97 157.87,-30.06 151,-33 132.37,-40.96 111.74,-50.08 94.71,-57.68"/>
+<polygon fill="#000000" stroke="#000000" points="92.83,-54.69 85.13,-61.97 95.69,-61.08 92.83,-54.69"/>
+</g>
+<!-- sourcefile~inca_main.f90 -->
+<g id="sourcefile~~mod_quadratures.f90~~AfferentGraph_node7" class="node">
+<title>sourcefile~inca_main.f90</title>
+<g id="a_sourcefile~~mod_quadratures.f90~~AfferentGraph_node7"><a xlink:href="../sourcefile/inca_main.f90.html" xlink:title="inca_main.f90">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="524,-106 445,-106 445,-82 524,-82 524,-106"/>
+<text text-anchor="middle" x="484.5" y="-91.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">inca_main.f90</text>
+</a>
+</g>
+</g>
+<!-- sourcefile~inca_main.f90&#45;&gt;sourcefile~mod_c1hole.f90 -->
+<g id="sourcefile~~mod_quadratures.f90~~AfferentGraph_edge7" class="edge">
+<title>sourcefile~inca_main.f90&#45;&gt;sourcefile~mod_c1hole.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M445.92,-106.03C434.2,-109.4 421.16,-112.74 409,-115 358.14,-124.44 299.26,-129.28 257.69,-131.7"/>
+<polygon fill="#000000" stroke="#000000" points="257.3,-128.22 247.51,-132.27 257.69,-135.21 257.3,-128.22"/>
+</g>
+<!-- sourcefile~inca_main.f90&#45;&gt;sourcefile~mod_input_reader.f90 -->
+<g id="sourcefile~~mod_quadratures.f90~~AfferentGraph_edge8" class="edge">
+<title>sourcefile~inca_main.f90&#45;&gt;sourcefile~mod_input_reader.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M444.82,-94C436.8,-94 428.13,-94 419.41,-94"/>
+<polygon fill="#000000" stroke="#000000" points="419.19,-90.5 409.19,-94 419.19,-97.5 419.19,-90.5"/>
+</g>
+<!-- sourcefile~inca_main.f90&#45;&gt;sourcefile~mod_intracule.f90 -->
+<g id="sourcefile~~mod_quadratures.f90~~AfferentGraph_edge9" class="edge">
+<title>sourcefile~inca_main.f90&#45;&gt;sourcefile~mod_intracule.f90</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M445.53,-81.96C430.98,-77.35 414.18,-72.03 398.82,-67.16"/>
+<polygon fill="#000000" stroke="#000000" points="399.56,-63.72 388.97,-64.04 397.45,-70.4 399.56,-63.72"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#AfferentGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="AfferentGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="190pt" height="32pt"
+ viewBox="0.00 0.00 190.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 186,-28 186,4 -4,4"/>
+<!-- Source File -->
+<g id="node1" class="node">
+<title>Source File</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="67,-24 0,-24 0,0 67,0 67,-24"/>
+<text text-anchor="middle" x="33.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Source File</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node2" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="182,-24 85,-24 85,0 182,0 182,-24"/>
+<text text-anchor="middle" x="133.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a file to a file which it depends on. A file
+is dependent upon another if the latter must be compiled before the former
+can be.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+          </div>
+        </div>
+<br>
+      <section>
+        <h2><span class="anchor" id="src"></span>Source Code</h2>
+        <div class="hl codehilite"><pre><span></span><a id="ln-1" name="ln-1" href="#ln-1"></a><span class="c">!!Module for quadrature grids and weights, and local decomposition variables</span>
+<a id="ln-2" name="ln-2" href="#ln-2"></a><span class="k">module </span><span class="n">quadratures</span>
+<a id="ln-3" name="ln-3" href="#ln-3"></a><span class="k">implicit none</span>
+<a id="ln-4" name="ln-4" href="#ln-4"></a><span class="c">!Angular+radial quadrature</span>
+<a id="ln-5" name="ln-5" href="#ln-5"></a><span class="kt">double precision</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rg</span><span class="p">,</span><span class="w"> </span><span class="n">rrrg</span><span class="w"> </span><span class="c">!grid points for the integral (total, sym+weight)</span>
+<a id="ln-6" name="ln-6" href="#ln-6"></a><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w">  </span><span class="n">maxgrid</span><span class="p">,</span><span class="w"> </span><span class="n">rrgrid</span><span class="w"> </span><span class="c">!original and final number of (symmetry and weight reduced) grid points</span>
+<a id="ln-7" name="ln-7" href="#ln-7"></a><span class="kt">double precision</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rweight</span><span class="p">,</span><span class="w"> </span><span class="n">rweight_vee</span><span class="w"> </span><span class="c">!weight of rrrg grid points</span>
+<a id="ln-8" name="ln-8" href="#ln-8"></a><span class="kt">double precision</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="w"> </span><span class="c">!integration limits</span>
+<a id="ln-9" name="ln-9" href="#ln-9"></a><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">definite</span><span class="w"> </span><span class="c">!.true. if limits are finite (a,b)</span>
+<a id="ln-10" name="ln-10" href="#ln-10"></a><span class="c">! --- Additions for Local Decomposition ---</span>
+<a id="ln-11" name="ln-11" href="#ln-11"></a><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">point_center_map</span><span class="w"> </span><span class="c">! Stores the center index (1..nquad) for each grid point</span>
+<a id="ln-12" name="ln-12" href="#ln-12"></a><span class="kt">double precision</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rint_local</span><span class="w">  </span><span class="c">! Stores pair count per center</span>
+<a id="ln-13" name="ln-13" href="#ln-13"></a><span class="kt">double precision</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">vee_local</span><span class="w">   </span><span class="c">! Stores Vee per center</span>
+<a id="ln-14" name="ln-14" href="#ln-14"></a><span class="c">!Angular quadrature (I(s) vs s)</span>
+<a id="ln-15" name="ln-15" href="#ln-15"></a><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rgrid</span><span class="w">   </span><span class="c">!number of sym reduced grid points</span>
+<a id="ln-16" name="ln-16" href="#ln-16"></a><span class="kt">integer</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">smn</span><span class="w"> </span><span class="c">!number of points per quadrature center (Becke)</span>
+<a id="ln-17" name="ln-17" href="#ln-17"></a><span class="kt">double precision</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">radi</span><span class="w"> </span><span class="c">!radial points</span>
+<a id="ln-18" name="ln-18" href="#ln-18"></a><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">nradi</span><span class="w"> </span><span class="c">!number of radial points</span>
+<a id="ln-19" name="ln-19" href="#ln-19"></a><span class="kt">double precision</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">w_ang</span><span class="w">  </span><span class="c">!angular weights</span>
+<a id="ln-20" name="ln-20" href="#ln-20"></a><span class="kt">double precision</span><span class="p">,</span><span class="w"> </span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:,:)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rpg</span><span class="w">  </span><span class="c">!x,y,z total grid points</span>
+<a id="ln-21" name="ln-21" href="#ln-21"></a><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rpgrid</span><span class="w"> </span><span class="c">!number of grid points for the plot (symmetry reduced)</span>
+<a id="ln-22" name="ln-22" href="#ln-22"></a><span class="c">!deactivate symmetry</span>
+<a id="ln-23" name="ln-23" href="#ln-23"></a><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">nosym</span>
+<a id="ln-24" name="ln-24" href="#ln-24"></a>
+<a id="ln-25" name="ln-25" href="#ln-25"></a><span class="k">contains</span>
+<a id="ln-26" name="ln-26" href="#ln-26"></a><span class="w">    </span><span class="c">!******************************************************************************</span>
+<a id="ln-27" name="ln-27" href="#ln-27"></a><span class="w">    </span><span class="c">!Gauss-Legendreren subroutine. t eta w balioak ematen diguna </span>
+<a id="ln-28" name="ln-28" href="#ln-28"></a><span class="w">    </span><span class="c">!Modification of </span>
+<a id="ln-29" name="ln-29" href="#ln-29"></a><span class="w">    </span><span class="c">!https://github.com/NREL/OpenWARP/blob/master/source/NemohImproved/Nemoh/Solver/Core/Gaussm3.f90</span>
+<a id="ln-30" name="ln-30" href="#ln-30"></a><span class="w">    </span><span class="c">!* Calculation of GAUSS-LEGENDRE abscissas and weights for Gaussian Quadrature</span>
+<a id="ln-31" name="ln-31" href="#ln-31"></a><span class="w">    </span><span class="c">!* integration of polynomial functions.</span>
+<a id="ln-32" name="ln-32" href="#ln-32"></a><span class="w">    </span><span class="c">!*      For normalized lower and upper limits of integration -1.0 &amp; 1.0, and</span>
+<a id="ln-33" name="ln-33" href="#ln-33"></a><span class="w">    </span><span class="c">!* given n, this routine calculates, arrays t(1:n) and  w(1:n) of length n,</span>
+<a id="ln-34" name="ln-34" href="#ln-34"></a><span class="w">    </span><span class="c">!* containing the abscissas and weights of the Gauss-Legendre n-point quadrature</span>
+<a id="ln-35" name="ln-35" href="#ln-35"></a><span class="w">    </span><span class="c">!* formula. </span>
+<a id="ln-36" name="ln-36" href="#ln-36"></a><span class="w">    </span><span class="c">!* For detailed explanations finding weights &amp; abscissas, see  &quot;Numerical Recipes in Fortran */</span>
+<a id="ln-37" name="ln-37" href="#ln-37"></a><span class="w">    </span><span class="k">SUBROUTINE </span><span class="n">sub_GauLeg</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span><span class="n">X2</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+<a id="ln-38" name="ln-38" href="#ln-38"></a><span class="w">	    </span><span class="c">!beste modu bat X1 eta X2 kendu, eta XL eta XM</span>
+<a id="ln-39" name="ln-39" href="#ln-39"></a><span class="w">	    </span><span class="c">!bukaera t(i) = -z eta t(n+1-i)= +z izango dira</span>
+<a id="ln-40" name="ln-40" href="#ln-40"></a><span class="w">        </span><span class="k">IMPLICIT NONE      </span>
+<a id="ln-41" name="ln-41" href="#ln-41"></a><span class="k">        </span><span class="kt">INTEGER</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span>
+<a id="ln-42" name="ln-42" href="#ln-42"></a><span class="w">        </span><span class="kt">INTEGER</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w">   </span><span class="c">!Number of Gaussian points</span>
+<a id="ln-43" name="ln-43" href="#ln-43"></a><span class="w">        </span><span class="kt">REAL</span><span class="o">*</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">W</span><span class="p">,</span><span class="n">t</span>
+<a id="ln-44" name="ln-44" href="#ln-44"></a><span class="w">        </span><span class="kt">REAL</span><span class="o">*</span><span class="mi">8</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">XM</span><span class="p">,</span><span class="n">XL</span><span class="p">,</span><span class="n">X1</span><span class="p">,</span><span class="n">X2</span><span class="p">,</span><span class="n">EPS</span><span class="p">,</span><span class="n">P1</span><span class="p">,</span><span class="n">P2</span><span class="p">,</span><span class="n">P3</span><span class="p">,</span><span class="n">pi</span><span class="p">,</span><span class="n">Z1</span><span class="p">,</span><span class="n">Z</span><span class="p">,</span><span class="n">PP</span>
+<a id="ln-45" name="ln-45" href="#ln-45"></a><span class="w">	    </span><span class="c">!Relative precision</span>
+<a id="ln-46" name="ln-46" href="#ln-46"></a><span class="w">   	    </span><span class="n">EPS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.D-14</span>
+<a id="ln-47" name="ln-47" href="#ln-47"></a><span class="w">  	    </span><span class="c">!double precision arccosine. Pi value=3.14159</span>
+<a id="ln-48" name="ln-48" href="#ln-48"></a><span class="w"> 	    </span><span class="n">pi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">DACOS</span><span class="p">(</span><span class="o">-</span><span class="mf">1.D0</span><span class="p">)</span>
+<a id="ln-49" name="ln-49" href="#ln-49"></a><span class="w">	    </span><span class="c">!N = number of Gauss Points</span>
+<a id="ln-50" name="ln-50" href="#ln-50"></a><span class="w">	    </span><span class="c">!Roots are symmetric in the interval - so only need to find half of them  </span>
+<a id="ln-51" name="ln-51" href="#ln-51"></a><span class="w">   	    </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">int</span><span class="p">((</span><span class="nb">dble</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1.0d0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2.0d0</span><span class="p">)</span>
+<a id="ln-52" name="ln-52" href="#ln-52"></a><span class="w">	    </span><span class="c">!The coats are going to be X1 = -1 and X2 = 1, Gauss-Legendre </span>
+<a id="ln-53" name="ln-53" href="#ln-53"></a><span class="w">      	</span><span class="n">XM</span><span class="o">=</span><span class="mf">0.5D0</span><span class="o">*</span><span class="p">(</span><span class="n">X1</span><span class="o">+</span><span class="n">X2</span><span class="p">)</span>
+<a id="ln-54" name="ln-54" href="#ln-54"></a><span class="w">      	</span><span class="n">XL</span><span class="o">=</span><span class="mf">0.5D0</span><span class="o">*</span><span class="p">(</span><span class="n">X2</span><span class="o">-</span><span class="n">X1</span><span class="p">)</span>
+<a id="ln-55" name="ln-55" href="#ln-55"></a><span class="w">	    </span><span class="c">!Loop over the desired roots</span>
+<a id="ln-56" name="ln-56" href="#ln-56"></a><span class="w">      	</span><span class="k">DO </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">m</span>
+<a id="ln-57" name="ln-57" href="#ln-57"></a><span class="w">            </span><span class="n">Z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">DCOS</span><span class="w"> </span><span class="p">(</span><span class="n">pi</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="nb">dble</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">0.25D0</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="nb">dble</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.5D0</span><span class="p">))</span>
+<a id="ln-58" name="ln-58" href="#ln-58"></a><span class="w">	        </span><span class="c">!Starting with the above approximation to the i-th root,</span>
+<a id="ln-59" name="ln-59" href="#ln-59"></a><span class="w">	        </span><span class="c">!we enter the main loop of refinement by NEWTON&#39;S method   </span>
+<a id="ln-60" name="ln-60" href="#ln-60"></a><span class="w"> </span><span class="mi">10</span><span class="w">         </span><span class="n">P1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.D0</span>
+<a id="ln-61" name="ln-61" href="#ln-61"></a><span class="w">            </span><span class="n">P2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.D0</span>
+<a id="ln-62" name="ln-62" href="#ln-62"></a>
+<a id="ln-63" name="ln-63" href="#ln-63"></a><span class="w">	        </span><span class="c">!Loop up the recurrence relation to get the Legendre</span>
+<a id="ln-64" name="ln-64" href="#ln-64"></a><span class="w">	        </span><span class="c">!polynomial evaluated at z                </span>
+<a id="ln-65" name="ln-65" href="#ln-65"></a><span class="w">            </span><span class="k">DO </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="n">n</span>
+<a id="ln-66" name="ln-66" href="#ln-66"></a><span class="w">                </span><span class="n">P3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">P2</span>
+<a id="ln-67" name="ln-67" href="#ln-67"></a><span class="w">                </span><span class="n">P2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">P1</span>
+<a id="ln-68" name="ln-68" href="#ln-68"></a><span class="w">                </span><span class="n">P1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="mf">2.D0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">dble</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1.D0</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Z</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">P2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="nb">dble</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">-</span><span class="mf">1.D0</span><span class="p">)</span><span class="o">*</span><span class="n">P3</span><span class="p">)&amp;</span>
+<a id="ln-69" name="ln-69" href="#ln-69"></a><span class="w">                    </span><span class="o">/</span><span class="nb">dble</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+<a id="ln-70" name="ln-70" href="#ln-70"></a><span class="w">            </span><span class="k">END DO</span>
+<a id="ln-71" name="ln-71" href="#ln-71"></a><span class="w">            </span><span class="c">!p1 is now the desired Legendre polynomial.</span>
+<a id="ln-72" name="ln-72" href="#ln-72"></a><span class="w">            </span><span class="c">!We next compute pp, its derivative, by a standard relation involving also p2, </span>
+<a id="ln-73" name="ln-73" href="#ln-73"></a><span class="w">            </span><span class="c">!the polynomial of one lower order. </span>
+<a id="ln-74" name="ln-74" href="#ln-74"></a><span class="w">            </span><span class="n">PP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">dble</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">Z</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">P1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">P2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">Z</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Z</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1.D0</span><span class="p">)</span>
+<a id="ln-75" name="ln-75" href="#ln-75"></a><span class="w">            </span><span class="n">Z1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Z</span>
+<a id="ln-76" name="ln-76" href="#ln-76"></a><span class="w">            </span><span class="n">Z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Z1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">P1</span><span class="o">/</span><span class="n">PP</span><span class="w">	      </span><span class="c">! Newton&#39;s Method  */</span>
+<a id="ln-77" name="ln-77" href="#ln-77"></a><span class="w">            </span><span class="k">IF</span><span class="w"> </span><span class="p">(</span><span class="nb">DABS</span><span class="p">(</span><span class="n">Z</span><span class="o">-</span><span class="n">Z1</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="n">GT</span><span class="p">.</span><span class="w"> </span><span class="n">EPS</span><span class="p">)</span><span class="w"> </span><span class="k">GO</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="mi">10</span>
+<a id="ln-78" name="ln-78" href="#ln-78"></a><span class="w">	        </span><span class="c">! Roots will be symmetric about the origin  </span>
+<a id="ln-79" name="ln-79" href="#ln-79"></a><span class="w">            </span><span class="n">t</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XM</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">XL</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Z</span>
+<a id="ln-80" name="ln-80" href="#ln-80"></a><span class="w">            </span><span class="n">t</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XM</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">XL</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Z</span>
+<a id="ln-81" name="ln-81" href="#ln-81"></a><span class="w">	        </span><span class="c">!Compute the weight and its symmetric counterpart </span>
+<a id="ln-82" name="ln-82" href="#ln-82"></a><span class="w">            </span><span class="n">W</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.D0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">XL</span><span class="o">/</span><span class="p">((</span><span class="mf">1.D0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Z</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Z</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">PP</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">PP</span><span class="p">)</span>
+<a id="ln-83" name="ln-83" href="#ln-83"></a><span class="w">            </span><span class="n">W</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">W</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<a id="ln-84" name="ln-84" href="#ln-84"></a><span class="w">        </span><span class="k">END DO  </span>
+<a id="ln-85" name="ln-85" href="#ln-85"></a><span class="k">	    RETURN</span><span class="w">   </span><span class="c">!not neccesary</span>
+<a id="ln-86" name="ln-86" href="#ln-86"></a><span class="w">    </span><span class="k">END SUBROUTINE </span><span class="n">Sub_GauLeg</span>
+<a id="ln-87" name="ln-87" href="#ln-87"></a>
+<a id="ln-88" name="ln-88" href="#ln-88"></a><span class="k">end module </span><span class="n">quadratures</span>
+</pre></div>
+
+      </section>
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              INCA
+ was developed by Markel Ylla<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

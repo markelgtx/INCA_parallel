@@ -1,0 +1,993 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Intracule Calculator for evaluating radial and vector intracules from quantum chemical data.">
+    <meta name="author" content="Markel Ylla" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>geninfo &ndash; INCA</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">INCA <small>1.0</small></a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../page/index.html">User Manual</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/namelists.html">Namelists</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/inca.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>geninfo
+      <small>Module</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.6% of total for modules and submodules.">21 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/mod_geninfo.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/mod_geninfo.f90.html'>mod_geninfo.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">geninfo</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../module/geninfo.html#variable-uhf">uhf</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-rhf">rhf</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-rdens">rdens</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-udens">udens</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-opsh">opsh</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-clsh">clsh</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-natoms">natoms</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-nelec">nelec</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-nprim">nprim</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-netch">netch</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-mspin">mspin</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-nalfae">nalfae</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-nbetae">nbetae</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-ra">Ra</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-ptyp">Ptyp</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-alpha">Alpha</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-tmn">TMN</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-cartes">cartes</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-xn">Xn</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-yn">Yn</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-zn">Zn</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-an">an</a>
+            <a class="list-group-item" href="../module/geninfo.html#variable-chrg">chrg</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
+
+    </div>
+
+    <div class="col-md-9" id='text'>
+      
+<br>      
+          <div class="card">
+      <h3 class="card-header card-title bg-light">Used by</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: module~~geninfo~~UsedByGraph Pages: 1 -->
+<svg id="modulegeninfoUsedByGraph" width="442pt" height="406pt"
+ viewBox="0.00 0.00 442.00 406.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~geninfo~~UsedByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 402)">
+<title>module~~geninfo~~UsedByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-402 438,-402 438,4 -4,4"/>
+<!-- module~geninfo -->
+<g id="module~~geninfo~~UsedByGraph_node1" class="node">
+<title>module~geninfo</title>
+<polygon fill="none" stroke="black" points="54,-212 0,-212 0,-188 54,-188 54,-212"/>
+<text text-anchor="middle" x="27" y="-197.6" font-family="Helvetica,sans-Serif" font-size="10.50">geninfo</text>
+</g>
+<!-- module~autogrid -->
+<g id="module~~geninfo~~UsedByGraph_node2" class="node">
+<title>module~autogrid</title>
+<g id="a_module~~geninfo~~UsedByGraph_node2"><a xlink:href="../module/autogrid.html" xlink:title="autogrid">
+<polygon fill="#337ab7" stroke="#337ab7" points="235,-398 181,-398 181,-374 235,-374 235,-398"/>
+<text text-anchor="middle" x="208" y="-383.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">autogrid</text>
+</a>
+</g>
+</g>
+<!-- module~autogrid&#45;&gt;module~geninfo -->
+<g id="module~~geninfo~~UsedByGraph_edge1" class="edge">
+<title>module~autogrid&#45;&gt;module~geninfo</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M180.85,-390.57C162.47,-392.51 137.81,-392.51 118.5,-383"/>
+</g>
+<!-- module~c1hole -->
+<g id="module~~geninfo~~UsedByGraph_node3" class="node">
+<title>module~c1hole</title>
+<g id="a_module~~geninfo~~UsedByGraph_node3"><a xlink:href="../module/c1hole.html" xlink:title="c1hole">
+<polygon fill="#337ab7" stroke="#337ab7" points="235,-314 181,-314 181,-290 235,-290 235,-314"/>
+<text text-anchor="middle" x="208" y="-299.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">c1hole</text>
+</a>
+</g>
+</g>
+<!-- module~c1hole&#45;&gt;module~geninfo -->
+<g id="module~~geninfo~~UsedByGraph_edge2" class="edge">
+<title>module~c1hole&#45;&gt;module~geninfo</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M180.78,-305.29C162.81,-306.62 138.67,-306.55 118.5,-300"/>
+</g>
+<!-- module~functions -->
+<g id="module~~geninfo~~UsedByGraph_node5" class="node">
+<title>module~functions</title>
+<g id="a_module~~geninfo~~UsedByGraph_node5"><a xlink:href="../module/functions.html" xlink:title="functions">
+<polygon fill="#337ab7" stroke="#337ab7" points="145,-352 90,-352 90,-328 145,-328 145,-352"/>
+<text text-anchor="middle" x="117.5" y="-337.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">functions</text>
+</a>
+</g>
+</g>
+<!-- module~c1hole&#45;&gt;module~functions -->
+<g id="module~~geninfo~~UsedByGraph_edge17" class="edge">
+<title>module~c1hole&#45;&gt;module~functions</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M180.93,-313.2C172.61,-316.76 163.27,-320.78 154.38,-324.59"/>
+<polygon fill="#000000" stroke="#000000" points="152.81,-321.46 145,-328.62 155.57,-327.89 152.81,-321.46"/>
+</g>
+<!-- module~cubefile -->
+<g id="module~~geninfo~~UsedByGraph_node4" class="node">
+<title>module~cubefile</title>
+<g id="a_module~~geninfo~~UsedByGraph_node4"><a xlink:href="../module/cubefile.html" xlink:title="cubefile">
+<polygon fill="#337ab7" stroke="#337ab7" points="235,-356 181,-356 181,-332 235,-332 235,-356"/>
+<text text-anchor="middle" x="208" y="-341.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">cubefile</text>
+</a>
+</g>
+</g>
+<!-- module~cubefile&#45;&gt;module~geninfo -->
+<g id="module~~geninfo~~UsedByGraph_edge3" class="edge">
+<title>module~cubefile&#45;&gt;module~geninfo</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M188.47,-356.14C166.54,-369.81 131.38,-389.34 118.5,-383"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M116.5,-383C55.32,-352.87 36.08,-263.96 30.32,-222.18"/>
+<polygon fill="#000000" stroke="#000000" points="33.78,-221.67 29.08,-212.18 26.84,-222.53 33.78,-221.67"/>
+</g>
+<!-- module~cubefile&#45;&gt;module~functions -->
+<g id="module~~geninfo~~UsedByGraph_edge18" class="edge">
+<title>module~cubefile&#45;&gt;module~functions</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M180.93,-342.82C172.88,-342.46 163.86,-342.05 155.24,-341.66"/>
+<polygon fill="#000000" stroke="#000000" points="155.15,-338.15 145,-341.2 154.83,-345.15 155.15,-338.15"/>
+</g>
+<!-- module~functions&#45;&gt;module~geninfo -->
+<g id="module~~geninfo~~UsedByGraph_edge4" class="edge">
+<title>module~functions&#45;&gt;module~geninfo</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M102.48,-327.75C98.19,-323.63 93.65,-318.84 90,-314 67.44,-284.1 48.03,-244.96 37.2,-221.19"/>
+<polygon fill="#000000" stroke="#000000" points="40.37,-219.71 33.1,-212.01 33.98,-222.57 40.37,-219.71"/>
+</g>
+<!-- module~intracule -->
+<g id="module~~geninfo~~UsedByGraph_node6" class="node">
+<title>module~intracule</title>
+<g id="a_module~~geninfo~~UsedByGraph_node6"><a xlink:href="../module/intracule.html" xlink:title="intracule">
+<polygon fill="#337ab7" stroke="#337ab7" points="235,-272 181,-272 181,-248 235,-248 235,-272"/>
+<text text-anchor="middle" x="208" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">intracule</text>
+</a>
+</g>
+</g>
+<!-- module~intracule&#45;&gt;module~geninfo -->
+<g id="module~~geninfo~~UsedByGraph_edge5" class="edge">
+<title>module~intracule&#45;&gt;module~geninfo</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M188.36,-272.01C166.68,-285.34 132.13,-304.43 118.5,-300"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M116.5,-300C78.57,-287.68 51.65,-246.76 38.08,-221.24"/>
+<polygon fill="#000000" stroke="#000000" points="41.19,-219.64 33.53,-212.31 34.95,-222.81 41.19,-219.64"/>
+</g>
+<!-- module~intrastuff -->
+<g id="module~~geninfo~~UsedByGraph_node7" class="node">
+<title>module~intrastuff</title>
+<g id="a_module~~geninfo~~UsedByGraph_node7"><a xlink:href="../module/intrastuff.html" xlink:title="intrastuff">
+<polygon fill="#337ab7" stroke="#337ab7" points="144.5,-272 90.5,-272 90.5,-248 144.5,-248 144.5,-272"/>
+<text text-anchor="middle" x="117.5" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">intrastuff</text>
+</a>
+</g>
+</g>
+<!-- module~intracule&#45;&gt;module~intrastuff -->
+<g id="module~~geninfo~~UsedByGraph_edge20" class="edge">
+<title>module~intracule&#45;&gt;module~intrastuff</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M180.93,-260C172.72,-260 163.5,-260 154.72,-260"/>
+<polygon fill="#000000" stroke="#000000" points="154.69,-256.5 144.69,-260 154.69,-263.5 154.69,-256.5"/>
+</g>
+<!-- module~intrastuff&#45;&gt;module~geninfo -->
+<g id="module~~geninfo~~UsedByGraph_edge6" class="edge">
+<title>module~intrastuff&#45;&gt;module~geninfo</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M98.59,-247.86C85.88,-239.24 68.6,-227.52 54.32,-217.84"/>
+<polygon fill="#000000" stroke="#000000" points="56.12,-214.84 45.88,-212.12 52.2,-220.63 56.12,-214.84"/>
+</g>
+<!-- module~read_files -->
+<g id="module~~geninfo~~UsedByGraph_node8" class="node">
+<title>module~read_files</title>
+<g id="a_module~~geninfo~~UsedByGraph_node8"><a xlink:href="../module/read_files.html" xlink:title="read_files">
+<polygon fill="#337ab7" stroke="#337ab7" points="337,-253 278,-253 278,-229 337,-229 337,-253"/>
+<text text-anchor="middle" x="307.5" y="-238.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">read_files</text>
+</a>
+</g>
+</g>
+<!-- module~read_files&#45;&gt;module~geninfo -->
+<g id="module~~geninfo~~UsedByGraph_edge7" class="edge">
+<title>module~read_files&#45;&gt;module~geninfo</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M277.74,-236.77C226.69,-229.25 120.35,-213.6 64.32,-205.35"/>
+<polygon fill="#000000" stroke="#000000" points="64.55,-201.84 54.15,-203.85 63.53,-208.77 64.55,-201.84"/>
+</g>
+<!-- proc~becke1 -->
+<g id="module~~geninfo~~UsedByGraph_node9" class="node">
+<title>proc~becke1</title>
+<g id="a_module~~geninfo~~UsedByGraph_node9"><a xlink:href="../proc/becke1.html" xlink:title="becke1">
+<polygon fill="#d9534f" stroke="#d9534f" points="144.5,-192 90.5,-192 90.5,-168 144.5,-168 144.5,-192"/>
+<text text-anchor="middle" x="117.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">becke1</text>
+</a>
+</g>
+</g>
+<!-- proc~becke1&#45;&gt;module~geninfo -->
+<g id="module~~geninfo~~UsedByGraph_edge8" class="edge">
+<title>proc~becke1&#45;&gt;module~geninfo</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M90.43,-185.89C82.22,-187.75 73,-189.83 64.22,-191.82"/>
+<polygon fill="#000000" stroke="#000000" points="63.18,-188.46 54.19,-194.08 64.72,-195.29 63.18,-188.46"/>
+</g>
+<!-- proc~cmatrix -->
+<g id="module~~geninfo~~UsedByGraph_node10" class="node">
+<title>proc~cmatrix</title>
+<g id="a_module~~geninfo~~UsedByGraph_node10"><a xlink:href="../proc/cmatrix.html" xlink:title="cmatrix">
+<polygon fill="#d9534f" stroke="#d9534f" points="144.5,-150 90.5,-150 90.5,-126 144.5,-126 144.5,-150"/>
+<text text-anchor="middle" x="117.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">cmatrix</text>
+</a>
+</g>
+</g>
+<!-- proc~cmatrix&#45;&gt;module~geninfo -->
+<g id="module~~geninfo~~UsedByGraph_edge9" class="edge">
+<title>proc~cmatrix&#45;&gt;module~geninfo</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M99.02,-150.25C86.08,-159.31 68.27,-171.79 53.71,-181.99"/>
+<polygon fill="#000000" stroke="#000000" points="51.33,-179.38 45.15,-187.99 55.35,-185.12 51.33,-179.38"/>
+</g>
+<!-- proc~filebas -->
+<g id="module~~geninfo~~UsedByGraph_node11" class="node">
+<title>proc~filebas</title>
+<g id="a_module~~geninfo~~UsedByGraph_node11"><a xlink:href="../proc/filebas.html" xlink:title="filebas">
+<polygon fill="#d9534f" stroke="#d9534f" points="144.5,-108 90.5,-108 90.5,-84 144.5,-84 144.5,-108"/>
+<text text-anchor="middle" x="117.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">filebas</text>
+</a>
+</g>
+</g>
+<!-- proc~filebas&#45;&gt;module~geninfo -->
+<g id="module~~geninfo~~UsedByGraph_edge10" class="edge">
+<title>proc~filebas&#45;&gt;module~geninfo</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M99.95,-108.03C96.52,-110.82 93.03,-113.88 90,-117 71,-136.55 52.76,-162.05 41.05,-179.6"/>
+<polygon fill="#000000" stroke="#000000" points="38.11,-177.69 35.55,-187.97 43.96,-181.54 38.11,-177.69"/>
+</g>
+<!-- proc~filefchk -->
+<g id="module~~geninfo~~UsedByGraph_node12" class="node">
+<title>proc~filefchk</title>
+<g id="a_module~~geninfo~~UsedByGraph_node12"><a xlink:href="../proc/filefchk.html" xlink:title="filefchk">
+<polygon fill="#d9534f" stroke="#d9534f" points="144.5,-66 90.5,-66 90.5,-42 144.5,-42 144.5,-66"/>
+<text text-anchor="middle" x="117.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">filefchk</text>
+</a>
+</g>
+</g>
+<!-- proc~filefchk&#45;&gt;module~geninfo -->
+<g id="module~~geninfo~~UsedByGraph_edge11" class="edge">
+<title>proc~filefchk&#45;&gt;module~geninfo</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M98.96,-66.09C95.74,-68.79 92.59,-71.81 90,-75 64.01,-107.1 45.14,-151.89 35.43,-178.23"/>
+<polygon fill="#000000" stroke="#000000" points="32.01,-177.39 31.94,-187.98 38.61,-179.74 32.01,-177.39"/>
+</g>
+<!-- proc~filelog -->
+<g id="module~~geninfo~~UsedByGraph_node13" class="node">
+<title>proc~filelog</title>
+<g id="a_module~~geninfo~~UsedByGraph_node13"><a xlink:href="../proc/filelog.html" xlink:title="filelog">
+<polygon fill="#d9534f" stroke="#d9534f" points="144.5,-24 90.5,-24 90.5,0 144.5,0 144.5,-24"/>
+<text text-anchor="middle" x="117.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">filelog</text>
+</a>
+</g>
+</g>
+<!-- proc~filelog&#45;&gt;module~geninfo -->
+<g id="module~~geninfo~~UsedByGraph_edge12" class="edge">
+<title>proc~filelog&#45;&gt;module~geninfo</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M98.41,-24.12C95.31,-26.77 92.35,-29.77 90,-33 56.88,-78.61 39.49,-143.93 32.22,-177.77"/>
+<polygon fill="#000000" stroke="#000000" points="28.79,-177.09 30.21,-187.59 35.65,-178.5 28.79,-177.09"/>
+</g>
+<!-- module~input_reader -->
+<g id="module~~geninfo~~UsedByGraph_node14" class="node">
+<title>module~input_reader</title>
+<g id="a_module~~geninfo~~UsedByGraph_node14"><a xlink:href="../module/input_reader.html" xlink:title="input_reader">
+<polygon fill="#337ab7" stroke="#337ab7" points="344,-356 271,-356 271,-332 344,-332 344,-356"/>
+<text text-anchor="middle" x="307.5" y="-341.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">input_reader</text>
+</a>
+</g>
+</g>
+<!-- module~input_reader&#45;&gt;module~autogrid -->
+<g id="module~~geninfo~~UsedByGraph_edge13" class="edge">
+<title>module~input_reader&#45;&gt;module~autogrid</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M278.56,-356.04C268.03,-360.57 255.9,-365.8 244.75,-370.6"/>
+<polygon fill="#000000" stroke="#000000" points="243.07,-367.51 235.27,-374.68 245.84,-373.94 243.07,-367.51"/>
+</g>
+<!-- module~input_reader&#45;&gt;module~cubefile -->
+<g id="module~~geninfo~~UsedByGraph_edge15" class="edge">
+<title>module~input_reader&#45;&gt;module~cubefile</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M270.75,-344C262.49,-344 253.7,-344 245.42,-344"/>
+<polygon fill="#000000" stroke="#000000" points="245.28,-340.5 235.28,-344 245.28,-347.5 245.28,-340.5"/>
+</g>
+<!-- program~inca -->
+<g id="module~~geninfo~~UsedByGraph_node15" class="node">
+<title>program~inca</title>
+<g id="a_module~~geninfo~~UsedByGraph_node15"><a xlink:href="../program/inca.html" xlink:title="inca">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="434,-314 380,-314 380,-290 434,-290 434,-314"/>
+<text text-anchor="middle" x="407" y="-299.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">inca</text>
+</a>
+</g>
+</g>
+<!-- program~inca&#45;&gt;module~c1hole -->
+<g id="module~~geninfo~~UsedByGraph_edge14" class="edge">
+<title>program~inca&#45;&gt;module~c1hole</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M306.5,-302C286.17,-302 263.46,-302 245.07,-302"/>
+<polygon fill="#000000" stroke="#000000" points="245.07,-298.5 235.07,-302 245.07,-305.5 245.07,-298.5"/>
+</g>
+<!-- program~inca&#45;&gt;module~cubefile -->
+<g id="module~~geninfo~~UsedByGraph_edge16" class="edge">
+<title>program~inca&#45;&gt;module~cubefile</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M306.5,-302C280.37,-302 253.27,-314.89 234.3,-326.38"/>
+<polygon fill="#000000" stroke="#000000" points="232.24,-323.54 225.67,-331.85 235.99,-329.45 232.24,-323.54"/>
+</g>
+<!-- program~inca&#45;&gt;module~intracule -->
+<g id="module~~geninfo~~UsedByGraph_edge19" class="edge">
+<title>program~inca&#45;&gt;module~intracule</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M379.93,-302C360.29,-302 332.71,-302 308.5,-302"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M306.5,-302C280.37,-302 253.27,-289.11 234.3,-277.62"/>
+<polygon fill="#000000" stroke="#000000" points="235.99,-274.55 225.67,-272.15 232.24,-280.46 235.99,-274.55"/>
+</g>
+<!-- program~inca&#45;&gt;module~read_files -->
+<g id="module~~geninfo~~UsedByGraph_edge21" class="edge">
+<title>program~inca&#45;&gt;module~read_files</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M386.74,-289.95C372.31,-280.93 352.38,-268.45 336.24,-258.35"/>
+<polygon fill="#000000" stroke="#000000" points="338.06,-255.36 327.72,-253.03 334.34,-261.3 338.06,-255.36"/>
+</g>
+<!-- program~inca&#45;&gt;module~input_reader -->
+<g id="module~~geninfo~~UsedByGraph_edge22" class="edge">
+<title>program~inca&#45;&gt;module~input_reader</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M379.87,-313.26C369.38,-317.77 357.1,-323.06 345.71,-327.97"/>
+<polygon fill="#000000" stroke="#000000" points="344.21,-324.81 336.41,-331.98 346.98,-331.24 344.21,-324.81"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsedByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsedByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="490pt" height="32pt"
+ viewBox="0.00 0.00 489.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 485.5,-28 485.5,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="139.5,-24 72.5,-24 72.5,0 139.5,0 139.5,-24"/>
+<text text-anchor="middle" x="106" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="222,-24 158,-24 158,0 222,0 222,-24"/>
+<text text-anchor="middle" x="190" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="294,-24 240,-24 240,0 294,0 294,-24"/>
+<text text-anchor="middle" x="267" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="366,-24 312,-24 312,0 366,0 366,-24"/>
+<text text-anchor="middle" x="339" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="481.5,-24 384.5,-24 384.5,0 481.5,0 481.5,-24"/>
+<text text-anchor="middle" x="433" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+      <br>
+
+
+        <section>
+          <h2>Variables</h2>
+            <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-uhf"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>uhf</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-rhf"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>rhf</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-rdens"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>rdens</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-udens"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>udens</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-opsh"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>opsh</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-clsh"></span>
+              logical,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>clsh</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-natoms"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>natoms</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nelec"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nelec</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nprim"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nprim</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-netch"></span>
+              double precision,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>netch</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-mspin"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>mspin</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nalfae"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nalfae</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-nbetae"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>nbetae</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ra"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>Ra</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ptyp"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>Ptyp</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-alpha"></span>
+              double precision,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>Alpha</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-tmn"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, dimension(:,:)
+            </td>
+            <td>::</td>
+            <td><strong>TMN</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-cartes"></span>
+              double precision,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, dimension(:,:)
+            </td>
+            <td>::</td>
+            <td><strong>cartes</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xn"></span>
+              double precision,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>Xn</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-yn"></span>
+              double precision,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>Yn</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-zn"></span>
+              double precision,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>Zn</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-an"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>an</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-chrg"></span>
+              double precision,
+            </td>
+              <td>public,</td>
+            <td>
+              allocatable, dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>chrg</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+        </section>
+        <br>
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              INCA
+ was developed by Markel Ylla<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>
