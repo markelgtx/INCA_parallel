@@ -22,7 +22,10 @@ SYSTEMS = [
         "prefix": "ch4",
         "bas": "ch4_ops.bas", 
         "val": 45.013363086638655,
-        "err": 0.01336309 
+        "err": 0.01336309,
+        # intracule at s=0 and at two points (point 1 = origin, point 2 = (1,0,0) bohr)
+        "zero": 7.7702702634802296,
+        "two_points": (15.540540526960413, 1.2854504822876072)
     },
     {
         "name": "H3 System",
@@ -227,6 +230,29 @@ def verify_cube(cube_file, reference_cube_file):
         print(f"ERROR: Error verifying cube file: {e}")
         return False
 
+def verify_values(output_file, patterns, expected):
+    """Checks that each regex in `patterns` finds a number in the .out file equal to `expected`."""
+    path = os.path.join(WORK_DIR, output_file)
+    if not os.path.exists(path):
+        print(f"ERROR: Output file {output_file} not generated.")
+        return False
+    with open(path, 'r') as f:
+        text = f.read()
+    found = []
+    for pat in patterns:
+        m = re.search(pat, text)
+        val = parse_scientific(m.group(1)) if m else None
+        if val is None:
+            print(f"ERROR: Pattern '{pat}' not found in {output_file}.")
+            return False
+        found.append(val)
+    for got, exp in zip(found, expected):
+        if abs(got - exp) > TOLERANCE * max(1.0, abs(exp)):
+            print(f"ERROR: Mismatch. Exp: {exp}, Got: {got}")
+            return False
+    print("OK: " + ", ".join(f"{v:.6f}" for v in found))
+    return True
+
 # --- MAIN RUNNER ---
 
 def run_tests():
@@ -253,7 +279,7 @@ def run_tests():
         if missing and sys_def.get("optional"):
             print(f"SKIPPED: data not found in tests/data/: {', '.join(missing)}")
             print("         (download inca_test_data from Zenodo, see tests/README.md)")
-            skipped += 3
+            skipped += 5
             continue
 
         system_tests = [
@@ -277,6 +303,22 @@ def run_tests():
                 "ref": f"{pref}_ref.cube"
             }
         ]
+        if "zero" in sys_def:
+            system_tests.append({
+                "type": "zero",
+                "template": "test_zero.inp",
+                "desc": "Intracule at Zero",
+                "patterns": [r"INTRACULE AT ZERO\s*=\s*(\S+)"],
+                "expected": [sys_def["zero"]]
+            })
+        if "two_points" in sys_def:
+            system_tests.append({
+                "type": "twopoints",
+                "template": "test_twopoints.inp",
+                "desc": "Intracule at Two Points",
+                "patterns": [r"Point 1:.*Intracule:\s*(\S+)", r"Point 2:.*Intracule:\s*(\S+)"],
+                "expected": list(sys_def["two_points"])
+            })
 
         for test in system_tests:
             print(f"{test['desc']} ... ", end="")
@@ -325,6 +367,10 @@ def run_tests():
             elif test['type'] == "cube":
                 # Changed to look for {prefix}_vector.cube using an f-string
                 if not verify_cube(f"{pref}_vector.cube", test['ref']):
+                    failed += 1
+
+            elif test['type'] in ("zero", "twopoints"):
+                if not verify_values(output_name, test['patterns'], test['expected']):
                     failed += 1
 
     print("\n========================================")

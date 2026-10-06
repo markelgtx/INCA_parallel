@@ -1,0 +1,16 @@
+&files
+  fchkfilename = '{fchk_file}',
+  basfilename  = '{bas_file}',
+  dm2name      = '{dm2p_file}'
+/
+&intracule_job
+  intracule_two_points = .true.,
+  x_point1 = 0.0d0, y_point1 = 0.0d0, z_point1 = 0.0d0,
+  x_point2 = 1.0d0, y_point2 = 0.0d0, z_point2 = 0.0d0,
+  thresh      = 1.0d-12,
+  multicenter = .false.,
+  nrad        = 50,
+  nang        = 110
+/
+&cube_job
+/

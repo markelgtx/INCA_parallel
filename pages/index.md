@@ -20,14 +20,25 @@ INCA uses a standard Fortran `NAMELIST` input structure. The input file contains
 
 ---
 
-## 2. Intracule Options (`calc_type`)
+## 2. Intracule Options (`calc_type`, `intracule_at_zero`, `intracule_two_points`)
 
 ### Calculation Types
 * **`calc_type = 'radial_integral'`**: Computes the total integrated radial intracule and $V_{ee}$.
 * **`calc_type = 'radial_plot'`**: Evaluates the radial intracule $I(s)$ over a 1D scan grid.
 * **`calc_type = 'cubeintra'`**: Evaluates the vectorial intracule on a 3D grid.
-* **`intracule_at_zero`**: Evaluates the probability solely at $s = 0$.
-* **`intracule_two_points`**: Evaluates the vector intracule between exactly two coordinates. (Requires `x_point1`, `y_point1`, `z_point1` and `x_point2`, `y_point2`, `z_point2`).
+* **`intracule_at_zero`** *(logical)*: Evaluates the intracule solely at $s = 0$. It is an alternative to `calc_type` and does not need it. The result is written to the `.out` file as `INTRACULE AT ZERO` (the raw value divided by two).
+* **`intracule_two_points`** *(logical)*: Evaluates the vector intracule at exactly two coordinates. It is an alternative to `calc_type` and does not need it. Requires `x_point1`, `y_point1`, `z_point1` and `x_point2`, `y_point2`, `z_point2` (bohr). The values are written to the `.out` file as `Point 1` and `Point 2` (raw values, not divided by two, so the value at the origin is twice `INTRACULE AT ZERO`).
+
+Example, intracule at two points:
+
+```fortran
+&intracule_job
+  intracule_two_points = .true.,
+  x_point1 = 0.0d0, y_point1 = 0.0d0, z_point1 = 0.0d0,
+  x_point2 = 1.0d0, y_point2 = 0.0d0, z_point2 = 0.0d0,
+  thresh = 1.0d-12, multicenter = .false., nrad = 50, nang = 110
+/
+```
 
 ### General Grid & Math Parameters
 * **`thresh`** *(real)*: Threshold for Cioslowski-Liu integral screening (Default: `1.0d-8`).
