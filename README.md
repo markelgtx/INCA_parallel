@@ -92,7 +92,7 @@ Main keywords (full description in the User Manual, `pages/index.md`):
 | | `calc_type='cubeintra'` | Vector intracule on a 3D grid (`center_i`, `step_i`, `np_i`) |
 | | `intracule_at_zero` | Intracule at s = 0 only (no `calc_type` needed); the value is printed in the `.out` log as `INTRACULE AT ZERO` |
 | | `intracule_two_points`, `x_point1..z_point2` | Vector intracule at two given points (no `calc_type` needed); both values are printed in the `.out` log as `Point 1` / `Point 2` |
-| | `multicenter`, `manual_grid` | Automatic or manual multicenter integration grid |
+| | `multicenter`, `manual_grid` | Multicenter integration grid (`multicenter = .true.`, the default) or single-center at the origin (`.false.`); we recommend setting it explicitly. `manual_grid` gives the centers by hand |
 | | `nosym` | Symmetry of the intracule, I(s) = I(-s). By default (`.false.`) it is used and only half of the grid points are computed; `nosym = .true.` switches it off and uses all points |
 | | `nohydro` | In the automatic multicenter grid, drop the centres formed with hydrogen atoms (only atom pairs without H give centres). Default `.true.`; set `nohydro = .false.` to keep them |
 | | `nrad`, `nang`, `thresh` | Radial points, Lebedev points, integral screening threshold |
