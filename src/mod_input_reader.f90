@@ -212,9 +212,9 @@ contains
             nquad = 1
             allocate(cent(3,1), nradc(1), nangc(1), sfalpha(1), Ps(1))
             cent(1:3,1) = 0.0d0
-            nradc(1) = nradc_in(1)   ! Falls back to 50 if not set
-            nangc(1) = nangc_in(1)   ! Falls back to 590 if not set
-            sfalpha(1) = sfalpha_in(1)
+            nradc(1) = nrad          ! Same keywords as the multicenter grid (default 50)
+            nangc(1) = nang          ! (default 590)
+            sfalpha(1) = sfalpha_in(1)   ! Radial scaling factor (default 1.0 bohr)
             Ps(1) = 1.0d0
          end if
       end if
