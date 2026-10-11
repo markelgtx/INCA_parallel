@@ -58,11 +58,11 @@ Used when `calc_type = 'radial_plot'`. Allows for varying grid resolutions (e.g.
 ## 3. Advanced Grid Topologies (For Developers)
 
 Used when `calc_type = 'radial_integral'`. 
-By default, INCA uses a **Single Center** expansion at the origin. 
+By default, INCA uses the automatic **multicenter** grid (`multicenter = .true.`). We recommend always stating the grid explicitly in the input: `multicenter = .true.` for the multicenter grid, or `multicenter = .false.` for a single-center expansion at the origin.
 
 ### Automatic Multicenter Grid
-* **`multicenter = .true.`**: Enables automated multicenter partitioning (Salvador TFVC scheme).
-* **`nrad`**, **`nang`** *(integers)*: Global radial and angular points per center.
+* **`multicenter = .true.`**: Enables automated multicenter partitioning (Salvador TFVC scheme). This is the default; set `multicenter = .false.` for a single-center expansion at the origin.
+* **`nrad`**, **`nang`** *(integers)*: Radial and angular points per center (Defaults: `50` and `590`). They are also used by the single-center grid (`multicenter = .false.`), whose radial scaling factor is `sfalpha_in(1)` (Default: `1.0` bohr).
 * **`nohydro`** *(logical)*: Drops the centers formed with hydrogen atoms (Default: `.true.`; set `nohydro = .false.` to keep them).
 * **`betaone`** *(logical)*: Forces alternate Becke partition stiffness.
 
