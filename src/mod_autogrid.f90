@@ -135,23 +135,50 @@ module autogrid
  
     !****************************************************************************
     !! Returns the Bragg-Slater radius (in Bohr) for a given atomic number.
+    !! Values (in Angstrom) are the empirical atomic radii of Slater, J. Chem. Phys. 41, 3199 (1964)
+    !! for H-Kr, except for H, for which Becke (J. Chem. Phys. 88, 2547 (1988)) uses 0.35 instead of 0.25.
+    !! He and Ne (not given by Slater) use the values 0.35 and 0.38, and any other element
+    !! (Ar, Kr, Z > 36) uses the default value 1.00.
     double precision function get_bs_radius(iz)
        implicit none
        integer, intent(in) :: iz
        
        select case (iz)
-       case (1)  ; get_bs_radius = 0.35d0  
-       case (2)  ; get_bs_radius = 0.35d0
-       case (3:5); get_bs_radius = 1.45d0 
-       case (6)  ; get_bs_radius = 0.70d0
-       case (7)  ; get_bs_radius = 0.65d0
-       case (8)  ; get_bs_radius = 0.60d0
-       case (9)  ; get_bs_radius = 0.50d0
-       case (10) ; get_bs_radius = 0.38d0 
-       case (15) ; get_bs_radius = 1.00d0
-       case (16) ; get_bs_radius = 1.00d0
-       case (17) ; get_bs_radius = 1.00d0
-       case default; get_bs_radius = 1.00d0
+       case (1)  ; get_bs_radius = 0.35d0   ! H (Becke)
+       case (2)  ; get_bs_radius = 0.35d0   ! He (not in Slater's table)
+       case (3)  ; get_bs_radius = 1.45d0   ! Li
+       case (4)  ; get_bs_radius = 1.05d0   ! Be
+       case (5)  ; get_bs_radius = 0.85d0   ! B
+       case (6)  ; get_bs_radius = 0.70d0   ! C
+       case (7)  ; get_bs_radius = 0.65d0   ! N
+       case (8)  ; get_bs_radius = 0.60d0   ! O
+       case (9)  ; get_bs_radius = 0.50d0   ! F
+       case (10) ; get_bs_radius = 0.38d0   ! Ne (not in Slater's table)
+       case (11) ; get_bs_radius = 1.80d0   ! Na
+       case (12) ; get_bs_radius = 1.50d0   ! Mg
+       case (13) ; get_bs_radius = 1.25d0   ! Al
+       case (14) ; get_bs_radius = 1.10d0   ! Si
+       case (15) ; get_bs_radius = 1.00d0   ! P
+       case (16) ; get_bs_radius = 1.00d0   ! S
+       case (17) ; get_bs_radius = 1.00d0   ! Cl
+       case (19) ; get_bs_radius = 2.20d0   ! K
+       case (20) ; get_bs_radius = 1.80d0   ! Ca
+       case (21) ; get_bs_radius = 1.60d0   ! Sc
+       case (22) ; get_bs_radius = 1.40d0   ! Ti
+       case (23) ; get_bs_radius = 1.35d0   ! V
+       case (24) ; get_bs_radius = 1.40d0   ! Cr
+       case (25) ; get_bs_radius = 1.40d0   ! Mn
+       case (26) ; get_bs_radius = 1.40d0   ! Fe
+       case (27) ; get_bs_radius = 1.35d0   ! Co
+       case (28) ; get_bs_radius = 1.35d0   ! Ni
+       case (29) ; get_bs_radius = 1.35d0   ! Cu
+       case (30) ; get_bs_radius = 1.35d0   ! Zn
+       case (31) ; get_bs_radius = 1.30d0   ! Ga
+       case (32) ; get_bs_radius = 1.25d0   ! Ge
+       case (33) ; get_bs_radius = 1.15d0   ! As
+       case (34) ; get_bs_radius = 1.15d0   ! Se
+       case (35) ; get_bs_radius = 1.15d0   ! Br
+       case default; get_bs_radius = 1.00d0 ! Ar, Kr and Z > 36
        end select
        
        get_bs_radius = get_bs_radius * 1.8897d0

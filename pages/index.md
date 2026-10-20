@@ -63,6 +63,7 @@ By default, INCA uses the automatic **multicenter** grid (`multicenter = .true.`
 ### Automatic Multicenter Grid
 * **`multicenter = .true.`**: Enables automated multicenter partitioning (Salvador TFVC scheme). This is the default; set `multicenter = .false.` for a single-center expansion at the origin.
 * **`nrad`**, **`nang`** *(integers)*: Radial and angular points per center (Defaults: `50` and `590`). They are also used by the single-center grid (`multicenter = .false.`), whose radial scaling factor is `sfalpha_in(1)` (Default: `1.0` bohr).
+* The radial scaling factor of each center is computed automatically from Bragg-Slater atomic radii (Slater, J. Chem. Phys. 41, 3199 (1964), with H = 0.35 Å as in Becke 1988; H-Kr are tabulated, other elements use 1.0 Å): the average of the radii of the two atoms of a pair for interatomic centers, and the average weighted by the number of intra-atomic pairs for the origin.
 * **`nohydro`** *(logical)*: Drops the centers formed with hydrogen atoms (Default: `.true.`; set `nohydro = .false.` to keep them).
 * **`betaone`** *(logical)*: Forces alternate Becke partition stiffness.
 
