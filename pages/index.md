@@ -9,8 +9,16 @@ INCA uses a standard Fortran `NAMELIST` input structure. The input file contains
 ### File I/O
 * **`wfxfilename`** *(string)*: Path to the input `.wfx` file.
 * **`fchkfilename`** *(string)*: Path to the input `.fchk` file.
-* **`basfilename`** *(string)*: Path to custom basis set `.bas`.
-* **`dm2name`** *(string)*: Path to `.dm2p` stream file.
+* **`basfilename`** *(string)*: Path to the primitive basis file `.bas`.
+* **`dm2name`** *(string)*: Path to the `.dm2p` file (DM2 in the primitive basis).
+
+**Intracule calculations need three files:** the `.fchk` (or `.wfx`), the `.bas` and the `.dm2p`. INCA does not generate the `.dm2p`; it has to be produced by an external program (for example DMN).
+
+* The **`.bas`** file holds the primitive Gaussian basis, one line per primitive after a header line starting with `#`: atomic number of the centre, centre coordinates X, Y, Z (bohr), exponent, and the Cartesian angular powers nx, ny, nz.
+* The **`.dm2p`** file holds the second-order reduced density matrix in the primitive basis: one binary record per primitive quartet, with the four primitive indices i, j, k, l (4-byte integers) and the DM2 value for that quartet (8-byte real, with respect to normalized primitives).
+* Both files must use the **same primitive ordering**: primitive *n* in the `.dm2p` is the primitive on line *n* of the `.bas`. Without a `.bas`, INCA takes the primitives from the `.fchk` / `.wfx`, whose order does not in general match the `.dm2p`.
+
+The full format description, with an example, is in the README.
 * **`outname`** *(string)*: Custom master output log filename.
 
 ### Task Flags
