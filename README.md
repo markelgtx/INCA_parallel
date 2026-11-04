@@ -54,6 +54,50 @@ after adding or renaming source files).
 `run_inca.sh` sets `OMP_NUM_THREADS` to all cores (unless you set it yourself)
 and forces BLAS/LAPACK to a single thread to avoid oversubscription.
 
+### Files needed for an intracule calculation
+
+An intracule calculation needs three files, all given in the `&files` block:
+
+| File | Keyword | Content |
+|------|---------|---------|
+| `.fchk` (or `.wfx`) | `fchkfilename` (or `wfxfilename`) | Wavefunction file: molecular geometry, atomic numbers and number of primitives |
+| `.bas` | `basfilename` | Primitive Gaussian basis: one line per primitive with its centre, exponent and angular powers |
+| `.dm2p` | `dm2name` | Second-order reduced density matrix (DM2) in the primitive basis: one record per primitive quartet with its DM2 value |
+
+The `.bas` and `.dm2p` files must use the same primitive ordering: primitive
+*n* in the `.dm2p` is the primitive on line *n* of the `.bas`. INCA does not
+generate the `.dm2p`; it has to be produced by an external program (for
+example DMN). Without a `.bas`, INCA takes the primitives from the `.fchk` /
+`.wfx` and prints a warning, because that order does not in general match the
+`.dm2p`.
+
+**`.bas` format.** A text file. Everything before the first line starting with
+`#` is skipped; the `#` line is a header. After it come `nprim` lines (the
+number of primitives in the `.fchk` / `.wfx`), one per primitive, in the order
+used in the `.dm2p`:
+
+```
+# Z              X_A             Y_A             Z_A             Exp             Quant(nx,ny,nz)
+  6     0.00000000E+00  0.00000000E+00  0.00000000E+00  0.71616837E+02          0       0       0
+  ...
+  1     0.11967636E+01  0.11967636E+01  0.11967636E+01  0.34252509E+01          0       0       0
+```
+
+The columns are the atomic number of the centre, the Cartesian coordinates of
+the centre (bohr, matching the geometry of the `.fchk` / `.wfx`), the Gaussian
+exponent, and the Cartesian angular powers *n<sub>x</sub>, n<sub>y</sub>,
+n<sub>z</sub>* (e.g. `1 0 0` for a p<sub>x</sub> primitive). See
+`tests/data/ch4_ops.bas`.
+
+**`.dm2p` format.** A binary file with one record per primitive quartet:
+four integers *i, j, k, l* (4-byte) with the primitive indices, followed by
+the DM2 value for that quartet (8-byte real). The indices refer to the lines
+of the `.bas`. The DM2 values are taken with respect to normalized primitives;
+INCA multiplies them by the primitive normalization factors. The file can be
+a flat stream or a sequential unformatted Fortran file with 4-byte record
+markers (detected automatically). It can contain all quartets or only the
+symmetry-unique ones; INCA reports which one it read. See `tests/data/ch4.dm2p`.
+
 ### Input
 
 The input is a Fortran namelist file with up to three blocks: `&files`,
@@ -84,7 +128,7 @@ Main keywords (full description in the User Manual, `pages/index.md`):
 
 | Block | Keyword | Meaning |
 |-------|---------|---------|
-| `&files` | `fchkfilename`, `wfxfilename`, `basfilename`, `dm2name`, `logfilename` | Input files (a `.fchk` or `.wfx` is required) |
+| `&files` | `fchkfilename`, `wfxfilename`, `basfilename`, `dm2name`, `logfilename` | Input files. An intracule calculation needs the `.fchk` (or `.wfx`), the `.bas` and the `.dm2p` (see above) |
 | `&files` | `outname`, `r_plot_name`, `cubeintraname` | Output names (default: derived from the input name) |
 | `&intracule_job` | `calc_type` | Intracule calculation: `'radial_integral'`, `'radial_plot'` or `'cubeintra'` (leave out for no intracule) |
 | | `calc_type='radial_integral'` | Total integral of the radial intracule |
