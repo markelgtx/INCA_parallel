@@ -68,7 +68,7 @@ The `.bas` and `.dm2p` files must use the same primitive ordering: primitive
 *n* in the `.dm2p` is the primitive on line *n* of the `.bas`. INCA does not
 generate the `.dm2p`; it has to be produced by an external program (for
 example DMN). Without a `.bas`, INCA takes the primitives from the `.fchk` /
-`.wfx` and prints a warning, because that order does not in general match the
+`.wfx` and prints a warning, because that order does not necessarily match the
 `.dm2p`.
 
 **`.bas` format.** A text file. Everything before the first line starting with
